@@ -139,19 +139,6 @@ func main() {
 		}
 	}
 
-	// @Debug: Piece verification
-	// for i := range players[0].pieces {
-	// 	players[0].pieces[i].isPlaced = true
-	// 	players[0].pieces[i].orientation = 0
-	// 	if i < 5 {
-	// 		players[0].pieces[i].origin = [2]int{(i * 4) % 20, 4 * (i / 5)}
-	// 	} else if i < 15 {
-	// 		players[0].pieces[i].origin = [2]int{(i * 4) % 20, 4*(i/5) - 1}
-	// 	} else {
-	// 		players[0].pieces[i].origin = [2]int{(i * 4) % 20, 4*(i/5) + 1}
-	// 	}
-	// }
-
 	// --------------------------------------------------
 	// Game State Functions
 	// --------------------------------------------------
@@ -427,6 +414,19 @@ func main() {
 	players[1].pieces[0].orientation = 0
 	players[1].pieces[0].isPlaced = true
 
+	// @Debug: Piece verification
+	// for i := range players[0].pieces {
+	// 	players[0].pieces[i].isPlaced = true
+	// 	players[0].pieces[i].orientation = 0
+	// 	if i < 5 {
+	// 		players[0].pieces[i].origin = [2]int{(i * 4) % 20, 4 * (i / 5)}
+	// 	} else if i < 15 {
+	// 		players[0].pieces[i].origin = [2]int{(i * 4) % 20, 4*(i/5) - 1}
+	// 	} else {
+	// 		players[0].pieces[i].origin = [2]int{(i * 4) % 20, 4*(i/5) + 1}
+	// 	}
+	// }
+
 	// init gameBoard
 	updateBoardState()
 	updateGameBoard()
@@ -492,11 +492,6 @@ func main() {
 				x := int(cellV.X)
 				y := int(cellV.Y)
 
-				// Place piece at given coordinates
-				// players[1].pieces[pieceToPlace].origin = [2]int{x, y}
-				// players[1].pieces[pieceToPlace].orientation = pieceOrientation
-				// players[1].pieces[pieceToPlace].isPlaced = true
-
 				if !players[1].pieces[pieceToPlace].isPlaced {
 					if isValidPlacement(x, y, players[1].id, pieceToPlace, pieceOrientation) {
 						players[1].pieces[pieceToPlace].origin = [2]int{x, y}
@@ -507,10 +502,9 @@ func main() {
 						} else {
 							pieceToPlace = 1
 						}
+						updateBoardState()
 					}
 				}
-
-				updateBoardState()
 			}
 		}
 
