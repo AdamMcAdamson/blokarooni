@@ -12,18 +12,19 @@ func main() {
 	// Window Setup
 	// --------------------------------------------------
 
-	const windowWidth = 1120
+	const windowWidth = 1600
 	const windowHeight = 1120
 	rl.InitWindow(windowWidth, windowHeight, "raylib [core] example - basic window")
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(60)
 
+	// Game Board
 	const gameBoardWidth int = 20
 	const gameBoardHeight int = 20
 
 	// @TODO: handle other window sizes well (as of writing we need a multiple of 20 in order to draw correctly)
-	const gameBoardWidthPixels float32 = windowHeight * 0.75   // 840
-	const gameBoardHeightPixels float32 = gameBoardWidthPixels // 840
+	const gameBoardWidthPixels float32 = 840  // windowHeight * 0.75   // 840
+	const gameBoardHeightPixels float32 = 840 // gameBoardWidthPixels // 840
 
 	gameBoardSizePixels := rl.Vector2{X: gameBoardWidthPixels, Y: gameBoardHeightPixels}
 
@@ -34,10 +35,30 @@ func main() {
 
 	gameBoard := [gameBoardWidth][gameBoardHeight]int{}
 
-	gameBoardStartingPos := rl.Vector2{X: float32((windowWidth - gameBoardWidthPixels) / 2), Y: float32((windowHeight - gameBoardHeightPixels) / 2)}
+	gameBoardStartingPos := rl.Vector2{X: 100.0, Y: 100.0} // rl.Vector2{X: float32((windowWidth - gameBoardWidthPixels) / 2), Y: float32((windowHeight - gameBoardHeightPixels) / 2)}
 
-	fmt.Printf("gameBoardStaringPos (v2): %f, %f\n", gameBoardStartingPos.X, gameBoardStartingPos.Y)
-	fmt.Printf("cellSize (v2): %f, %f\n", cellSize.X, cellSize.Y)
+	// Preview Board
+	// @TODO: handle other preview board sizes (requires 10 to be drawn correctly atm)
+	// 		-- I suspect this is the same issue as the window size issue
+	const previewBoardWidth int = 10
+	const previewBoardHeight int = 10
+
+	const previewBoardWidthPixels float32 = 420
+	const previewBoardHeightPixels float32 = 420
+
+	previewBoardSizePixels := rl.Vector2{X: previewBoardWidthPixels, Y: previewBoardHeightPixels}
+
+	const previewCellWidth float32 = previewBoardWidthPixels / float32(previewBoardWidth)
+	const previewCellHeight float32 = previewBoardHeightPixels / float32(previewBoardHeight)
+
+	previewCellSize := rl.Vector2{X: float32(previewCellWidth), Y: float32(previewCellHeight)}
+
+	previewBoard := [previewBoardWidth][previewBoardHeight]int{}
+
+	previewBoardStartingPos := rl.Vector2{X: 1060, Y: 100}
+
+	// fmt.Printf("gameBoardStaringPos (v2): %f, %f\n", gameBoardStartingPos.X, gameBoardStartingPos.Y)
+	// fmt.Printf("cellSize (v2): %f, %f\n", cellSize.X, cellSize.Y)
 
 	// --------------------------------------------------
 	// Data Setup
@@ -173,6 +194,56 @@ func main() {
 		}
 	}
 
+	clearPreviewBoard := func() {
+		for x := range previewBoard {
+			for y := range previewBoard[0] {
+				previewBoard[x][y] = 0
+			}
+		}
+	}
+
+	updatePreviewSquare := func(x int, y int, playerNumber int) {
+		if x > 9 || y > 9 || x < 0 || y < 0 {
+			fmt.Printf("Invalid previewBoard, tile out of bounds. Tile (%d, %d)\n", x, y)
+		} else {
+			previewBoard[x][y] = playerNumber
+		}
+	}
+
+	updatePreviewBoard := func(playerNumber int, piece int, orientation int) {
+		clearPreviewBoard()
+		x := 4
+		y := 4
+		for py, prow := range pieces[piece] {
+			for px, pval := range prow {
+				// @TODO: handle player
+				// @TODO: handle conflicts (red touching red) (Maybe we should do this on attempt to place)
+				if pval {
+					switch orientation {
+					case 0:
+						updatePreviewSquare(x+px, y+py, playerNumber)
+					case 1:
+						updatePreviewSquare(x+py, y-px, playerNumber)
+					case 2:
+						updatePreviewSquare(x-px, y-py, playerNumber)
+					case 3:
+						updatePreviewSquare(x-py, y+px, playerNumber)
+					case 4:
+						updatePreviewSquare(x-px, y+py, playerNumber)
+					case 5:
+						updatePreviewSquare(x+py, y+px, playerNumber)
+					case 6:
+						updatePreviewSquare(x+px, y-py, playerNumber)
+					case 7:
+						updatePreviewSquare(x-py, y-px, playerNumber)
+					default:
+						panic(fmt.Sprintf("Invalid piece orientation. Player %d, Piece %d", playerNumber, piece))
+					}
+				}
+			}
+		}
+	}
+
 	clearGameBoard := func() {
 		for x := range gameBoard {
 			for y := range gameBoard[0] {
@@ -218,12 +289,150 @@ func main() {
 		}
 	}
 
+	isValidPlacementSquare := func(x int, y int, playerNumber int) bool {
+		// Check if square exists and is free
+		if x > 19 || y > 19 || x < 0 || y < 0 {
+			// fmt.Printf("Invalid placementSquare, tile out of bounds. Tile (%d, %d)\n", x, y)
+			return false
+		}
+		if gameBoard[x][y] != 0 {
+			// fmt.Printf("Invalid placementSquare, tile conflict at (%d, %d)\n", x, y)
+			return false
+		}
+
+		// Ensure sides are not of same player
+		if x > 0 && gameBoard[x-1][y] == playerNumber {
+			return false
+		}
+		if x < 19 && gameBoard[x+1][y] == playerNumber {
+			return false
+		}
+		if y > 0 && gameBoard[x][y-1] == playerNumber {
+			return false
+		}
+		if y < 19 && gameBoard[x][y+1] == playerNumber {
+			return false
+		}
+
+		return true
+	}
+
+	isValidConnectingSquare := func(x int, y int, playerNumber int) bool {
+		// @TODO: Check diagonal for same playerNumbers
+
+		// Guaranteed in-bounds by isValidPlacementSquare
+		// if x > 19 || y > 19 || x < 0 || y < 0 {...}
+
+		fmt.Printf("PlayerNumber at (0, 0): %d\n", gameBoard[0][0])
+
+		if x > 0 {
+			if y > 0 {
+				if gameBoard[x-1][y-1] == playerNumber {
+					fmt.Println("Should print")
+					return true
+				}
+			}
+			if y < 19 {
+				if gameBoard[x-1][y+1] == playerNumber {
+					return true
+				}
+			}
+		}
+		if x < 19 {
+			if y > 0 {
+				if gameBoard[x+1][y-1] == playerNumber {
+					return true
+				}
+			}
+			if y < 19 {
+				if gameBoard[x+1][y+1] == playerNumber {
+					return true
+				}
+			}
+		}
+		fmt.Printf("Invalid connectingSquare. Tile (%d, %d)\n", x, y)
+		return false
+	}
+
+	isValidPlacement := func(x int, y int, playerNumber int, piece int, orientation int) bool {
+		// Ensure at least one square isValidConnectingSquare
+		// Ensure isValidPlacementSquare for all squares
+
+		connectionFound := false
+
+		for py, prow := range pieces[piece] {
+			for px, pval := range prow {
+				if pval {
+					switch orientation {
+					case 0:
+						if !isValidPlacementSquare(x+px, y+py, playerNumber) {
+							fmt.Println("NOT VALID PLACEMENT SQUARE")
+							return false
+						} else if !connectionFound {
+							connectionFound = isValidConnectingSquare(x+px, y+py, playerNumber)
+						}
+					case 1:
+						if !isValidPlacementSquare(x+py, y-px, playerNumber) {
+							return false
+						} else if !connectionFound {
+							connectionFound = isValidConnectingSquare(x+py, y-px, playerNumber)
+						}
+					case 2:
+						if !isValidPlacementSquare(x-px, y-py, playerNumber) {
+							return false
+						} else if !connectionFound {
+							connectionFound = isValidConnectingSquare(x-px, y-py, playerNumber)
+						}
+					case 3:
+						if !isValidPlacementSquare(x-py, y+px, playerNumber) {
+							return false
+						} else if !connectionFound {
+							connectionFound = isValidConnectingSquare(x-py, y+px, playerNumber)
+						}
+					case 4:
+						if !isValidPlacementSquare(x-px, y+py, playerNumber) {
+							return false
+						} else if !connectionFound {
+							connectionFound = isValidConnectingSquare(x-px, y+py, playerNumber)
+						}
+					case 5:
+						if !isValidPlacementSquare(x+py, y+px, playerNumber) {
+							return false
+						} else if !connectionFound {
+							connectionFound = isValidConnectingSquare(x+py, y+px, playerNumber)
+						}
+					case 6:
+						if !isValidPlacementSquare(x+px, y-py, playerNumber) {
+							return false
+						} else if !connectionFound {
+							connectionFound = isValidConnectingSquare(x+px, y-py, playerNumber)
+						}
+					case 7:
+						if !isValidPlacementSquare(x-py, y-px, playerNumber) {
+							return false
+						} else if !connectionFound {
+							connectionFound = isValidConnectingSquare(x-py, y-px, playerNumber)
+						}
+					default:
+						panic(fmt.Sprintf("Invalid piece orientation. Player %d, Piece %d", playerNumber, piece))
+					}
+				}
+			}
+		}
+		return connectionFound
+	}
+
+	// @DEBUG: Setup First Piece for testing
+	players[1].pieces[0].origin = [2]int{0, 0}
+	players[1].pieces[0].orientation = 0
+	players[1].pieces[0].isPlaced = true
+
 	// init gameBoard
 	updateBoardState()
 	updateGameBoard()
 
 	// Piece Placing Data
-	pieceToPlace := 0
+	pieceToPlace := 1
 	pieceOrientation := 0
 
 	// --------------------------------------------------
@@ -284,9 +493,22 @@ func main() {
 				y := int(cellV.Y)
 
 				// Place piece at given coordinates
-				players[1].pieces[pieceToPlace].origin = [2]int{x, y}
-				players[1].pieces[pieceToPlace].orientation = pieceOrientation
-				players[1].pieces[pieceToPlace].isPlaced = true
+				// players[1].pieces[pieceToPlace].origin = [2]int{x, y}
+				// players[1].pieces[pieceToPlace].orientation = pieceOrientation
+				// players[1].pieces[pieceToPlace].isPlaced = true
+
+				if !players[1].pieces[pieceToPlace].isPlaced {
+					if isValidPlacement(x, y, players[1].id, pieceToPlace, pieceOrientation) {
+						players[1].pieces[pieceToPlace].origin = [2]int{x, y}
+						players[1].pieces[pieceToPlace].orientation = pieceOrientation
+						players[1].pieces[pieceToPlace].isPlaced = true
+						if pieceToPlace < 20 {
+							pieceToPlace++
+						} else {
+							pieceToPlace = 1
+						}
+					}
+				}
 
 				updateBoardState()
 			}
@@ -295,6 +517,8 @@ func main() {
 		// Clear and Update gameBoard
 		clearGameBoard()
 		updateGameBoard()
+
+		updatePreviewBoard(players[1].id, pieceToPlace, pieceOrientation)
 
 		// --------------------------------------------------
 		// Drawing
@@ -305,7 +529,7 @@ func main() {
 		rl.ClearBackground(rl.RayWhite)
 		rl.DrawText(fmt.Sprintf("Piece: %d, Orientation: %d", pieceToPlace, pieceOrientation), 10, 10, 40, rl.DarkGray)
 
-		// Draw grid
+		// Draw gameBoard grid
 		rl.DrawLineV(rl.Vector2Subtract(gameBoardStartingPos, rl.Vector2{X: 0.0, Y: 1.0}), rl.Vector2Add(gameBoardStartingPos, rl.Vector2{X: 0.0, Y: gameBoardSizePixels.Y}), rl.Black)
 		for i := 1; i <= gameBoardWidth; i++ {
 			start := rl.Vector2Add(gameBoardStartingPos, rl.Vector2Multiply(cellSize, rl.Vector2{X: float32(i), Y: 0.0}))
@@ -328,6 +552,34 @@ func main() {
 				}
 			}
 		}
+
+		// Draw preview grid
+		rl.DrawLineV(rl.Vector2Subtract(previewBoardStartingPos, rl.Vector2{X: 0.0, Y: 1.0}), rl.Vector2Add(previewBoardStartingPos, rl.Vector2{X: 0.0, Y: previewBoardSizePixels.Y}), rl.Black)
+		for i := 1; i <= previewBoardWidth; i++ {
+			start := rl.Vector2Add(previewBoardStartingPos, rl.Vector2Multiply(previewCellSize, rl.Vector2{X: float32(i), Y: 0.0}))
+			end := rl.Vector2Add(start, rl.Vector2{X: 0.0, Y: previewBoardSizePixels.Y})
+			rl.DrawLineV(start, end, rl.Black)
+		}
+		for i := 0; i <= previewBoardHeight; i++ {
+			start := rl.Vector2Add(previewBoardStartingPos, rl.Vector2Multiply(previewCellSize, rl.Vector2{X: 0.0, Y: float32(i)}))
+			end := rl.Vector2Add(start, rl.Vector2{X: previewBoardSizePixels.X, Y: 0.0})
+			rl.DrawLineV(start, end, rl.Black)
+		}
+
+		// Color grid locations
+		for x, col := range previewBoard {
+			for y, val := range col {
+				if val != 0 {
+					drawPos = rl.Vector2Add(previewBoardStartingPos, rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, previewCellSize))
+					rl.DrawRectangleV(drawPos, rl.Vector2Subtract(previewCellSize, rl.Vector2{X: 1.0, Y: 1.0}), playerColor[val])
+				}
+			}
+		}
+		drawPos = rl.Vector2Add(previewBoardStartingPos, rl.Vector2Multiply(rl.Vector2{X: 4.0, Y: 4.0}, previewCellSize))
+		rl.DrawText("x", int32(drawPos.X+(previewCellWidth/4)), int32(drawPos.Y /*+(previewCellHeight/20)*/), 42, rl.Brown)
+		// fmt.Printf("Drawing 'X' at (%d,%d)\n", int32(drawPos.X+(previewCellWidth/4)), int32(drawPos.Y+(previewCellHeight/4)))
+
+		// rl.drawrectanglev(drawpos, rl.vector2subtract(previewcellsize, rl.vector2{x: 1.0, y: 1.0}), )
 
 		rl.EndDrawing()
 	}
