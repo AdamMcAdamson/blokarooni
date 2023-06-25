@@ -530,7 +530,7 @@ func main() {
 		rl.DrawText(fmt.Sprintf("Piece: %d, Orientation: %d", pieceToPlace, pieceOrientation), 10, 10, 40, rl.DarkGray)
 
 		// Draw gameBoard grid
-		rl.DrawLineV(rl.Vector2Subtract(gameBoardStartingPos, rl.Vector2{X: 0.0, Y: 1.0}), rl.Vector2Add(gameBoardStartingPos, rl.Vector2{X: 0.0, Y: gameBoardSizePixels.Y}), rl.Black)
+		rl.DrawLineV(rl.Vector2Subtract(gameBoardStartingPos, rl.Vector2{X: 0.0, Y: 0.0}), rl.Vector2Add(gameBoardStartingPos, rl.Vector2{X: 0.0, Y: gameBoardSizePixels.Y + 1}), rl.Black)
 		for i := 1; i <= gameBoardWidth; i++ {
 			start := rl.Vector2Add(gameBoardStartingPos, rl.Vector2Multiply(cellSize, rl.Vector2{X: float32(i), Y: 0.0}))
 			end := rl.Vector2Add(start, rl.Vector2{X: 0.0, Y: gameBoardSizePixels.Y})
@@ -547,14 +547,14 @@ func main() {
 		for x, col := range gameBoard {
 			for y, val := range col {
 				if val != 0 {
-					drawPos = rl.Vector2Add(gameBoardStartingPos, rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, cellSize))
+					drawPos = rl.Vector2Add(gameBoardStartingPos, rl.Vector2Add(rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, cellSize), rl.Vector2{X: 0, Y: 1.0}))
 					rl.DrawRectangleV(drawPos, rl.Vector2Subtract(cellSize, rl.Vector2{X: 1.0, Y: 1.0}), playerColor[val])
 				}
 			}
 		}
 
 		// Draw preview grid
-		rl.DrawLineV(rl.Vector2Subtract(previewBoardStartingPos, rl.Vector2{X: 0.0, Y: 1.0}), rl.Vector2Add(previewBoardStartingPos, rl.Vector2{X: 0.0, Y: previewBoardSizePixels.Y}), rl.Black)
+		rl.DrawLineV(rl.Vector2Subtract(previewBoardStartingPos, rl.Vector2{X: 1.0, Y: 1.0}), rl.Vector2Add(previewBoardStartingPos, rl.Vector2{X: 0.0, Y: previewBoardSizePixels.Y + 1}), rl.Black)
 		for i := 1; i <= previewBoardWidth; i++ {
 			start := rl.Vector2Add(previewBoardStartingPos, rl.Vector2Multiply(previewCellSize, rl.Vector2{X: float32(i), Y: 0.0}))
 			end := rl.Vector2Add(start, rl.Vector2{X: 0.0, Y: previewBoardSizePixels.Y})
@@ -570,16 +570,13 @@ func main() {
 		for x, col := range previewBoard {
 			for y, val := range col {
 				if val != 0 {
-					drawPos = rl.Vector2Add(previewBoardStartingPos, rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, previewCellSize))
+					drawPos = rl.Vector2Add(previewBoardStartingPos, rl.Vector2Add(rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, previewCellSize), rl.Vector2{X: 0, Y: 1.0}))
 					rl.DrawRectangleV(drawPos, rl.Vector2Subtract(previewCellSize, rl.Vector2{X: 1.0, Y: 1.0}), playerColor[val])
 				}
 			}
 		}
 		drawPos = rl.Vector2Add(previewBoardStartingPos, rl.Vector2Multiply(rl.Vector2{X: 4.0, Y: 4.0}, previewCellSize))
 		rl.DrawText("x", int32(drawPos.X+(previewCellWidth/4)), int32(drawPos.Y /*+(previewCellHeight/20)*/), 42, rl.Brown)
-		// fmt.Printf("Drawing 'X' at (%d,%d)\n", int32(drawPos.X+(previewCellWidth/4)), int32(drawPos.Y+(previewCellHeight/4)))
-
-		// rl.drawrectanglev(drawpos, rl.vector2subtract(previewcellsize, rl.vector2{x: 1.0, y: 1.0}), )
 
 		rl.EndDrawing()
 	}
