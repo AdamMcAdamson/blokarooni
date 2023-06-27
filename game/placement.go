@@ -68,7 +68,11 @@ func isValidConnectingSquare(x int, y int, playerNumber int) bool {
 	return false
 }
 
-func isValidPlacement(x int, y int, playerNumber int, piece int, orientation int) bool {
+func isCorner(x int, y int) bool {
+	return (x == 0 || x == 19) && (y == 0 || y == 19)
+}
+
+func isValidPlacement(x int, y int, playerNumber int, piece int, orientation int, firstPiece bool) bool {
 	// Ensure at least one square isValidConnectingSquare
 	// Ensure isValidPlacementSquare for all squares
 
@@ -81,50 +85,66 @@ func isValidPlacement(x int, y int, playerNumber int, piece int, orientation int
 				case 0:
 					if !isValidPlacementSquare(x+px, y+py, playerNumber) {
 						return false
-					} else if !connectionFound {
+					} else if !connectionFound && !firstPiece {
 						connectionFound = isValidConnectingSquare(x+px, y+py, playerNumber)
+					} else if !connectionFound {
+						connectionFound = isCorner(x+px, y+py)
 					}
 				case 1:
 					if !isValidPlacementSquare(x+py, y-px, playerNumber) {
 						return false
-					} else if !connectionFound {
+					} else if !connectionFound && !firstPiece {
 						connectionFound = isValidConnectingSquare(x+py, y-px, playerNumber)
+					} else if !connectionFound {
+						connectionFound = isCorner(x+py, y-px)
 					}
 				case 2:
 					if !isValidPlacementSquare(x-px, y-py, playerNumber) {
 						return false
-					} else if !connectionFound {
+					} else if !connectionFound && !firstPiece {
 						connectionFound = isValidConnectingSquare(x-px, y-py, playerNumber)
+					} else if !connectionFound {
+						connectionFound = isCorner(x-px, y-py)
 					}
 				case 3:
 					if !isValidPlacementSquare(x-py, y+px, playerNumber) {
 						return false
-					} else if !connectionFound {
+					} else if !connectionFound && !firstPiece {
 						connectionFound = isValidConnectingSquare(x-py, y+px, playerNumber)
+					} else if !connectionFound {
+						connectionFound = isCorner(x-py, y+px)
 					}
 				case 4:
 					if !isValidPlacementSquare(x-px, y+py, playerNumber) {
 						return false
-					} else if !connectionFound {
+					} else if !connectionFound && !firstPiece {
 						connectionFound = isValidConnectingSquare(x-px, y+py, playerNumber)
+					} else if !connectionFound {
+						connectionFound = isCorner(x-px, y+py)
 					}
 				case 5:
 					if !isValidPlacementSquare(x+py, y+px, playerNumber) {
 						return false
-					} else if !connectionFound {
+					} else if !connectionFound && !firstPiece {
 						connectionFound = isValidConnectingSquare(x+py, y+px, playerNumber)
+					} else if !connectionFound {
+						connectionFound = isCorner(x+py, y+px)
 					}
 				case 6:
 					if !isValidPlacementSquare(x+px, y-py, playerNumber) {
 						return false
-					} else if !connectionFound {
+					} else if !connectionFound && !firstPiece {
 						connectionFound = isValidConnectingSquare(x+px, y-py, playerNumber)
+					} else if !connectionFound {
+						connectionFound = isCorner(x+px, y-py)
 					}
 				case 7:
 					if !isValidPlacementSquare(x-py, y-px, playerNumber) {
 						return false
-					} else if !connectionFound {
+					} else if !connectionFound && !firstPiece {
 						connectionFound = isValidConnectingSquare(x-py, y-px, playerNumber)
+					} else if !connectionFound {
+						connectionFound = isCorner(x-py, y-px)
 					}
 				default:
 					panic(fmt.Sprintf("Invalid piece orientation. Player %d, Piece %d", playerNumber, piece))

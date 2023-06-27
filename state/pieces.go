@@ -30,6 +30,3 @@ func GetPiecesData() [21][][]bool {
 }
 
 var Pieces = GetPiecesData()
-
-var PieceToPlace = 1
-var PieceOrientation = 0

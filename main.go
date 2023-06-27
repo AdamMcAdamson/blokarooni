@@ -22,9 +22,9 @@ func main() {
 	game.Init()
 
 	// @DEBUG: Setup First Piece for testing
-	s.Players[1].Pieces[0].Origin = [2]int{0, 0}
-	s.Players[1].Pieces[0].Orientation = 0
-	s.Players[1].Pieces[0].IsPlaced = true
+	// s.Players[1].Pieces[0].Origin = [2]int{0, 0}
+	// s.Players[1].Pieces[0].Orientation = 0
+	// s.Players[1].Pieces[0].IsPlaced = true
 
 	// Init gameBoard
 	game.UpdateBoardState()
@@ -57,7 +57,7 @@ func main() {
 		game.ClearGameBoard()
 		game.UpdateGameBoard()
 
-		game.UpdatePreviewBoard(s.Players[1].Id, s.PieceToPlace, s.PieceOrientation)
+		game.UpdatePreviewBoard(s.Players[s.CurrentPlayerIndex].Id, s.PieceToPlace, s.PieceOrientation)
 
 		// --------------------------------------------------
 		// Drawing

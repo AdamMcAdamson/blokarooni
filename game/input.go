@@ -61,17 +61,24 @@ func handleClicks() {
 			x := int(cellV.X)
 			y := int(cellV.Y)
 
-			if !s.Players[1].Pieces[s.PieceToPlace].IsPlaced {
-				if isValidPlacement(x, y, s.Players[1].Id, s.PieceToPlace, s.PieceOrientation) {
-					s.Players[1].Pieces[s.PieceToPlace].Origin = [2]int{x, y}
-					s.Players[1].Pieces[s.PieceToPlace].Orientation = s.PieceOrientation
-					s.Players[1].Pieces[s.PieceToPlace].IsPlaced = true
-					if s.PieceToPlace < 20 {
-						s.PieceToPlace++
+			if !s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace].IsPlaced {
+				if isValidPlacement(x, y, s.Players[s.CurrentPlayerIndex].Id, s.PieceToPlace, s.PieceOrientation, (s.Players[s.CurrentPlayerIndex].Turn == 0)) {
+					s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace].Origin = [2]int{x, y}
+					s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace].Orientation = s.PieceOrientation
+					s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace].IsPlaced = true
+					s.Players[s.CurrentPlayerIndex].Turn++
+					// if s.PieceToPlace < 20 {
+					// 	s.PieceToPlace++
+					// } else {
+					// 	s.PieceToPlace = 1
+					// }
+					if s.CurrentPlayerIndex < 3 {
+						s.CurrentPlayerIndex++
 					} else {
-						s.PieceToPlace = 1
+						s.CurrentPlayerIndex = 0
 					}
 					UpdateBoardState()
+
 				}
 			}
 		}
