@@ -9,9 +9,10 @@ type PieceState struct {
 }
 
 type PlayerState struct {
-	Id     int
-	Turn   int
-	Pieces [21]PieceState
+	Id              int
+	Turn            int
+	PiecesRemaining int
+	Pieces          [21]PieceState
 }
 
 type BoardStateEntry struct {

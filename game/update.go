@@ -140,3 +140,45 @@ func UpdateGameBoard() {
 		}
 	}
 }
+func updateCurrentPlayerIndex() {
+	counter := 0
+	for counter < 4 {
+		if s.CurrentPlayerIndex < 3 {
+			s.CurrentPlayerIndex++
+		} else {
+			s.CurrentPlayerIndex = 0
+		}
+		if s.Players[s.CurrentPlayerIndex].PiecesRemaining > 0 {
+			return
+		}
+		counter++
+	}
+	fmt.Printf("ERROR: Players.PiecesRemaining and/or game over condition is not being set correctly. All players seem to have no pieces remaining.\n")
+}
+
+func updatePieceToPlace(increaseIndex bool, force bool) {
+	counter := 0
+	if s.Players[s.CurrentPlayerIndex].PiecesRemaining <= 0 {
+		fmt.Printf("ERROR: CurrentPlayerIndex.PiecesRemaining <= 0 when choosing piecetoPlace. CurrentPlayerIndex (%d) and/or game over condition is not being set correctly.\n", s.CurrentPlayerIndex)
+	}
+	for s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace].IsPlaced == true || force {
+		if increaseIndex {
+			if s.PieceToPlace < 20 {
+				s.PieceToPlace++
+			} else {
+				s.PieceToPlace = 0
+			}
+		} else {
+			if s.PieceToPlace > 0 {
+				s.PieceToPlace--
+			} else {
+				s.PieceToPlace = 20
+			}
+		}
+		if counter > 21 {
+			fmt.Printf("ERROR: Players.PiecesRemaining and/or Pieces.IsPlaced is not being set correctly. Cycled through all pieces. CurrentPlayerIndex: %d, PiecesRemaining: %d.\n", s.CurrentPlayerIndex, s.Players[s.CurrentPlayerIndex].PiecesRemaining)
+		}
+		counter++
+		force = false
+	}
+}
