@@ -21,11 +21,6 @@ func main() {
 	// Init game
 	game.Init()
 
-	// @DEBUG: Setup First Piece for testing
-	// s.Players[1].Pieces[0].Origin = [2]int{0, 0}
-	// s.Players[1].Pieces[0].Orientation = 0
-	// s.Players[1].Pieces[0].IsPlaced = true
-
 	// Init gameBoard
 	game.UpdateBoardState()
 	game.UpdateGameBoard()
