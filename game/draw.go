@@ -18,12 +18,37 @@ func Draw() {
 
 	drawGameBoard()
 	drawGameBoardPieces()
-	drawPreviewBoard()
-	drawPreviewBoardPiece()
 
-	drawSkipButton()
+	if s.GameState != 2 {
+		drawPreviewBoard()
+		drawPreviewBoardPiece()
+
+		drawSkipButton()
+	} else {
+		drawEndGameScreen()
+	}
 
 	rl.EndDrawing()
+}
+
+func drawEndGameScreen() {
+	endGameScreenRect := rl.Rectangle{X: 1020, Y: 100, Width: 480, Height: 340}
+	rl.DrawRectangleRounded(endGameScreenRect, 0, 4, rl.LightGray)
+
+	indexOrder := [4]int{0, 1, 2, 3}
+	temp := 0
+	for i := range indexOrder {
+		for j := i + 1; j < 4; j++ {
+			if s.Players[indexOrder[i]].Score < s.Players[indexOrder[j]].Score {
+				temp = indexOrder[i]
+				indexOrder[i] = indexOrder[j]
+				indexOrder[j] = temp
+			}
+		}
+	}
+	for i, val := range indexOrder {
+		rl.DrawText(fmt.Sprintf("Player %d Score: %d", s.Players[val].Id, s.Players[val].Score), endGameScreenRect.ToInt32().X+20, endGameScreenRect.ToInt32().Y+int32(20+i*80), 42, c.PlayerColor[s.Players[val].Id])
+	}
 }
 
 func drawSkipButton() {
