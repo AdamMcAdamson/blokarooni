@@ -27,8 +27,11 @@ func Draw() {
 }
 
 func drawSkipButton() {
+	text := "Skip Turn"
+	var fontSize float32 = 24
 	rl.DrawRectangleRounded(c.SkipTurnButtonBounds, .25, 4, rl.LightGray)
-	rl.DrawText("Skip Turn", c.SkipTurnButtonBounds.ToInt32().X+c.SkipTurnButtonBounds.ToInt32().Width/4, c.SkipTurnButtonBounds.ToInt32().Y+c.SkipTurnButtonBounds.ToInt32().Height/3, 24, rl.DarkGray)
+	textSize := rl.MeasureTextEx(rl.GetFontDefault(), text, fontSize, 1)
+	rl.DrawText(text, c.SkipTurnButtonBounds.ToInt32().X+((c.SkipTurnButtonBounds.ToInt32().Width-int32(textSize.X))/2), c.SkipTurnButtonBounds.ToInt32().Y+((c.SkipTurnButtonBounds.ToInt32().Height-int32(textSize.Y))/2), int32(fontSize), rl.DarkGray)
 }
 
 func drawGameBoard() {

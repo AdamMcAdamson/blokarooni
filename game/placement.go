@@ -7,6 +7,12 @@ import (
 )
 
 func placePiece(x int, y int) {
+	if s.PieceToPlace == 0 && s.Players[s.CurrentPlayerIndex].PiecesRemaining == 1 {
+		s.Players[s.CurrentPlayerIndex].Bonus = 20
+	} else if s.Players[s.CurrentPlayerIndex].PiecesRemaining == 1 {
+		s.Players[s.CurrentPlayerIndex].Bonus = 15
+	}
+
 	s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace].Origin = [2]int{x, y}
 	s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace].Orientation = s.PieceOrientation
 	s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace].IsPlaced = true

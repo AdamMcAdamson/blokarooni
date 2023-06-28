@@ -12,6 +12,7 @@ type PlayerState struct {
 	Id              int
 	Turn            int
 	PiecesRemaining int
+	Bonus           int
 	Pieces          [21]PieceState
 }
 
