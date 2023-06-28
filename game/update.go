@@ -8,12 +8,12 @@ import (
 	s "github.com/AdamMcAdamson/blockeroni/state"
 )
 
-func checkToEndGame() {
+func checkToEndGame() bool {
 	allPlaced := true
 	for i := range s.Players {
 		if s.Players[i].PiecesRemaining != 0 {
 			if !s.Players[i].Skipped {
-				return
+				return false
 			}
 			allPlaced = false
 		}
@@ -21,9 +21,11 @@ func checkToEndGame() {
 
 	if allPlaced {
 		s.GameState = 2 // GameOver
+		return true
 	} else {
 		s.ShouldShowEndGameButton = true
 	}
+	return false
 }
 
 func skipTurn() {
@@ -165,6 +167,9 @@ func UpdateGameBoard() {
 			}
 		}
 	}
+	if checkToEndGame() {
+		endGame()
+	}
 }
 func updateCurrentPlayerIndex() {
 	counter := 0
@@ -209,6 +214,20 @@ func updatePieceToPlace(increaseIndex bool, force bool) {
 	}
 }
 
-// func calculateScore() {
+func calculateNegativeScores() {
+	for i := range s.Players {
+		workingScore := 0
+		if s.Players[i].PiecesRemaining > 0 {
+			for j := range s.Players[i].Pieces {
+				if !s.Players[i].Pieces[j].IsPlaced {
+					workingScore -= s.Players[i].Pieces[j].NumSquares
+				}
+			}
+			s.Players[i].Score = workingScore
+		}
+	}
+}
 
-// }
+func endGame() {
+	calculateNegativeScores()
+}
