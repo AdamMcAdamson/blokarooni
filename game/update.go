@@ -8,6 +8,12 @@ import (
 	s "github.com/AdamMcAdamson/blockeroni/state"
 )
 
+func skipTurn() {
+	s.Players[s.CurrentPlayerIndex].Turn++
+	updateCurrentPlayerIndex()
+	updatePieceToPlace(true, false)
+}
+
 // updateBoardState
 // @INFO: For now this is doesn't retain move order so that we can change piece locations real time
 func UpdateBoardState() {
@@ -161,7 +167,7 @@ func updatePieceToPlace(increaseIndex bool, force bool) {
 	if s.Players[s.CurrentPlayerIndex].PiecesRemaining <= 0 {
 		fmt.Printf("ERROR: CurrentPlayerIndex.PiecesRemaining <= 0 when choosing piecetoPlace. CurrentPlayerIndex (%d) and/or game over condition is not being set correctly.\n", s.CurrentPlayerIndex)
 	}
-	for s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace].IsPlaced == true || force {
+	for s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace].IsPlaced || force {
 		if increaseIndex {
 			if s.PieceToPlace < 20 {
 				s.PieceToPlace++

@@ -6,6 +6,18 @@ import (
 	s "github.com/AdamMcAdamson/blockeroni/state"
 )
 
+func placePiece(x int, y int) {
+	s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace].Origin = [2]int{x, y}
+	s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace].Orientation = s.PieceOrientation
+	s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace].IsPlaced = true
+	s.Players[s.CurrentPlayerIndex].PiecesRemaining--
+	s.Players[s.CurrentPlayerIndex].Turn++
+
+	updateCurrentPlayerIndex()
+	updatePieceToPlace(true, false)
+	UpdateBoardState()
+}
+
 func isValidPlacementSquare(x int, y int, playerNumber int) bool {
 	// Check if square exists and is free
 	if x > 19 || y > 19 || x < 0 || y < 0 {

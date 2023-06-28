@@ -45,3 +45,5 @@ var PreviewBoardStartingPos = rl.Vector2{X: 1060, Y: 100}
 
 // Define player colors
 var PlayerColor = [5]rl.Color{rl.White, rl.Red, rl.Green, rl.Yellow, rl.Blue}
+
+var SkipTurnButtonBounds = rl.Rectangle{X: 1060.0, Y: 560.0, Width: 240.0, Height: 80.0}

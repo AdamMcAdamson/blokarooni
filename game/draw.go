@@ -21,7 +21,14 @@ func Draw() {
 	drawPreviewBoard()
 	drawPreviewBoardPiece()
 
+	drawSkipButton()
+
 	rl.EndDrawing()
+}
+
+func drawSkipButton() {
+	rl.DrawRectangleRounded(c.SkipTurnButtonBounds, .25, 4, rl.LightGray)
+	rl.DrawText("Skip Turn", c.SkipTurnButtonBounds.ToInt32().X+c.SkipTurnButtonBounds.ToInt32().Width/4, c.SkipTurnButtonBounds.ToInt32().Y+c.SkipTurnButtonBounds.ToInt32().Height/3, 24, rl.DarkGray)
 }
 
 func drawGameBoard() {

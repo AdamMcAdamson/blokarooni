@@ -43,8 +43,14 @@ func handleKeys() {
 func handleClicks() {
 	if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 
-		mousePosOnBoard := rl.Vector2Subtract(rl.GetMousePosition(), c.GameBoardStartingPos)
+		mousePos := rl.GetMousePosition()
+		mousePosOnBoard := rl.Vector2Subtract(mousePos, c.GameBoardStartingPos)
 
+		if rl.CheckCollisionPointRec(mousePos, c.SkipTurnButtonBounds) {
+			skipTurn()
+		}
+
+		// @TODO: Create rect for gameBoard and use CheckCollisionPointRec to check bounds
 		if mousePosOnBoard.X <= c.GameBoardSizePixels.X && mousePosOnBoard.Y <= c.GameBoardSizePixels.Y && mousePosOnBoard.X >= 0 && mousePosOnBoard.Y >= 0 {
 			// get cell
 			cellV := rl.Vector2DivideV(mousePosOnBoard, c.CellSize)
@@ -55,15 +61,7 @@ func handleClicks() {
 
 			if !s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace].IsPlaced {
 				if isValidPlacement(x, y, s.Players[s.CurrentPlayerIndex].Id, s.PieceToPlace, s.PieceOrientation, (s.Players[s.CurrentPlayerIndex].PiecesRemaining == 21)) {
-					s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace].Origin = [2]int{x, y}
-					s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace].Orientation = s.PieceOrientation
-					s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace].IsPlaced = true
-					s.Players[s.CurrentPlayerIndex].PiecesRemaining--
-					s.Players[s.CurrentPlayerIndex].Turn++
-
-					updateCurrentPlayerIndex()
-					updatePieceToPlace(true, false)
-					UpdateBoardState()
+					placePiece(x, y)
 				}
 			}
 		}
