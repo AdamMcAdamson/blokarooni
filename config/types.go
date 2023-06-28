@@ -13,6 +13,7 @@ type PlayerState struct {
 	Turn            int
 	PiecesRemaining int
 	Bonus           int
+	Skipped         bool
 	Pieces          [21]PieceState
 }
 

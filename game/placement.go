@@ -18,9 +18,14 @@ func placePiece(x int, y int) {
 	s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace].IsPlaced = true
 	s.Players[s.CurrentPlayerIndex].PiecesRemaining--
 	s.Players[s.CurrentPlayerIndex].Turn++
+	s.Players[s.CurrentPlayerIndex].Skipped = false
 
-	updateCurrentPlayerIndex()
-	updatePieceToPlace(true, false)
+	checkToEndGame()
+
+	if s.GameState != 2 {
+		updateCurrentPlayerIndex()
+		updatePieceToPlace(true, false)
+	}
 	UpdateBoardState()
 }
 

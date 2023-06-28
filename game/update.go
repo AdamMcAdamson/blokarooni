@@ -8,8 +8,28 @@ import (
 	s "github.com/AdamMcAdamson/blockeroni/state"
 )
 
+func checkToEndGame() {
+	allPlaced := true
+	for i := range s.Players {
+		if s.Players[i].PiecesRemaining != 0 {
+			if !s.Players[i].Skipped {
+				return
+			}
+			allPlaced = false
+		}
+	}
+
+	if allPlaced {
+		s.GameState = 2 // GameOver
+	} else {
+		s.ShouldShowEndGameButton = true
+	}
+}
+
 func skipTurn() {
 	s.Players[s.CurrentPlayerIndex].Turn++
+	s.Players[s.CurrentPlayerIndex].Skipped = true
+	checkToEndGame()
 	updateCurrentPlayerIndex()
 	updatePieceToPlace(true, false)
 }
@@ -188,3 +208,7 @@ func updatePieceToPlace(increaseIndex bool, force bool) {
 		force = false
 	}
 }
+
+// func calculateScore() {
+
+// }
