@@ -16,17 +16,19 @@ func Draw() {
 	rl.ClearBackground(rl.RayWhite)
 	rl.DrawText(fmt.Sprintf("Piece: %d, Orientation: %d", s.PieceToPlace, s.PieceOrientation), 10, 10, 40, rl.DarkGray)
 
+	drawSideboards()
+
 	drawGameBoard()
 	drawGameBoardPieces()
 
-	if s.GameState != 2 {
-		drawPreviewBoard()
-		drawPreviewBoardPiece()
+	// if s.GameState != 2 {
+	// 	drawPreviewBoard()
+	// 	drawPreviewBoardPiece()
 
-		drawSkipButton()
-	} else {
-		drawEndGameScreen()
-	}
+	// 	drawSkipButton()
+	// } else {
+	// 	drawEndGameScreen()
+	// }
 
 	rl.EndDrawing()
 }
@@ -48,6 +50,50 @@ func drawEndGameScreen() {
 	}
 	for i, val := range indexOrder {
 		rl.DrawText(fmt.Sprintf("Player %d Score: %d", s.Players[val].Id, s.Players[val].Score), endGameScreenRect.ToInt32().X+20, endGameScreenRect.ToInt32().Y+int32(20+i*80), 42, c.PlayerColor[s.Players[val].Id])
+	}
+}
+
+func drawSideboards() {
+	drawPlayerSideboard(40, 120, 0)
+	drawPlayerSideboard(1360, 120, 1)
+	drawPlayerSideboard(40, 540, 2)
+	drawPlayerSideboard(1360, 540, 3)
+}
+
+func drawPlayerSideboard(x int32, y int32, playerIndex int) {
+
+	// margin of 5 in both dimensions
+	drawRegionStartX := x + 20
+	drawRegionStartY := y + 20
+
+	posX := drawRegionStartX
+	posY := drawRegionStartY
+
+	sideboardRec := rl.Rectangle{X: float32(x), Y: float32(y), Width: 400, Height: 380}
+	rl.DrawRectangleRounded(sideboardRec, 0.05, 1, rl.LightGray)
+
+	for i, piece := range s.Players[playerIndex].Pieces {
+		if !piece.IsPlaced {
+			posX = drawRegionStartX + c.SideboardDrawOffsets[i][0]
+			posY = drawRegionStartY + c.SideboardDrawOffsets[i][1]
+			drawPiece(posX, posY, 20, 20, i, s.Players[playerIndex].Id)
+		}
+	}
+
+}
+
+func drawPiece(x int32, y int32, cellWidth int32, cellHeight int32, piece int, playerId int) {
+	posX := x
+	posY := y
+	for py, prow := range s.Pieces[piece] {
+		for px, pval := range prow {
+			if pval {
+				posX = x + (int32(px) * cellWidth)
+				posY = y + (int32(py) * cellHeight)
+				rl.DrawRectangleLines(posX, posY, cellWidth+1, cellHeight+1, rl.Black)
+				rl.DrawRectangle(posX+1, posY+1, cellWidth-1, cellHeight-1, c.PlayerColor[playerId])
+			}
+		}
 	}
 }
 

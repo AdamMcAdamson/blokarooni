@@ -1,7 +1,7 @@
 package gamestate
 
 // Pieces Structure Data
-func GetPiecesData() [21][][]bool {
+func getPiecesData() [21][][]bool {
 	pieces := [21][][]bool{}
 
 	// 1
@@ -38,7 +38,7 @@ func GetPiecesData() [21][][]bool {
 	return pieces
 }
 
-var Pieces = GetPiecesData()
+var Pieces = getPiecesData()
 
 func getPieceNumSquaresFromIndex(index int) int {
 	if index > 20 {

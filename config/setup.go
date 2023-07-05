@@ -4,7 +4,7 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-const WindowWidth = 1600
+const WindowWidth = 1800
 const WindowHeight = 1120
 
 // Game Board
@@ -22,7 +22,9 @@ const CellHeight float32 = GameBoardHeightPixels / float32(GameBoardHeight)
 
 var CellSize = rl.Vector2{X: float32(CellWidth), Y: float32(CellHeight)}
 
-var GameBoardStartingPos = rl.Vector2{X: 100.0, Y: 100.0} // rl.Vector2{X: float32((windowWidth - GameBoardWidthPixels) / 2), Y: float32((windowHeight - GameBoardHeightPixels) / 2)}
+var GameBoardStartingPos = rl.Vector2{X: float32((WindowWidth - GameBoardWidthPixels) / 2), Y: 100 /*float32((WindowHeight - GameBoardHeightPixels) / 2)*/}
+
+// = rl.Vector2{X: 100.0, Y: 100.0}
 
 // Preview Board
 // @TODO: handle other preview board sizes (requires 10 to be drawn correctly atm)
