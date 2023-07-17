@@ -4,6 +4,8 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+const eps float32 = 0.00001
+
 const WindowWidth = 1800
 const WindowHeight = 1120
 
@@ -12,13 +14,13 @@ const GameBoardWidth int = 20
 const GameBoardHeight int = 20
 
 // @TODO: handle other window sizes well (as of writing we need a multiple of 20 in order to draw correctly)
-const GameBoardWidthPixels float32 = 840  // windowHeight * 0.75   // 840
-const GameBoardHeightPixels float32 = 840 // GameBoardWidthPixels // 840
+const GameBoardWidthPixels = 840  // windowHeight * 0.75   // 840
+const GameBoardHeightPixels = 840 // GameBoardWidthPixels // 840
 
 var GameBoardSizePixels = rl.Vector2{X: GameBoardWidthPixels, Y: GameBoardHeightPixels}
 
-const CellWidth float32 = GameBoardWidthPixels / float32(GameBoardWidth)
-const CellHeight float32 = GameBoardHeightPixels / float32(GameBoardHeight)
+const CellWidth float32 = GameBoardWidthPixels/float32(GameBoardWidth) + eps
+const CellHeight float32 = GameBoardHeightPixels/float32(GameBoardHeight) + eps
 
 var CellSize = rl.Vector2{X: float32(CellWidth), Y: float32(CellHeight)}
 

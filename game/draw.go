@@ -53,6 +53,7 @@ func drawEndGameScreen() {
 	}
 }
 
+// @TODO: Draw sideboards from s.SideboardPieces instead of creating and drawing them seperately
 func drawSideboards() {
 	drawPlayerSideboard(40, 120, 0)
 	drawPlayerSideboard(1360, 120, 1)
@@ -126,7 +127,7 @@ func drawGameBoardPieces() {
 	for x, col := range s.GameBoard {
 		for y, val := range col {
 			if val != 0 {
-				drawPos = rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2Add(rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, c.CellSize), rl.Vector2{X: 0, Y: 1.0}))
+				drawPos = rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2Add(rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, c.CellSize), rl.Vector2{X: 0, Y: 0.0}))
 				rl.DrawRectangleV(drawPos, rl.Vector2Subtract(c.CellSize, rl.Vector2{X: 1.0, Y: 1.0}), c.PlayerColor[val])
 			}
 		}
