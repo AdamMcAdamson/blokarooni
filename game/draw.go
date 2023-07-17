@@ -91,8 +91,14 @@ func drawPiece(x int32, y int32, cellWidth int32, cellHeight int32, piece int, p
 			if pval {
 				posX = x + (int32(px) * cellWidth)
 				posY = y + (int32(py) * cellHeight)
+				color := c.PlayerColor[playerId]
 				rl.DrawRectangleLines(posX, posY, cellWidth+1, cellHeight+1, rl.Black)
-				rl.DrawRectangle(posX+1, posY+1, cellWidth-1, cellHeight-1, c.PlayerColor[playerId])
+				if s.Players[s.CurrentPlayerIndex].Id == playerId && s.PieceToPlace == piece {
+					rect := rl.Rectangle{X: float32(posX + 1), Y: float32(posY + 1), Width: float32(cellWidth - 1), Height: float32(cellHeight - 1)}
+					rl.DrawRectangleGradientEx(rect, color, rl.LightGray, color, color)
+				} else {
+					rl.DrawRectangle(posX+1, posY+1, cellWidth-1, cellHeight-1, color)
+				}
 			}
 		}
 	}
