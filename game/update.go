@@ -74,55 +74,55 @@ func updateSquare(x int, y int, playerNumber int) {
 	}
 }
 
-func clearPreviewBoard() {
-	for x := range s.PreviewBoard {
-		for y := range s.PreviewBoard[0] {
-			s.PreviewBoard[x][y] = 0
-		}
-	}
-}
+// func clearPreviewBoard() {
+// 	for x := range s.PreviewBoard {
+// 		for y := range s.PreviewBoard[0] {
+// 			s.PreviewBoard[x][y] = 0
+// 		}
+// 	}
+// }
 
-func updatePreviewSquare(x int, y int, playerNumber int) {
-	if x > 9 || y > 9 || x < 0 || y < 0 {
-		fmt.Printf("Invalid previewBoard, tile out of bounds. Tile (%d, %d)\n", x, y)
-	} else {
-		s.PreviewBoard[x][y] = playerNumber
-	}
-}
+// func updatePreviewSquare(x int, y int, playerNumber int) {
+// 	if x > 9 || y > 9 || x < 0 || y < 0 {
+// 		fmt.Printf("Invalid previewBoard, tile out of bounds. Tile (%d, %d)\n", x, y)
+// 	} else {
+// 		s.PreviewBoard[x][y] = playerNumber
+// 	}
+// }
 
-func UpdatePreviewBoard(playerNumber int, piece int, orientation int) {
-	clearPreviewBoard()
-	x := 4
-	y := 4
-	for py, prow := range s.Pieces[piece] {
-		for px, pval := range prow {
-			// @TODO: handle player
-			// @TODO: handle conflicts (red touching red) (Maybe we should do this on attempt to place)
-			if pval {
-				switch orientation {
-				case 0:
-					updatePreviewSquare(x+px, y+py, playerNumber)
-				case 1:
-					updatePreviewSquare(x+py, y-px, playerNumber)
-				case 2:
-					updatePreviewSquare(x-px, y-py, playerNumber)
-				case 3:
-					updatePreviewSquare(x-py, y+px, playerNumber)
-				case 4:
-					updatePreviewSquare(x-px, y+py, playerNumber)
-				case 5:
-					updatePreviewSquare(x+py, y+px, playerNumber)
-				case 6:
-					updatePreviewSquare(x+px, y-py, playerNumber)
-				case 7:
-					updatePreviewSquare(x-py, y-px, playerNumber)
-				default:
-					panic(fmt.Sprintf("Invalid piece orientation. Player %d, Piece %d", playerNumber, piece))
-				}
-			}
-		}
-	}
-}
+// func UpdatePreviewBoard(playerNumber int, piece int, orientation int) {
+// 	clearPreviewBoard()
+// 	x := 4
+// 	y := 4
+// 	for py, prow := range s.Pieces[piece] {
+// 		for px, pval := range prow {
+// 			// @TODO: handle player
+// 			// @TODO: handle conflicts (red touching red) (Maybe we should do this on attempt to place)
+// 			if pval {
+// 				switch orientation {
+// 				case 0:
+// 					updatePreviewSquare(x+px, y+py, playerNumber)
+// 				case 1:
+// 					updatePreviewSquare(x+py, y-px, playerNumber)
+// 				case 2:
+// 					updatePreviewSquare(x-px, y-py, playerNumber)
+// 				case 3:
+// 					updatePreviewSquare(x-py, y+px, playerNumber)
+// 				case 4:
+// 					updatePreviewSquare(x-px, y+py, playerNumber)
+// 				case 5:
+// 					updatePreviewSquare(x+py, y+px, playerNumber)
+// 				case 6:
+// 					updatePreviewSquare(x+px, y-py, playerNumber)
+// 				case 7:
+// 					updatePreviewSquare(x-py, y-px, playerNumber)
+// 				default:
+// 					panic(fmt.Sprintf("Invalid piece orientation. Player %d, Piece %d", playerNumber, piece))
+// 				}
+// 			}
+// 		}
+// 	}
+// }
 
 func ClearGameBoard() {
 	for x := range s.GameBoard {

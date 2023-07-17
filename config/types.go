@@ -1,5 +1,9 @@
 package config
 
+import (
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
+
 // Data Types
 type PieceState struct {
 	Number      int
@@ -21,4 +25,9 @@ type PlayerState struct {
 type BoardStateEntry struct {
 	PieceState
 	PlayerNumber int
+}
+
+type SideboardPieceSquare struct {
+	PieceNumber   int
+	CollisionRect rl.Rectangle
 }

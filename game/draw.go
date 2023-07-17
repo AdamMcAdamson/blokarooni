@@ -97,13 +97,13 @@ func drawPiece(x int32, y int32, cellWidth int32, cellHeight int32, piece int, p
 	}
 }
 
-func drawSkipButton() {
-	text := "Skip Turn"
-	var fontSize float32 = 24
-	rl.DrawRectangleRounded(c.SkipTurnButtonBounds, .25, 4, rl.LightGray)
-	textSize := rl.MeasureTextEx(rl.GetFontDefault(), text, fontSize, 1)
-	rl.DrawText(text, c.SkipTurnButtonBounds.ToInt32().X+((c.SkipTurnButtonBounds.ToInt32().Width-int32(textSize.X))/2), c.SkipTurnButtonBounds.ToInt32().Y+((c.SkipTurnButtonBounds.ToInt32().Height-int32(textSize.Y))/2), int32(fontSize), rl.DarkGray)
-}
+// func drawSkipButton() {
+// 	text := "Skip Turn"
+// 	var fontSize float32 = 24
+// 	rl.DrawRectangleRounded(c.SkipTurnButtonBounds, .25, 4, rl.LightGray)
+// 	textSize := rl.MeasureTextEx(rl.GetFontDefault(), text, fontSize, 1)
+// 	rl.DrawText(text, c.SkipTurnButtonBounds.ToInt32().X+((c.SkipTurnButtonBounds.ToInt32().Width-int32(textSize.X))/2), c.SkipTurnButtonBounds.ToInt32().Y+((c.SkipTurnButtonBounds.ToInt32().Height-int32(textSize.Y))/2), int32(fontSize), rl.DarkGray)
+// }
 
 func drawGameBoard() {
 	// Draw gameBoard grid
@@ -133,32 +133,32 @@ func drawGameBoardPieces() {
 	}
 }
 
-func drawPreviewBoard() {
-	// Draw preview grid
-	rl.DrawLineV(rl.Vector2Subtract(c.PreviewBoardStartingPos, rl.Vector2{X: 1.0, Y: 1.0}), rl.Vector2Add(c.PreviewBoardStartingPos, rl.Vector2{X: 0.0, Y: c.PreviewBoardSizePixels.Y + 1}), rl.Black)
-	for i := 1; i <= c.PreviewBoardWidth; i++ {
-		start := rl.Vector2Add(c.PreviewBoardStartingPos, rl.Vector2Multiply(c.PreviewCellSize, rl.Vector2{X: float32(i), Y: 0.0}))
-		end := rl.Vector2Add(start, rl.Vector2{X: 0.0, Y: c.PreviewBoardSizePixels.Y})
-		rl.DrawLineV(start, end, rl.Black)
-	}
-	for i := 0; i <= c.PreviewBoardHeight; i++ {
-		start := rl.Vector2Add(c.PreviewBoardStartingPos, rl.Vector2Multiply(c.PreviewCellSize, rl.Vector2{X: 0.0, Y: float32(i)}))
-		end := rl.Vector2Add(start, rl.Vector2{X: c.PreviewBoardSizePixels.X, Y: 0.0})
-		rl.DrawLineV(start, end, rl.Black)
-	}
-}
+// func drawPreviewBoard() {
+// 	// Draw preview grid
+// 	rl.DrawLineV(rl.Vector2Subtract(c.PreviewBoardStartingPos, rl.Vector2{X: 1.0, Y: 1.0}), rl.Vector2Add(c.PreviewBoardStartingPos, rl.Vector2{X: 0.0, Y: c.PreviewBoardSizePixels.Y + 1}), rl.Black)
+// 	for i := 1; i <= c.PreviewBoardWidth; i++ {
+// 		start := rl.Vector2Add(c.PreviewBoardStartingPos, rl.Vector2Multiply(c.PreviewCellSize, rl.Vector2{X: float32(i), Y: 0.0}))
+// 		end := rl.Vector2Add(start, rl.Vector2{X: 0.0, Y: c.PreviewBoardSizePixels.Y})
+// 		rl.DrawLineV(start, end, rl.Black)
+// 	}
+// 	for i := 0; i <= c.PreviewBoardHeight; i++ {
+// 		start := rl.Vector2Add(c.PreviewBoardStartingPos, rl.Vector2Multiply(c.PreviewCellSize, rl.Vector2{X: 0.0, Y: float32(i)}))
+// 		end := rl.Vector2Add(start, rl.Vector2{X: c.PreviewBoardSizePixels.X, Y: 0.0})
+// 		rl.DrawLineV(start, end, rl.Black)
+// 	}
+// }
 
-func drawPreviewBoardPiece() {
-	// Color grid locations
-	var drawPos rl.Vector2
-	for x, col := range s.PreviewBoard {
-		for y, val := range col {
-			if val != 0 {
-				drawPos = rl.Vector2Add(c.PreviewBoardStartingPos, rl.Vector2Add(rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, c.PreviewCellSize), rl.Vector2{X: 0, Y: 1.0}))
-				rl.DrawRectangleV(drawPos, rl.Vector2Subtract(c.PreviewCellSize, rl.Vector2{X: 1.0, Y: 1.0}), c.PlayerColor[val])
-			}
-		}
-	}
-	drawPos = rl.Vector2Add(c.PreviewBoardStartingPos, rl.Vector2Multiply(rl.Vector2{X: 4.0, Y: 4.0}, c.PreviewCellSize))
-	rl.DrawText("x", int32(drawPos.X+(c.PreviewCellWidth/4)), int32(drawPos.Y /*+(c.PreviewCellHeight/20)*/), 42, rl.Brown)
-}
+// func drawPreviewBoardPiece() {
+// 	// Color grid locations
+// 	var drawPos rl.Vector2
+// 	for x, col := range s.PreviewBoard {
+// 		for y, val := range col {
+// 			if val != 0 {
+// 				drawPos = rl.Vector2Add(c.PreviewBoardStartingPos, rl.Vector2Add(rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, c.PreviewCellSize), rl.Vector2{X: 0, Y: 1.0}))
+// 				rl.DrawRectangleV(drawPos, rl.Vector2Subtract(c.PreviewCellSize, rl.Vector2{X: 1.0, Y: 1.0}), c.PlayerColor[val])
+// 			}
+// 		}
+// 	}
+// 	drawPos = rl.Vector2Add(c.PreviewBoardStartingPos, rl.Vector2Multiply(rl.Vector2{X: 4.0, Y: 4.0}, c.PreviewCellSize))
+// 	rl.DrawText("x", int32(drawPos.X+(c.PreviewCellWidth/4)), int32(drawPos.Y /*+(c.PreviewCellHeight/20)*/), 42, rl.Brown)
+// }

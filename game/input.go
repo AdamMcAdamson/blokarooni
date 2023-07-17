@@ -64,6 +64,12 @@ func handleClicks() {
 					placePiece(x, y)
 				}
 			}
+		} else {
+			for i := range s.SideboardPieces[s.CurrentPlayerIndex] {
+				if !s.Players[s.CurrentPlayerIndex].Pieces[s.SideboardPieces[s.CurrentPlayerIndex][i].PieceNumber].IsPlaced && rl.CheckCollisionPointRec(mousePos, s.SideboardPieces[s.CurrentPlayerIndex][i].CollisionRect) {
+					s.PieceToPlace = s.SideboardPieces[s.CurrentPlayerIndex][i].PieceNumber
+				}
+			}
 		}
 	}
 }

@@ -5,8 +5,6 @@ import (
 
 	c "github.com/AdamMcAdamson/blockeroni/config"
 
-	s "github.com/AdamMcAdamson/blockeroni/state"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -52,7 +50,7 @@ func main() {
 		game.ClearGameBoard()
 		game.UpdateGameBoard()
 
-		game.UpdatePreviewBoard(s.Players[s.CurrentPlayerIndex].Id, s.PieceToPlace, s.PieceOrientation)
+		// game.UpdatePreviewBoard(s.Players[s.CurrentPlayerIndex].Id, s.PieceToPlace, s.PieceOrientation)
 
 		// --------------------------------------------------
 		// Drawing
