@@ -108,7 +108,7 @@ func drawPiece(x int32, y int32, cellWidth int32, cellHeight int32, piece int, p
 
 func drawGameBoard() {
 	// Draw gameBoard grid
-	rl.DrawLineV(rl.Vector2Subtract(c.GameBoardStartingPos, rl.Vector2{X: 0.0, Y: 0.0}), rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2{X: 0.0, Y: c.GameBoardSizePixels.Y + 1}), rl.Black)
+	rl.DrawLineV(rl.Vector2Subtract(c.GameBoardStartingPos, rl.Vector2{X: 0.0, Y: 1.0}), rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2{X: 0.0, Y: c.GameBoardSizePixels.Y}), rl.Black)
 	for i := 1; i <= c.GameBoardWidth; i++ {
 		start := rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2Multiply(c.CellSize, rl.Vector2{X: float32(i), Y: 0.0}))
 		end := rl.Vector2Add(start, rl.Vector2{X: 0.0, Y: c.GameBoardSizePixels.Y})
@@ -127,7 +127,7 @@ func drawGameBoardPieces() {
 	for x, col := range s.GameBoard {
 		for y, val := range col {
 			if val != 0 {
-				drawPos = rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2Add(rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, c.CellSize), rl.Vector2{X: 0, Y: 0.0}))
+				drawPos = rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, c.CellSize))
 				rl.DrawRectangleV(drawPos, rl.Vector2Subtract(c.CellSize, rl.Vector2{X: 1.0, Y: 1.0}), c.PlayerColor[val])
 			}
 		}
