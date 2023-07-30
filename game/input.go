@@ -76,7 +76,7 @@ func handleClicks() {
 	}
 }
 
-// @TODO: If a piece is selected, draw the piece at the mouse location
+// If a piece is selected, draw the piece at the mouse location
 func handleMousePositionOnBoard() {
 	mousePos := rl.GetMousePosition()
 	mousePosOnBoard := rl.Vector2Subtract(mousePos, c.GameBoardStartingPos)
