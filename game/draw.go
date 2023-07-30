@@ -167,26 +167,28 @@ func drawPreviewPiece() {
 
 		piece := s.Pieces[s.PiecePreview.Number]
 
-		for py, prow := range piece.Cells {
-			for px, pval := range prow {
+		for iy, prow := range piece.Cells {
+			for ix, pval := range prow {
 				if pval {
+					px := ix - piece.Offset[0]
+					py := iy - piece.Offset[1]
 					switch s.PiecePreview.Orientation {
 					case 0:
-						drawCellColorIfValid(x+px-piece.Offset[0], y+py-piece.Offset[1], color)
+						drawCellColorIfValid(x+px, y+py, color)
 					case 1:
-						drawCellColorIfValid(x+py-piece.Offset[1], y-px-piece.Offset[0], color)
+						drawCellColorIfValid(x+py, y-px, color)
 					case 2:
-						drawCellColorIfValid(x-px-piece.Offset[0], y-py-piece.Offset[1], color)
+						drawCellColorIfValid(x-px, y-py, color)
 					case 3:
-						drawCellColorIfValid(x-py-piece.Offset[1], y+px-piece.Offset[0], color)
+						drawCellColorIfValid(x-py, y+px, color)
 					case 4:
-						drawCellColorIfValid(x-px-piece.Offset[0], y+py-piece.Offset[1], color)
+						drawCellColorIfValid(x-px, y+py, color)
 					case 5:
-						drawCellColorIfValid(x+py-piece.Offset[1], y+px-piece.Offset[0], color)
+						drawCellColorIfValid(x+py, y+px, color)
 					case 6:
-						drawCellColorIfValid(x+px-piece.Offset[0], y-py-piece.Offset[1], color)
+						drawCellColorIfValid(x+px, y-py, color)
 					case 7:
-						drawCellColorIfValid(x-py-piece.Offset[1], y-px-piece.Offset[0], color)
+						drawCellColorIfValid(x-py, y-px, color)
 					default:
 						panic("Invalid preview piece orientation.")
 					}
