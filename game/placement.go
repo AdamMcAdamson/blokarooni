@@ -175,7 +175,7 @@ func isValidPlacement(x int, y int, playerNumber int, pieceNumber int, orientati
 						connectionFound = isCorner(x-py, y-px)
 					}
 				default:
-					panic(fmt.Sprintf("Invalid piece orientation. Player %d, Piece %d", playerNumber, piece))
+					panic(fmt.Sprintf("Invalid piece orientation. Player %d, Piece %d", playerNumber, pieceNumber))
 				}
 			}
 		}

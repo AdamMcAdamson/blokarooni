@@ -23,6 +23,8 @@ func main() {
 	game.UpdateBoardState()
 	game.UpdateGameBoard()
 
+	// @TODO: Create function that simulates a game for debug purposes
+
 	// @Debug: Piece verification
 	// for i := range players[0].pieces {
 	// 	players[0].pieces[i].isPlaced = true
