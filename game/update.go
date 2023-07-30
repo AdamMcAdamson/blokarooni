@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	c "github.com/AdamMcAdamson/blockeroni/config"
+	rl "github.com/gen2brain/raylib-go/raylib"
 
 	s "github.com/AdamMcAdamson/blockeroni/state"
 )
@@ -32,7 +33,7 @@ func skipTurn() {
 	s.Players[s.CurrentPlayerIndex].Turn++
 	s.Players[s.CurrentPlayerIndex].Skipped = true
 	checkToEndGame()
-	updateCurrentPlayerIndex()
+	updateCurrentPlayer()
 	updatePieceToPlace(true, false)
 }
 
@@ -67,7 +68,7 @@ func UpdateBoardState() {
 func updateSquare(x int, y int, playerNumber int) {
 	if x > 19 || y > 19 || x < 0 || y < 0 {
 		fmt.Printf("Invalid boardState, tile out of bounds. Tile (%d, %d)\n", x, y)
-	} else if s.GameBoard[x][y] != 0 {
+	} else if s.GameBoard[x][y] != 0 && s.GameBoard[x][y] < 5 {
 		fmt.Printf("Invalid boardState, tile conflict at (%d, %d)\n", x, y)
 	} else {
 		s.GameBoard[x][y] = playerNumber
@@ -171,7 +172,18 @@ func UpdateGameBoard() {
 		endGame()
 	}
 }
-func updateCurrentPlayerIndex() {
+
+func updatePiecePreview(x int, y int) {
+	s.PiecePreview.Number = s.PieceToPlace
+	s.PiecePreview.Orientation = s.PieceOrientation
+	s.PiecePreview.IsVisible = true
+	s.PiecePreview.Color = rl.ColorAlpha(c.PlayerColor[s.Players[s.CurrentPlayerIndex].Id], c.PiecePreviewAlpha)
+	s.PiecePreview.Origin = [2]int{x, y}
+}
+
+func updateCurrentPlayer() {
+	s.PieceSelected = false
+	s.PieceOrientation = 0
 	counter := 0
 	for counter < 4 {
 		if s.CurrentPlayerIndex < 3 {

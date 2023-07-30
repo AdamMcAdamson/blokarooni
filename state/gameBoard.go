@@ -8,6 +8,8 @@ var GameBoard = [c.GameBoardWidth][c.GameBoardHeight]int{}
 
 //var PreviewBoard = [c.PreviewBoardWidth][c.PreviewBoardHeight]int{}
 
+var PiecePreview = c.PreviewPiece{}
+
 var SideboardPieces = [len(Players)][]c.SideboardPieceSquare{}
 
 var BoardState = []c.BoardStateEntry{}

@@ -6,6 +6,7 @@ import (
 
 var Players = [4]c.PlayerState{}
 
+var PieceSelected = false
 var PieceToPlace = 0
 var PieceOrientation = 0
 var CurrentPlayerIndex = 0

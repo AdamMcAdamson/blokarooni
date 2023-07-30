@@ -23,7 +23,7 @@ func placePiece(x int, y int) {
 	checkToEndGame()
 
 	if s.GameState != 2 {
-		updateCurrentPlayerIndex()
+		updateCurrentPlayer()
 		updatePieceToPlace(true, false)
 	}
 	UpdateBoardState()
@@ -35,7 +35,7 @@ func isValidPlacementSquare(x int, y int, playerNumber int) bool {
 		// fmt.Printf("Invalid placementSquare, tile out of bounds. Tile (%d, %d)\n", x, y)
 		return false
 	}
-	if s.GameBoard[x][y] != 0 {
+	if s.GameBoard[x][y] != 0 && s.GameBoard[x][y] < 5 {
 		// fmt.Printf("Invalid placementSquare, tile conflict at (%d, %d)\n", x, y)
 		return false
 	}

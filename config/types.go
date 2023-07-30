@@ -31,3 +31,11 @@ type SideboardPieceSquare struct {
 	PieceNumber   int
 	CollisionRect rl.Rectangle
 }
+
+type PreviewPiece struct {
+	Number      int
+	Orientation int
+	Origin      [2]int
+	IsVisible   bool
+	Color       rl.Color
+}

@@ -36,3 +36,5 @@ func GenerateSideboardDrawOffsets(cellWidth int32, cellHeight int32 /*, sideboar
 }
 
 var SideboardDrawOffsets = GenerateSideboardDrawOffsets(20, 20)
+
+const PiecePreviewAlpha = 0.4

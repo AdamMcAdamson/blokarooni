@@ -11,6 +11,7 @@ import (
 func HandleInput() {
 	handleKeys()
 	handleClicks()
+	handleMousePositionOnBoard()
 }
 
 func handleKeys() {
@@ -68,8 +69,34 @@ func handleClicks() {
 			for i := range s.SideboardPieces[s.CurrentPlayerIndex] {
 				if !s.Players[s.CurrentPlayerIndex].Pieces[s.SideboardPieces[s.CurrentPlayerIndex][i].PieceNumber].IsPlaced && rl.CheckCollisionPointRec(mousePos, s.SideboardPieces[s.CurrentPlayerIndex][i].CollisionRect) {
 					s.PieceToPlace = s.SideboardPieces[s.CurrentPlayerIndex][i].PieceNumber
+					s.PieceSelected = true
 				}
 			}
 		}
+	}
+}
+
+// @TODO: If a piece is selected, draw the piece at the mouse location
+func handleMousePositionOnBoard() {
+	mousePos := rl.GetMousePosition()
+	mousePosOnBoard := rl.Vector2Subtract(mousePos, c.GameBoardStartingPos)
+
+	if s.PieceSelected {
+		// @TODO: Create rect for gameBoard and use CheckCollisionPointRec to check bounds
+		if mousePosOnBoard.X <= c.GameBoardSizePixels.X && mousePosOnBoard.Y <= c.GameBoardSizePixels.Y && mousePosOnBoard.X >= 0 && mousePosOnBoard.Y >= 0 {
+			//fmt.Printf("Piece Selected, mouse on Board\n")
+			// get cell
+			cellV := rl.Vector2DivideV(mousePosOnBoard, c.CellSize)
+
+			// get gameBoard Coordinates
+			x := int(cellV.X)
+			y := int(cellV.Y)
+
+			updatePiecePreview(x, y)
+		} else {
+			s.PiecePreview.IsVisible = false
+		}
+	} else {
+		s.PiecePreview.IsVisible = false
 	}
 }

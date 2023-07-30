@@ -20,6 +20,7 @@ func Draw() {
 
 	drawGameBoard()
 	drawGameBoardPieces()
+	drawPreviewPiece()
 
 	// if s.GameState != 2 {
 	// 	drawPreviewBoard()
@@ -129,12 +130,64 @@ func drawGameBoard() {
 
 func drawGameBoardPieces() {
 	// Color grid locations
-	var drawPos rl.Vector2
+	//var drawPos rl.Vector2
 	for x, col := range s.GameBoard {
 		for y, val := range col {
 			if val != 0 {
-				drawPos = rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, c.CellSize))
-				rl.DrawRectangleV(drawPos, rl.Vector2Subtract(c.CellSize, rl.Vector2{X: 1.0, Y: 1.0}), c.PlayerColor[val])
+				drawCellColor(x, y, c.PlayerColor[val])
+				// drawPos = rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, c.CellSize))
+				// rl.DrawRectangleV(drawPos, rl.Vector2Subtract(c.CellSize, rl.Vector2{X: 1.0, Y: 1.0}), c.PlayerColor[val])
+			}
+		}
+	}
+}
+
+func drawCellColor(x int, y int, color rl.Color) {
+	drawPos := rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, c.CellSize))
+	rl.DrawRectangleV(drawPos, rl.Vector2Subtract(c.CellSize, rl.Vector2{X: 1.0, Y: 1.0}), color)
+}
+
+func drawCellColorIfValid(x int, y int, color rl.Color) {
+	if x >= 0 && x < c.GameBoardWidth && y >= 0 && y < c.GameBoardHeight {
+		// fmt.Printf("Cell is valid for drawCellColor. x: %d, y: %d, Color: (%d,%d,%d,%d)\n", x, y, color.R, color.G, color.B, color.A)
+		drawCellColor(x, y, color)
+	} else {
+		// fmt.Printf("Invalid Cell for drawCellColor\n")
+	}
+}
+
+func drawPreviewPiece() {
+	if s.PiecePreview.IsVisible {
+
+		x := s.PiecePreview.Origin[0]
+		y := s.PiecePreview.Origin[1]
+
+		color := s.PiecePreview.Color
+
+		for py, prow := range s.Pieces[s.PiecePreview.Number] {
+			for px, pval := range prow {
+				if pval {
+					switch s.PiecePreview.Orientation {
+					case 0:
+						drawCellColorIfValid(x+px, y+py, color)
+					case 1:
+						drawCellColorIfValid(x+py, y-px, color)
+					case 2:
+						drawCellColorIfValid(x-px, y-py, color)
+					case 3:
+						drawCellColorIfValid(x-py, y+px, color)
+					case 4:
+						drawCellColorIfValid(x-px, y+py, color)
+					case 5:
+						drawCellColorIfValid(x+py, y+px, color)
+					case 6:
+						drawCellColorIfValid(x+px, y-py, color)
+					case 7:
+						drawCellColorIfValid(x-py, y-px, color)
+					default:
+						panic("Invalid preview piece orientation.")
+					}
+				}
 			}
 		}
 	}
