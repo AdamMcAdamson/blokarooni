@@ -47,17 +47,18 @@ func addPlayerSideboard(x int32, y int32, playerIndex int) {
 
 }
 
-func addPiece(x int32, y int32, cellWidth int32, cellHeight int32, piece int, playerIndex int) {
+func addPiece(x int32, y int32, cellWidth int32, cellHeight int32, pieceNumber int, playerIndex int) {
 	posX := x
 	posY := y
-	for py, prow := range Pieces[piece] {
+	piece := Pieces[pieceNumber]
+	for py, prow := range piece.Cells {
 		for px, pval := range prow {
 			if pval {
 				posX = x + (int32(px) * cellWidth)
 				posY = y + (int32(py) * cellHeight)
 
 				rect := rl.Rectangle{X: float32(posX), Y: float32(posY), Width: float32(cellWidth + 1), Height: float32(cellHeight + 1)}
-				sideboardPieceSquare := c.SideboardPieceSquare{PieceNumber: piece, CollisionRect: rect}
+				sideboardPieceSquare := c.SideboardPieceSquare{PieceNumber: pieceNumber, CollisionRect: rect}
 
 				SideboardPieces[playerIndex] = append(SideboardPieces[playerIndex], sideboardPieceSquare)
 			}

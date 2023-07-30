@@ -5,6 +5,11 @@ import (
 )
 
 // Data Types
+type PieceData struct {
+	Offset [2]int
+	Cells  [][]bool
+}
+
 type PieceState struct {
 	Number      int
 	NumSquares  int
@@ -33,9 +38,10 @@ type SideboardPieceSquare struct {
 }
 
 type PreviewPiece struct {
-	Number      int
-	Orientation int
-	Origin      [2]int
-	IsVisible   bool
-	Color       rl.Color
+	Number          int
+	Origin          [2]int
+	SelectionOffset [2]int
+	Orientation     int
+	IsVisible       bool
+	Color           rl.Color
 }

@@ -84,17 +84,18 @@ func drawPlayerSideboard(x int32, y int32, playerIndex int) {
 
 }
 
-func drawPiece(x int32, y int32, cellWidth int32, cellHeight int32, piece int, playerId int) {
+func drawPiece(x int32, y int32, cellWidth int32, cellHeight int32, pieceNumber int, playerId int) {
 	posX := x
 	posY := y
-	for py, prow := range s.Pieces[piece] {
+	piece := s.Pieces[pieceNumber]
+	for py, prow := range piece.Cells {
 		for px, pval := range prow {
 			if pval {
 				posX = x + (int32(px) * cellWidth)
 				posY = y + (int32(py) * cellHeight)
 				color := c.PlayerColor[playerId]
 				rl.DrawRectangleLines(posX, posY, cellWidth+1, cellHeight+1, rl.Black)
-				if s.Players[s.CurrentPlayerIndex].Id == playerId && s.PieceToPlace == piece {
+				if s.Players[s.CurrentPlayerIndex].Id == playerId && s.PieceToPlace == pieceNumber {
 					rect := rl.Rectangle{X: float32(posX + 1), Y: float32(posY + 1), Width: float32(cellWidth - 1), Height: float32(cellHeight - 1)}
 					rl.DrawRectangleGradientEx(rect, color, rl.LightGray, color, color)
 				} else {
@@ -164,26 +165,28 @@ func drawPreviewPiece() {
 
 		color := s.PiecePreview.Color
 
-		for py, prow := range s.Pieces[s.PiecePreview.Number] {
+		piece := s.Pieces[s.PiecePreview.Number]
+
+		for py, prow := range piece.Cells {
 			for px, pval := range prow {
 				if pval {
 					switch s.PiecePreview.Orientation {
 					case 0:
-						drawCellColorIfValid(x+px, y+py, color)
+						drawCellColorIfValid(x+px-piece.Offset[0], y+py-piece.Offset[1], color)
 					case 1:
-						drawCellColorIfValid(x+py, y-px, color)
+						drawCellColorIfValid(x+py-piece.Offset[1], y-px-piece.Offset[0], color)
 					case 2:
-						drawCellColorIfValid(x-px, y-py, color)
+						drawCellColorIfValid(x-px-piece.Offset[0], y-py-piece.Offset[1], color)
 					case 3:
-						drawCellColorIfValid(x-py, y+px, color)
+						drawCellColorIfValid(x-py-piece.Offset[1], y+px-piece.Offset[0], color)
 					case 4:
-						drawCellColorIfValid(x-px, y+py, color)
+						drawCellColorIfValid(x-px-piece.Offset[0], y+py-piece.Offset[1], color)
 					case 5:
-						drawCellColorIfValid(x+py, y+px, color)
+						drawCellColorIfValid(x+py-piece.Offset[1], y+px-piece.Offset[0], color)
 					case 6:
-						drawCellColorIfValid(x+px, y-py, color)
+						drawCellColorIfValid(x+px-piece.Offset[0], y-py-piece.Offset[1], color)
 					case 7:
-						drawCellColorIfValid(x-py, y-px, color)
+						drawCellColorIfValid(x-py-piece.Offset[1], y-px-piece.Offset[0], color)
 					default:
 						panic("Invalid preview piece orientation.")
 					}

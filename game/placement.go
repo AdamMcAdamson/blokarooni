@@ -95,79 +95,81 @@ func isCorner(x int, y int) bool {
 	return (x == 0 || x == 19) && (y == 0 || y == 19)
 }
 
-func isValidPlacement(x int, y int, playerNumber int, piece int, orientation int, firstPiece bool) bool {
+func isValidPlacement(x int, y int, playerNumber int, pieceNumber int, orientation int, firstPiece bool) bool {
 	// Ensure at least one square isValidConnectingSquare
 	// Ensure isValidPlacementSquare for all squares
 
 	connectionFound := false
 
-	for py, prow := range s.Pieces[piece] {
+	piece := s.Pieces[pieceNumber]
+
+	for py, prow := range piece.Cells {
 		for px, pval := range prow {
 			if pval {
 				switch orientation {
 				case 0:
-					if !isValidPlacementSquare(x+px, y+py, playerNumber) {
+					if !isValidPlacementSquare(x+px-piece.Offset[0], y+py-piece.Offset[1], playerNumber) {
 						return false
 					} else if !connectionFound && !firstPiece {
-						connectionFound = isValidConnectingSquare(x+px, y+py, playerNumber)
+						connectionFound = isValidConnectingSquare(x+px-piece.Offset[0], y+py-piece.Offset[1], playerNumber)
 					} else if !connectionFound {
-						connectionFound = isCorner(x+px, y+py)
+						connectionFound = isCorner(x+px-piece.Offset[0], y+py-piece.Offset[1])
 					}
 				case 1:
-					if !isValidPlacementSquare(x+py, y-px, playerNumber) {
+					if !isValidPlacementSquare(x+py-piece.Offset[1], y-px-piece.Offset[0], playerNumber) {
 						return false
 					} else if !connectionFound && !firstPiece {
-						connectionFound = isValidConnectingSquare(x+py, y-px, playerNumber)
+						connectionFound = isValidConnectingSquare(x+py-piece.Offset[1], y-px-piece.Offset[0], playerNumber)
 					} else if !connectionFound {
-						connectionFound = isCorner(x+py, y-px)
+						connectionFound = isCorner(x+py-piece.Offset[1], y-px-piece.Offset[0])
 					}
 				case 2:
-					if !isValidPlacementSquare(x-px, y-py, playerNumber) {
+					if !isValidPlacementSquare(x-px-piece.Offset[0], y-py-piece.Offset[1], playerNumber) {
 						return false
 					} else if !connectionFound && !firstPiece {
-						connectionFound = isValidConnectingSquare(x-px, y-py, playerNumber)
+						connectionFound = isValidConnectingSquare(x-px-piece.Offset[0], y-py-piece.Offset[1], playerNumber)
 					} else if !connectionFound {
-						connectionFound = isCorner(x-px, y-py)
+						connectionFound = isCorner(x-px-piece.Offset[0], y-py-piece.Offset[1])
 					}
 				case 3:
-					if !isValidPlacementSquare(x-py, y+px, playerNumber) {
+					if !isValidPlacementSquare(x-py-piece.Offset[1], y+px-piece.Offset[0], playerNumber) {
 						return false
 					} else if !connectionFound && !firstPiece {
-						connectionFound = isValidConnectingSquare(x-py, y+px, playerNumber)
+						connectionFound = isValidConnectingSquare(x-py-piece.Offset[1], y+px-piece.Offset[0], playerNumber)
 					} else if !connectionFound {
-						connectionFound = isCorner(x-py, y+px)
+						connectionFound = isCorner(x-py-piece.Offset[1], y+px-piece.Offset[0])
 					}
 				case 4:
-					if !isValidPlacementSquare(x-px, y+py, playerNumber) {
+					if !isValidPlacementSquare(x-px-piece.Offset[0], y+py-piece.Offset[1], playerNumber) {
 						return false
 					} else if !connectionFound && !firstPiece {
-						connectionFound = isValidConnectingSquare(x-px, y+py, playerNumber)
+						connectionFound = isValidConnectingSquare(x-px-piece.Offset[0], y+py-piece.Offset[1], playerNumber)
 					} else if !connectionFound {
-						connectionFound = isCorner(x-px, y+py)
+						connectionFound = isCorner(x-px-piece.Offset[0], y+py-piece.Offset[1])
 					}
 				case 5:
-					if !isValidPlacementSquare(x+py, y+px, playerNumber) {
+					if !isValidPlacementSquare(x+py-piece.Offset[1], y+px-piece.Offset[0], playerNumber) {
 						return false
 					} else if !connectionFound && !firstPiece {
-						connectionFound = isValidConnectingSquare(x+py, y+px, playerNumber)
+						connectionFound = isValidConnectingSquare(x+py-piece.Offset[1], y+px-piece.Offset[0], playerNumber)
 					} else if !connectionFound {
-						connectionFound = isCorner(x+py, y+px)
+						connectionFound = isCorner(x+py-piece.Offset[1], y+px-piece.Offset[0])
 					}
 				case 6:
-					if !isValidPlacementSquare(x+px, y-py, playerNumber) {
+					if !isValidPlacementSquare(x+px-piece.Offset[0], y-py-piece.Offset[1], playerNumber) {
 						return false
 					} else if !connectionFound && !firstPiece {
-						connectionFound = isValidConnectingSquare(x+px, y-py, playerNumber)
+						connectionFound = isValidConnectingSquare(x+px-piece.Offset[0], y-py-piece.Offset[1], playerNumber)
 					} else if !connectionFound {
-						connectionFound = isCorner(x+px, y-py)
+						connectionFound = isCorner(x+px-piece.Offset[0], y-py-piece.Offset[1])
 					}
 				case 7:
-					if !isValidPlacementSquare(x-py, y-px, playerNumber) {
+					if !isValidPlacementSquare(x-py-piece.Offset[1], y-px-piece.Offset[0], playerNumber) {
 						return false
 					} else if !connectionFound && !firstPiece {
-						connectionFound = isValidConnectingSquare(x-py, y-px, playerNumber)
+						connectionFound = isValidConnectingSquare(x-py-piece.Offset[1], y-px-piece.Offset[0], playerNumber)
 					} else if !connectionFound {
-						connectionFound = isCorner(x-py, y-px)
+						connectionFound = isCorner(x-py-piece.Offset[1], y-px-piece.Offset[0])
 					}
 				default:
 					panic(fmt.Sprintf("Invalid piece orientation. Player %d, Piece %d", playerNumber, piece))

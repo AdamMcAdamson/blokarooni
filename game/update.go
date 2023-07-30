@@ -138,29 +138,30 @@ func UpdateGameBoard() {
 	for _, entry := range s.BoardState {
 		x := entry.Origin[0]
 		y := entry.Origin[1]
+		piece := s.Pieces[entry.Number]
 		// fmt.Printf("Entry number: %d\n", entry.number)
-		for py, prow := range s.Pieces[entry.Number] {
+		for py, prow := range piece.Cells {
 			for px, pval := range prow {
 				// @TODO: handle player
 				// @TODO: handle conflicts (red touching red) (Maybe we should do this on attempt to place)
 				if pval {
 					switch entry.Orientation {
 					case 0:
-						updateSquare(x+px, y+py, entry.PlayerNumber)
+						updateSquare(x+px-piece.Offset[0], y+py-piece.Offset[1], entry.PlayerNumber)
 					case 1:
-						updateSquare(x+py, y-px, entry.PlayerNumber)
+						updateSquare(x+py-piece.Offset[1], y-px-piece.Offset[0], entry.PlayerNumber)
 					case 2:
-						updateSquare(x-px, y-py, entry.PlayerNumber)
+						updateSquare(x-px-piece.Offset[0], y-py-piece.Offset[1], entry.PlayerNumber)
 					case 3:
-						updateSquare(x-py, y+px, entry.PlayerNumber)
+						updateSquare(x-py-piece.Offset[1], y+px-piece.Offset[0], entry.PlayerNumber)
 					case 4:
-						updateSquare(x-px, y+py, entry.PlayerNumber)
+						updateSquare(x-px-piece.Offset[0], y+py-piece.Offset[1], entry.PlayerNumber)
 					case 5:
-						updateSquare(x+py, y+px, entry.PlayerNumber)
+						updateSquare(x+py-piece.Offset[1], y+px-piece.Offset[0], entry.PlayerNumber)
 					case 6:
-						updateSquare(x+px, y-py, entry.PlayerNumber)
+						updateSquare(x+px-piece.Offset[0], y-py-piece.Offset[1], entry.PlayerNumber)
 					case 7:
-						updateSquare(x-py, y-px, entry.PlayerNumber)
+						updateSquare(x-py-piece.Offset[1], y-px-piece.Offset[0], entry.PlayerNumber)
 					default:
 						panic(fmt.Sprintf("Invalid piece orientation. Player %d, Piece %d", entry.PlayerNumber, entry.Number))
 					}
