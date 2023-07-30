@@ -152,9 +152,10 @@ func drawCellColorIfValid(x int, y int, color rl.Color) {
 	if x >= 0 && x < c.GameBoardWidth && y >= 0 && y < c.GameBoardHeight {
 		// fmt.Printf("Cell is valid for drawCellColor. x: %d, y: %d, Color: (%d,%d,%d,%d)\n", x, y, color.R, color.G, color.B, color.A)
 		drawCellColor(x, y, color)
-	} else {
-		// fmt.Printf("Invalid Cell for drawCellColor\n")
 	}
+	// else {
+	// fmt.Printf("Invalid Cell for drawCellColor\n")
+	//}
 }
 
 func drawPreviewPiece() {

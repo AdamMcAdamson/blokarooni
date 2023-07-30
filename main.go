@@ -8,6 +8,18 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+// @TODO: Finsh Game
+// ------------------
+// Refactor boardState to handle entries as turns
+// Create function that simulates a game from a given boardState (and randomly playes games for debug)
+// End game state and screen
+// Save/Load game boardState data
+// Skip Turns
+// UI Work
+// -- Verify Cells draw properly on both computers
+// -- General Cleanup (Say which player's turn it is, better piece highlighting etc)
+// -- Buttons
+
 func main() {
 	// --------------------------------------------------
 	// Window Setup
@@ -22,8 +34,6 @@ func main() {
 	// Init gameBoard
 	game.UpdateBoardState()
 	game.UpdateGameBoard()
-
-	// @TODO: Create function that simulates a game for debug purposes
 
 	// @Debug: Piece verification
 	// for i := range players[0].pieces {
