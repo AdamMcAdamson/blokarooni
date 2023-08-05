@@ -10,10 +10,9 @@ import (
 
 // @TODO: Finsh Game
 // ------------------
-// Refactor boardState to handle entries as turns
+// Load Save in Game window (Use s.GameState for saves)
 // Create function that simulates a game from a given boardState (and randomly playes games for debug)
 // End game state and screen
-// Save/Load game boardState data
 // Skip Turns
 // UI Work
 // -- Verify Cells draw properly on both computers
