@@ -37,41 +37,77 @@ func skipTurn() {
 	updatePieceToPlace(true, false)
 }
 
-// updateBoardState
-// @INFO: For now this is doesn't retain move order so that we can change piece locations real time
-func UpdateBoardState() {
-	s.BoardState = []c.BoardStateEntry{} // @TODO: Remove when retaining move order
-	for i := range s.Players {
-		for j, piece := range s.Players[i].Pieces {
-			if piece.IsPlaced {
-				// Only add new boardStateEntries to maintain move order
-				// @TODO: Uncomment when retaining move order
-				/*
-					found := false
-					for _, stateEntry := range boardState {
-						if stateEntry.number == piece.number && stateEntry.playerNumber == players[i].id {
-							found = true
-							break
-						}
-					}
-					if !found {
-				*/
-				fmt.Printf("Piece is Placed: %d\nNumber: %d \n", j, piece.Number)
-				s.BoardState = append(s.BoardState, c.BoardStateEntry{PieceState: piece, PlayerNumber: s.Players[i].Id})
-				// }
+func addBoardStateEntry(playerId int, piece c.PieceState) {
+	fmt.Printf("ADDING BOARD STATE ENTRY:\nPlayerId: %d\nPiece: %v\n", playerId, piece)
+	s.BoardState = append(s.BoardState, c.BoardStateEntry{PieceState: piece, PlayerNumber: playerId})
+}
+func setGameStateAfterLoad() {
+	Init()
+
+	// Synce Player State with BoardState
+	for ei, entry := range s.BoardState {
+		for playerIndex := range s.Players {
+			if entry.PlayerNumber == s.Players[playerIndex].Id {
+				if entry.Number == 0 && s.Players[playerIndex].PiecesRemaining == 1 {
+					s.Players[playerIndex].Score = 20
+				} else if s.Players[playerIndex].PiecesRemaining == 1 {
+					s.Players[playerIndex].Score = 15
+				}
+
+				s.Players[playerIndex].Pieces[entry.PieceState.Number] = entry.PieceState
+				s.Players[playerIndex].PiecesRemaining--
+				s.Players[playerIndex].Turn++
+				s.Players[playerIndex].Skipped = false
+
+				// Update Current Player and PieceToPlace
+				if ei == len(s.BoardState)-1 {
+					fmt.Println("SET PLAYER INDEX")
+					s.CurrentPlayerIndex = playerIndex
+					updateCurrentPlayer()
+					updatePieceToPlace(true, false)
+					s.DebugPrint()
+				}
 			}
 		}
 	}
 }
 
+// updateBoardState
+// @INFO: For now this is doesn't retain move order so that we can change piece locations real time
+// func UpdateBoardState() {
+// 	s.BoardState = []c.BoardStateEntry{} // @TODO: Remove when retaining move order
+// 	for i := range s.Players {
+// 		for j, piece := range s.Players[i].Pieces {
+// 			if piece.IsPlaced {
+// 				// Only add new boardStateEntries to maintain move order
+// 				// @TODO: Uncomment when retaining move order
+// 				/*
+// 					found := false
+// 					for _, stateEntry := range s.BoardState {
+// 						if stateEntry.Number == piece.Number && stateEntry.PlayerNumber == s.Players[i].Id {
+// 							found = true
+// 							break
+// 						}
+// 					}
+// 					if !found {
+// 				*/
+
+// 				fmt.Printf("Piece is Placed: %d\nNumber: %d \n", j, piece.Number)
+// 				s.BoardState = append(s.BoardState, c.BoardStateEntry{PieceState: piece, PlayerNumber: s.Players[i].Id})
+// 				// }
+// 			}
+// 		}
+// 	}
+// }
+
 // Update square if valid
-func updateSquare(x int, y int, playerNumber int) {
+func updateSquare(x int, y int, playerId int) {
 	if x > 19 || y > 19 || x < 0 || y < 0 {
 		fmt.Printf("Invalid boardState, tile out of bounds. Tile (%d, %d)\n", x, y)
 	} else if s.GameBoard[x][y] != 0 && s.GameBoard[x][y] < 5 {
 		fmt.Printf("Invalid boardState, tile conflict at (%d, %d)\n", x, y)
 	} else {
-		s.GameBoard[x][y] = playerNumber
+		s.GameBoard[x][y] = playerId
 	}
 }
 
@@ -117,7 +153,7 @@ func updateSquare(x int, y int, playerNumber int) {
 // 					updatePreviewSquare(x+px, y-py, playerNumber)
 // 				case 7:
 // 					updatePreviewSquare(x-py, y-px, playerNumber)
-// 				default:
+// 				default:py :=
 // 					panic(fmt.Sprintf("Invalid piece orientation. Player %d, Piece %d", playerNumber, piece))
 // 				}
 // 			}
@@ -140,6 +176,7 @@ func UpdateGameBoard() {
 		y := entry.Origin[1]
 		piece := s.Pieces[entry.Number]
 		// fmt.Printf("Entry number: %d\n", entry.number)
+
 		for iy, prow := range piece.Cells {
 			for ix, pval := range prow {
 				// @TODO: handle player

@@ -1,0 +1,38 @@
+[
+    {
+        "Number": 4,
+        "NumSquares": 4,
+        "IsPlaced": true,
+        "Orientation": 0,
+        "Origin": [
+            1,
+            0
+        ],
+        "PlayerNumber": 1,
+        "Turn": 0
+    },
+    {
+        "Number": 5,
+        "NumSquares": 4,
+        "IsPlaced": true,
+        "Orientation": 0,
+        "Origin": [
+            18,
+            1
+        ],
+        "PlayerNumber": 2,
+        "Turn": 0
+    },
+    {
+        "Number": 15,
+        "NumSquares": 5,
+        "IsPlaced": true,
+        "Orientation": 0,
+        "Origin": [
+            1,
+            19
+        ],
+        "PlayerNumber": 3,
+        "Turn": 0
+    }
+]

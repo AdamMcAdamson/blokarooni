@@ -50,4 +50,7 @@ var PreviewBoardStartingPos = rl.Vector2{X: 1060, Y: 100}
 // Define player colors
 var PlayerColor = [5]rl.Color{rl.White, rl.Blue, rl.Yellow, rl.Red, rl.Green}
 
-var SkipTurnButtonBounds = rl.Rectangle{X: 1060.0, Y: 560.0, Width: 200.0, Height: 80.0}
+// var SkipTurnButtonBounds = rl.Rectangle{X: 1060.0, Y: 560.0, Width: 200.0, Height: 80.0}
+
+const SaveFilePath = "./saves/"
+const SaveFileNameBase = "blokarooni-save-"

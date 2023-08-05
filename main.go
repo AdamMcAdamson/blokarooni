@@ -32,7 +32,7 @@ func main() {
 	game.Init()
 
 	// Init gameBoard
-	game.UpdateBoardState()
+	//game.UpdateBoardState()
 	game.UpdateGameBoard()
 
 	// @Debug: Piece verification

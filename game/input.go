@@ -19,6 +19,15 @@ func handleKeys() {
 	for checkForMoreKeys {
 		keyCode := rl.GetKeyPressed()
 		switch keyCode {
+		case rl.KeyS:
+			{
+				s.SaveBoardState()
+			}
+		case rl.KeyL:
+			{
+				s.GetSaveFiles()
+				setGameStateAfterLoad()
+			}
 		case rl.KeyLeft:
 			if s.PieceOrientation > 0 {
 				s.PieceOrientation--
@@ -46,10 +55,6 @@ func handleClicks() {
 
 		mousePos := rl.GetMousePosition()
 		mousePosOnBoard := rl.Vector2Subtract(mousePos, c.GameBoardStartingPos)
-
-		if rl.CheckCollisionPointRec(mousePos, c.SkipTurnButtonBounds) {
-			skipTurn()
-		}
 
 		// @TODO: Create rect for gameBoard and use CheckCollisionPointRec to check bounds
 		if mousePosOnBoard.X <= c.GameBoardSizePixels.X && mousePosOnBoard.Y <= c.GameBoardSizePixels.Y && mousePosOnBoard.X >= 0 && mousePosOnBoard.Y >= 0 {

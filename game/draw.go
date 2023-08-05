@@ -14,7 +14,7 @@ func Draw() {
 	rl.BeginDrawing()
 
 	rl.ClearBackground(rl.RayWhite)
-	rl.DrawText(fmt.Sprintf("Piece: %d, Orientation: %d", s.PieceToPlace, s.PieceOrientation), 10, 10, 40, rl.DarkGray)
+	rl.DrawText(fmt.Sprintf("PlayerIndex: %d, Piece: %d, Orientation: %d", s.CurrentPlayerIndex, s.PieceToPlace, s.PieceOrientation), 10, 10, 40, rl.DarkGray)
 
 	drawSideboards()
 
@@ -164,6 +164,8 @@ func drawPreviewPiece() {
 		x := s.PiecePreview.Origin[0]
 		y := s.PiecePreview.Origin[1]
 
+		rl.DrawText(fmt.Sprintf("X: %d, Y: %d", x, y), 10, 50, 40, rl.DarkGray)
+
 		color := s.PiecePreview.Color
 
 		piece := s.Pieces[s.PiecePreview.Number]
@@ -173,6 +175,7 @@ func drawPreviewPiece() {
 				if pval {
 					px := ix - piece.Offset[0]
 					py := iy - piece.Offset[1]
+
 					switch s.PiecePreview.Orientation {
 					case 0:
 						drawCellColorIfValid(x+px, y+py, color)
