@@ -27,7 +27,7 @@ func SaveBoardState() {
 	}
 }
 
-func GetSaveFiles() {
+func GetSaveFiles() bool {
 
 	// LoadBoardState("./saves/blokarooni-save-2023-08-05-142833.json")
 	// return
@@ -53,50 +53,54 @@ func GetSaveFiles() {
 		}
 	}
 
-	LoadBoardState(options[3].filename)
-	return
+	if len(options) == 0 {
+		fmt.Println("No game saves found.")
+		return false
+	}
 
-	/*
-		// @TODO: Handle with in-game input
-		for {
-			var input int
-			_, err := fmt.Scanf("%d", &input)
-			//fmt.Printf("%d\n", input)
-			if err != nil {
-				// fmt.Println("Invalid selection (ERRORED), please choose again")
-				continue
-			}
-			for _, o := range options {
-				if input == o.index {
-					LoadBoardState(o.filename)
-					return
-				}
-			}
-			fmt.Println("Invalid selection, please choose again")
+	// @TODO: Handle with in-game input
+	// @INFO: Have not figured out how to debug with this setup. Will work when in-game input is used.
+	for {
+		var input int
+		_, err := fmt.Scanf("%d", &input)
+		//fmt.Printf("%d\n", input)
+		if err != nil {
+			// fmt.Println("Invalid selection (ERRORED), please choose again")
+			continue
 		}
-	*/
+		for _, o := range options {
+			if input == o.index {
+				LoadBoardState(o.filename)
+				return true
+			}
+		}
+		fmt.Println("Invalid selection, please choose again")
+	}
+
 }
 
 func LoadBoardState(filename string) {
 	fmt.Printf("LoadingBoardState: %s\n", filename)
+
 	file, err := os.Open(filename)
 	if err != nil {
 		fmt.Printf("Could not open file: %s\n", err)
 	}
-	fmt.Println("File Opened")
 	defer file.Close()
+
+	// Need to get file size so we can unmarshal into 'data' successfully
 	fileinfo, err := file.Stat()
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	data := make([]byte, fileinfo.Size())
+
 	if _, err := file.Read(data); err != nil {
 		fmt.Printf("Could not read file: %s\n", err)
 	}
-	// fmt.Println("File Read")
+
 	if err := json.Unmarshal(data, &BoardState); err != nil {
 		fmt.Printf("%s\n", err)
 	}
-	// fmt.Println("File Unmarshalled")
-	//fmt.Printf("%v", BoardState)
 }

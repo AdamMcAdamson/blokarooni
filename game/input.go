@@ -25,8 +25,9 @@ func handleKeys() {
 			}
 		case rl.KeyL:
 			{
-				s.GetSaveFiles()
-				setGameStateAfterLoad()
+				if s.GetSaveFiles() {
+					setGameStateAfterLoad()
+				}
 			}
 		case rl.KeyLeft:
 			if s.PieceOrientation > 0 {
