@@ -29,8 +29,7 @@ type PlayerState struct {
 
 type BoardStateEntry struct {
 	PieceState
-	PlayerNumber int //playerId @TODO: Rename
-	// Turn         int
+	PlayerId int
 }
 
 type SideboardPieceSquare struct {

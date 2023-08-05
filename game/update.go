@@ -39,7 +39,7 @@ func skipTurn() {
 
 func addBoardStateEntry(playerId int, piece c.PieceState) {
 	fmt.Printf("ADDING BOARD STATE ENTRY:\nPlayerId: %d\nPiece: %v\n", playerId, piece)
-	s.BoardState = append(s.BoardState, c.BoardStateEntry{PieceState: piece, PlayerNumber: playerId})
+	s.BoardState = append(s.BoardState, c.BoardStateEntry{PieceState: piece, PlayerId: playerId})
 }
 func setGameStateAfterLoad() {
 	Init()
@@ -47,7 +47,7 @@ func setGameStateAfterLoad() {
 	// Synce Player State with BoardState
 	for ei, entry := range s.BoardState {
 		for playerIndex := range s.Players {
-			if entry.PlayerNumber == s.Players[playerIndex].Id {
+			if entry.PlayerId == s.Players[playerIndex].Id {
 				if entry.Number == 0 && s.Players[playerIndex].PiecesRemaining == 1 {
 					s.Players[playerIndex].Score = 20
 				} else if s.Players[playerIndex].PiecesRemaining == 1 {
@@ -107,23 +107,23 @@ func UpdateGameBoard() {
 
 					switch entry.Orientation {
 					case 0:
-						updateSquare(x+px, y+py, entry.PlayerNumber)
+						updateSquare(x+px, y+py, entry.PlayerId)
 					case 1:
-						updateSquare(x+py, y-px, entry.PlayerNumber)
+						updateSquare(x+py, y-px, entry.PlayerId)
 					case 2:
-						updateSquare(x-px, y-py, entry.PlayerNumber)
+						updateSquare(x-px, y-py, entry.PlayerId)
 					case 3:
-						updateSquare(x-py, y+px, entry.PlayerNumber)
+						updateSquare(x-py, y+px, entry.PlayerId)
 					case 4:
-						updateSquare(x-px, y+py, entry.PlayerNumber)
+						updateSquare(x-px, y+py, entry.PlayerId)
 					case 5:
-						updateSquare(x+py, y+px, entry.PlayerNumber)
+						updateSquare(x+py, y+px, entry.PlayerId)
 					case 6:
-						updateSquare(x+px, y-py, entry.PlayerNumber)
+						updateSquare(x+px, y-py, entry.PlayerId)
 					case 7:
-						updateSquare(x-py, y-px, entry.PlayerNumber)
+						updateSquare(x-py, y-px, entry.PlayerId)
 					default:
-						panic(fmt.Sprintf("Invalid piece orientation. Player %d, Piece %d", entry.PlayerNumber, entry.Number))
+						panic(fmt.Sprintf("Invalid piece orientation. Player %d, Piece %d", entry.PlayerId, entry.Number))
 					}
 				}
 			}
@@ -213,15 +213,15 @@ func endGame() {
 // 	}
 // }
 
-// func updatePreviewSquare(x int, y int, playerNumber int) {
+// func updatePreviewSquare(x int, y int, PlayerId int) {
 // 	if x > 9 || y > 9 || x < 0 || y < 0 {
 // 		fmt.Printf("Invalid previewBoard, tile out of bounds. Tile (%d, %d)\n", x, y)
 // 	} else {
-// 		s.PreviewBoard[x][y] = playerNumber
+// 		s.PreviewBoard[x][y] = PlayerId
 // 	}
 // }
 
-// func UpdatePreviewBoard(playerNumber int, piece int, orientation int) {
+// func UpdatePreviewBoard(PlayerId int, piece int, orientation int) {
 // 	clearPreviewBoard()
 // 	x := 4
 // 	y := 4
@@ -232,23 +232,23 @@ func endGame() {
 // 			if pval {
 // 				switch orientation {
 // 				case 0:
-// 					updatePreviewSquare(x+px, y+py, playerNumber)
+// 					updatePreviewSquare(x+px, y+py, PlayerId)
 // 				case 1:
-// 					updatePreviewSquare(x+py, y-px, playerNumber)
+// 					updatePreviewSquare(x+py, y-px, PlayerId)
 // 				case 2:
-// 					updatePreviewSquare(x-px, y-py, playerNumber)
+// 					updatePreviewSquare(x-px, y-py, PlayerId)
 // 				case 3:
-// 					updatePreviewSquare(x-py, y+px, playerNumber)
+// 					updatePreviewSquare(x-py, y+px, PlayerId)
 // 				case 4:
-// 					updatePreviewSquare(x-px, y+py, playerNumber)
+// 					updatePreviewSquare(x-px, y+py, PlayerId)
 // 				case 5:
-// 					updatePreviewSquare(x+py, y+px, playerNumber)
+// 					updatePreviewSquare(x+py, y+px, PlayerId)
 // 				case 6:
-// 					updatePreviewSquare(x+px, y-py, playerNumber)
+// 					updatePreviewSquare(x+px, y-py, PlayerId)
 // 				case 7:
-// 					updatePreviewSquare(x-py, y-px, playerNumber)
+// 					updatePreviewSquare(x-py, y-px, PlayerId)
 // 				default:py :=
-// 					panic(fmt.Sprintf("Invalid piece orientation. Player %d, Piece %d", playerNumber, piece))
+// 					panic(fmt.Sprintf("Invalid piece orientation. Player %d, Piece %d", PlayerId, piece))
 // 				}
 // 			}
 // 		}
