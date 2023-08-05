@@ -106,14 +106,6 @@ func drawPiece(x int32, y int32, cellWidth int32, cellHeight int32, pieceNumber 
 	}
 }
 
-// func drawSkipButton() {
-// 	text := "Skip Turn"
-// 	var fontSize float32 = 24
-// 	rl.DrawRectangleRounded(c.SkipTurnButtonBounds, .25, 4, rl.LightGray)
-// 	textSize := rl.MeasureTextEx(rl.GetFontDefault(), text, fontSize, 1)
-// 	rl.DrawText(text, c.SkipTurnButtonBounds.ToInt32().X+((c.SkipTurnButtonBounds.ToInt32().Width-int32(textSize.X))/2), c.SkipTurnButtonBounds.ToInt32().Y+((c.SkipTurnButtonBounds.ToInt32().Height-int32(textSize.Y))/2), int32(fontSize), rl.DarkGray)
-// }
-
 func drawGameBoard() {
 	// Draw gameBoard grid
 	rl.DrawLineV(rl.Vector2Subtract(c.GameBoardStartingPos, rl.Vector2{X: 0.0, Y: 1.0}), rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2{X: 0.0, Y: c.GameBoardSizePixels.Y}), rl.Black)
@@ -136,8 +128,6 @@ func drawGameBoardPieces() {
 		for y, val := range col {
 			if val != 0 {
 				drawCellColor(x, y, c.PlayerColor[val])
-				// drawPos = rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, c.CellSize))
-				// rl.DrawRectangleV(drawPos, rl.Vector2Subtract(c.CellSize, rl.Vector2{X: 1.0, Y: 1.0}), c.PlayerColor[val])
 			}
 		}
 	}
@@ -153,9 +143,6 @@ func drawCellColorIfValid(x int, y int, color rl.Color) {
 		// fmt.Printf("Cell is valid for drawCellColor. x: %d, y: %d, Color: (%d,%d,%d,%d)\n", x, y, color.R, color.G, color.B, color.A)
 		drawCellColor(x, y, color)
 	}
-	// else {
-	// fmt.Printf("Invalid Cell for drawCellColor\n")
-	//}
 }
 
 func drawPreviewPiece() {
@@ -201,6 +188,14 @@ func drawPreviewPiece() {
 		}
 	}
 }
+
+// func drawSkipButton() {
+// 	text := "Skip Turn"
+// 	var fontSize float32 = 24
+// 	rl.DrawRectangleRounded(c.SkipTurnButtonBounds, .25, 4, rl.LightGray)
+// 	textSize := rl.MeasureTextEx(rl.GetFontDefault(), text, fontSize, 1)
+// 	rl.DrawText(text, c.SkipTurnButtonBounds.ToInt32().X+((c.SkipTurnButtonBounds.ToInt32().Width-int32(textSize.X))/2), c.SkipTurnButtonBounds.ToInt32().Y+((c.SkipTurnButtonBounds.ToInt32().Height-int32(textSize.Y))/2), int32(fontSize), rl.DarkGray)
+// }
 
 // func drawPreviewBoard() {
 // 	// Draw preview grid

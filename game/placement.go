@@ -21,7 +21,6 @@ func placePiece(x int, y int) {
 	s.Players[s.CurrentPlayerIndex].Skipped = false
 
 	addBoardStateEntry(s.Players[s.CurrentPlayerIndex].Id, s.Players[s.CurrentPlayerIndex].Pieces[s.PieceToPlace])
-	//UpdateBoardState() // @TODO: Change to add board state entry function
 
 	checkToEndGame()
 
@@ -185,7 +184,6 @@ func isValidPlacement(x int, y int, playerId int, pieceNumber int, orientation i
 	}
 	if !connectionFound {
 		fmt.Printf("No valid connecting square found.\n")
-		fmt.Printf("x: %d, y: %d, playerId: %d, pieceNumber: %d, orientation: %d, firstPiece: %t\n", x, y, playerId, pieceNumber, orientation, firstPiece)
 	}
 	return connectionFound
 }
