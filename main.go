@@ -23,7 +23,7 @@ func main() {
 	// --------------------------------------------------
 	// Window Setup
 	// --------------------------------------------------
-	rl.InitWindow(c.WindowWidth, c.WindowHeight, "raylib [core] example - basic window")
+	rl.InitWindow(c.WindowWidth, c.WindowHeight, "Blokarooni")
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(60)
 
