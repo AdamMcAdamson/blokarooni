@@ -103,4 +103,6 @@ func LoadBoardState(filename string) {
 	if err := json.Unmarshal(data, &BoardState); err != nil {
 		fmt.Printf("%s\n", err)
 	}
+
+	c.DebugPrinted = false // @DebugRemove
 }

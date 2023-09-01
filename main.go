@@ -8,16 +8,23 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-// @TODO: Finsh Game
+// @TODO: Finish Game
 // ------------------
 // Load Save in Game window (Use s.GameState for saves)
-// Create function that simulates a game from a given boardState (and randomly playes games for debug)
+// Better Rotation (enable/handle flips)
 // End game state and screen
+// Pick starting player
 // Skip Turns
+// Create function that determine if players have a valid play
+//  -- auto-skip if they have none (and they skipped before)
+//  -- use this simulates a game from a given boardState (and randomly play games for debug)
 // UI Work
-// -- Verify Cells draw properly on both computers
+// -- @VERIFY Cells draw properly on both computers
+// -- Center selected pieces on Cursor
+// -- Abstract Drawing Boards (Game nad Preview) into one function
 // -- General Cleanup (Say which player's turn it is, better piece highlighting etc)
-// -- Buttons
+// -- Buttons (rotation, skip turn, etc)
+// ------------------
 
 func main() {
 	// --------------------------------------------------

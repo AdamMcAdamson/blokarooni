@@ -1,5 +1,6 @@
 package main
 
+/*
 import rl "github.com/gen2brain/raylib-go/raylib"
 
 func main() { // VS Code is very unhappy with this...
@@ -25,7 +26,8 @@ func main() { // VS Code is very unhappy with this...
 		// rl.DrawPixel(19, 19, rl.Green)
 		// rl.DrawPixel(9, 19, rl.Green)
 
-		/*// Remove Block comment to include grouped stuff
+		/*
+		// Remove Block comment to include grouped stuff
 
 		rl.DrawLine(100, 50, 100, 200, rl.Green)
 		rl.DrawLine(110, 50, 110, 200, rl.Green)
@@ -58,7 +60,8 @@ func main() { // VS Code is very unhappy with this...
 		// rl.DrawLineV(p3, p4, rl.Blue)
 		// rl.DrawLineV(p4, p1, rl.Orange)
 
-		// */
+		// */ /*
+
 
 		rl.EndDrawing()
 	}
@@ -237,7 +240,7 @@ func drawPixelsAndLinesOnLaptop() {
 	// rl.DrawLineV(p3, p4, rl.Blue)
 	// rl.DrawLineV(p4, p1, rl.Orange)
 
-	// */
+	// */ /*
 
 }
 
@@ -282,3 +285,4 @@ func drawLinesOnDesktop() {
 	rl.DrawLine(110, 120, 100, 120, rl.Black)                                        // Pixels: (100,120) - (109, 120)
 
 }
+*/

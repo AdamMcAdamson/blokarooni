@@ -4,34 +4,46 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-const eps float32 = 0.00001
+const Eps float32 = 0.0025 // On Laptop, Eps Must be >= 0.0025 for DrawLineV
 
 const WindowWidth = 1800
 const WindowHeight = 1120
 
 // Game Board
+
+// Number of Cells
 const GameBoardWidth int = 20
 const GameBoardHeight int = 20
 
-// @TODO: handle other window sizes well (as of writing we need a multiple of 20 in order to draw correctly)
-const GameBoardWidthPixels = 840  // windowHeight * 0.75   // 840
-const GameBoardHeightPixels = 840 // GameBoardWidthPixels // 840
+const GameBoardLineWidth int = 1
+
+// Includes border
+// @VERIFY: handle other window sizes well on Desktop
+const GameBoardWidthPixels = 834  // windowHeight * 0.75  // 841
+const GameBoardHeightPixels = 834 // GameBoardWidthPixels // 841
 
 var GameBoardSizePixels = rl.Vector2{X: GameBoardWidthPixels, Y: GameBoardHeightPixels}
 
-const CellWidth float32 = GameBoardWidthPixels/float32(GameBoardWidth) + eps
-const CellHeight float32 = GameBoardHeightPixels/float32(GameBoardHeight) + eps
+// Only includes the bottom and right-most lines border in CellWidthWithBorder
+const CellWidthWithBorder float32 = float32(GameBoardWidthPixels-GameBoardLineWidth) / float32(GameBoardWidth)    // + Eps
+const CellHeightWithBorder float32 = float32(GameBoardHeightPixels-GameBoardLineWidth) / float32(GameBoardHeight) // + Eps
 
-var CellSize = rl.Vector2{X: float32(CellWidth), Y: float32(CellHeight)}
+var CellSizeWithBorder = rl.Vector2{X: float32(CellWidthWithBorder), Y: float32(CellHeightWithBorder)}
 
-var GameBoardStartingPos = rl.Vector2{X: float32((WindowWidth - GameBoardWidthPixels) / 2), Y: 100 /*float32((WindowHeight - GameBoardHeightPixels) / 2)*/}
+// Add Eps to ensure lines are drawn on correct side of the pixel delimiter
+var GameBoardStartingPos = rl.Vector2{X: float32((WindowWidth-GameBoardWidthPixels)/2) + Eps, Y: 100 + Eps}
 
-// = rl.Vector2{X: 100.0, Y: 100.0}
+// Accounts for upper and left-most border lines on the board
+// Also Subtract 0.5:
+// because DrawRectangleV rounds (0.5, 1.5) to 1.0 to draw pixel[1]
+// while   DrawLineV      rounds (1.0, 2.0) to 1.5 to draw pixel[1]
+var GameBoardStartingPiecePos = rl.Vector2Add(GameBoardStartingPos, rl.Vector2{X: float32(GameBoardLineWidth) - 0.5, Y: float32(GameBoardLineWidth) - 0.5})
 
-// Preview Board
+// Preview Board (Deprecated)
+/*
 // @TODO: handle other preview board sizes (requires 10 to be drawn correctly atm)
-//
-//	-- I suspect this is the same issue as the window size issue
+// -- I suspect this is the same issue as the window size issue
+// -- This should be handled once the function to draw boards is abstracted (see ../game/draw.go)
 const PreviewBoardWidth int = 10
 const PreviewBoardHeight int = 10
 
@@ -46,6 +58,7 @@ const PreviewCellHeight float32 = PreviewBoardHeightPixels / float32(PreviewBoar
 var PreviewCellSize = rl.Vector2{X: float32(PreviewCellWidth), Y: float32(PreviewCellHeight)}
 
 var PreviewBoardStartingPos = rl.Vector2{X: 1060, Y: 100}
+*/
 
 // Define player colors
 var PlayerColor = [5]rl.Color{rl.White, rl.Blue, rl.Yellow, rl.Red, rl.Green}
@@ -54,3 +67,5 @@ var PlayerColor = [5]rl.Color{rl.White, rl.Blue, rl.Yellow, rl.Red, rl.Green}
 
 const SaveFilePath = "./saves/"
 const SaveFileNameBase = "blokarooni-save-"
+
+var DebugPrinted = false

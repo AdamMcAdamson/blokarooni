@@ -60,7 +60,7 @@ func handleClicks() {
 		// @TODO: Create rect for gameBoard and use CheckCollisionPointRec to check bounds
 		if mousePosOnBoard.X <= c.GameBoardSizePixels.X && mousePosOnBoard.Y <= c.GameBoardSizePixels.Y && mousePosOnBoard.X >= 0 && mousePosOnBoard.Y >= 0 {
 			// get cell
-			cellV := rl.Vector2DivideV(mousePosOnBoard, c.CellSize)
+			cellV := rl.Vector2DivideV(mousePosOnBoard, c.CellSizeWithBorder)
 
 			// get gameBoard Coordinates
 			x := int(cellV.X)
@@ -92,7 +92,7 @@ func handleMousePositionOnBoard() {
 		if mousePosOnBoard.X <= c.GameBoardSizePixels.X && mousePosOnBoard.Y <= c.GameBoardSizePixels.Y && mousePosOnBoard.X >= 0 && mousePosOnBoard.Y >= 0 {
 			//fmt.Printf("Piece Selected, mouse on Board\n")
 			// get cell
-			cellV := rl.Vector2DivideV(mousePosOnBoard, c.CellSize)
+			cellV := rl.Vector2DivideV(mousePosOnBoard, c.CellSizeWithBorder)
 
 			// get gameBoard Coordinates
 			x := int(cellV.X)
