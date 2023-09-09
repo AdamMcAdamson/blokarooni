@@ -37,10 +37,12 @@ func skipTurn() {
 	updatePieceToPlace(true, false)
 }
 
+// Append a BoardStateEntry to the BoardState
 func addBoardStateEntry(playerId int, piece c.PieceState) {
 	fmt.Printf("ADDING BOARD STATE ENTRY:\nPlayerId: %d\nPiece: %v\n", playerId, piece)
 	s.BoardState = append(s.BoardState, c.BoardStateEntry{PieceState: piece, PlayerId: playerId})
 }
+
 func setGameStateAfterLoad() {
 	Init()
 
@@ -72,8 +74,8 @@ func setGameStateAfterLoad() {
 	}
 }
 
-// Update square if valid
-func updateSquare(x int, y int, playerId int) {
+// Update the gameboard cell if valid
+func updateGameBoardCell(x int, y int, playerId int) {
 	if x > 19 || y > 19 || x < 0 || y < 0 {
 		fmt.Printf("Invalid boardState, tile out of bounds. Tile (%d, %d)\n", x, y)
 	} else if s.GameBoard[x][y] != 0 && s.GameBoard[x][y] < 5 {
@@ -83,6 +85,7 @@ func updateSquare(x int, y int, playerId int) {
 	}
 }
 
+// Sets the gameboard cells to 0 (resets the board)
 func ClearGameBoard() {
 	for x := range s.GameBoard {
 		for y := range s.GameBoard[0] {
@@ -91,7 +94,7 @@ func ClearGameBoard() {
 	}
 }
 
-// Update gameBoard based on boardState
+// Update Game Board based on boardState
 func UpdateGameBoard() {
 	for _, entry := range s.BoardState {
 		x := entry.Origin[0]
@@ -107,21 +110,21 @@ func UpdateGameBoard() {
 
 					switch entry.Orientation {
 					case 0:
-						updateSquare(x+px, y+py, entry.PlayerId)
+						updateGameBoardCell(x+px, y+py, entry.PlayerId)
 					case 1:
-						updateSquare(x+py, y-px, entry.PlayerId)
+						updateGameBoardCell(x+py, y-px, entry.PlayerId)
 					case 2:
-						updateSquare(x-px, y-py, entry.PlayerId)
+						updateGameBoardCell(x-px, y-py, entry.PlayerId)
 					case 3:
-						updateSquare(x-py, y+px, entry.PlayerId)
+						updateGameBoardCell(x-py, y+px, entry.PlayerId)
 					case 4:
-						updateSquare(x-px, y+py, entry.PlayerId)
+						updateGameBoardCell(x-px, y+py, entry.PlayerId)
 					case 5:
-						updateSquare(x+py, y+px, entry.PlayerId)
+						updateGameBoardCell(x+py, y+px, entry.PlayerId)
 					case 6:
-						updateSquare(x+px, y-py, entry.PlayerId)
+						updateGameBoardCell(x+px, y-py, entry.PlayerId)
 					case 7:
-						updateSquare(x-py, y-px, entry.PlayerId)
+						updateGameBoardCell(x-py, y-px, entry.PlayerId)
 					default:
 						panic(fmt.Sprintf("Invalid piece orientation. Player %d, Piece %d", entry.PlayerId, entry.Number))
 					}
@@ -134,6 +137,7 @@ func UpdateGameBoard() {
 	}
 }
 
+// Update game state with new piece preview
 func updatePiecePreview(x int, y int) {
 	s.PiecePreview.Number = s.PieceToPlace
 	s.PiecePreview.Orientation = s.PieceOrientation
@@ -142,10 +146,13 @@ func updatePiecePreview(x int, y int) {
 	s.PiecePreview.Origin = [2]int{x, y}
 }
 
+// Select the next valid player
 func updateCurrentPlayer() {
 	s.PieceSelected = false
 	s.PieceOrientation = 0
 	counter := 0
+
+	// Wrap around
 	for counter < 4 {
 		if s.CurrentPlayerIndex < 3 {
 			s.CurrentPlayerIndex++
@@ -160,6 +167,9 @@ func updateCurrentPlayer() {
 	fmt.Printf("ERROR: Players.PiecesRemaining and/or game over condition is not being set correctly. All players seem to have no pieces remaining.\n")
 }
 
+// Update Piece to Place
+// increaseIndex - True: Increment, False: Decrement
+// force - True: Always change, False: Don't change if you don't have to (when switching currentPlayer)
 func updatePieceToPlace(increaseIndex bool, force bool) {
 	counter := 0
 	if s.Players[s.CurrentPlayerIndex].PiecesRemaining <= 0 {
@@ -187,6 +197,8 @@ func updatePieceToPlace(increaseIndex bool, force bool) {
 	}
 }
 
+// Calculate how many points players should lose based on the
+// total number of cells of the pieces they have not placed
 func calculateNegativeScores() {
 	for i := range s.Players {
 		workingScore := 0

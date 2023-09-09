@@ -4,7 +4,7 @@ import (
 	c "github.com/AdamMcAdamson/blockeroni/config"
 )
 
-// Pieces Structure Data
+// Get Pieces Structure Data
 func getPiecesData() [21]c.PieceData {
 	pieces := [21]c.PieceData{}
 

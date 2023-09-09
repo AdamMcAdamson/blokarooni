@@ -21,7 +21,7 @@ import (
 // UI Work
 // -- @VERIFY Cells draw properly on both computers
 // -- Center selected pieces on Cursor
-// -- Abstract Drawing Boards (Game nad Preview) into one function
+// -- Abstract Drawing Boards (Game and Preview) into one function
 // -- General Cleanup (Say which player's turn it is, better piece highlighting etc)
 // -- Buttons (rotation, skip turn, etc)
 // ------------------

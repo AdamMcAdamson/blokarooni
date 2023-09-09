@@ -21,6 +21,7 @@ func Draw() {
 	drawGameBoard()
 	drawGameBoardPieces()
 	drawPreviewPiece()
+	// drawPieceBeingHeld()
 
 	// if s.GameState != 2 {
 	// 	drawPreviewBoard()
@@ -120,6 +121,8 @@ func drawEndGameScreen() {
 	}
 }
 
+// Draw Player Sideboards
+// Sets positions of player sideboards
 // @TODO: Draw sideboards from s.SideboardPieces instead of creating and drawing them seperately
 func drawSideboards() {
 	drawPlayerSideboard(40, 120, 0)
@@ -128,39 +131,50 @@ func drawSideboards() {
 	drawPlayerSideboard(1360, 540, 3)
 }
 
+// Draws a Player Sideboard given the location and player
+// These show the players which pieces are still available to place
 func drawPlayerSideboard(x int32, y int32, playerIndex int) {
-
-	// margin of 5 in both dimensions
+	// margin in both dimensions
 	drawRegionStartX := x + 20
 	drawRegionStartY := y + 20
 
 	posX := drawRegionStartX
 	posY := drawRegionStartY
 
+	// Draw the actual "board"
 	sideboardRec := rl.Rectangle{X: float32(x), Y: float32(y), Width: 400, Height: 380}
 	rl.DrawRectangleRounded(sideboardRec, 0.05, 1, rl.LightGray)
 
+	// Draw the player's remaining pieces
 	for i, piece := range s.Players[playerIndex].Pieces {
 		if !piece.IsPlaced {
 			posX = drawRegionStartX + c.SideboardDrawOffsets[i][0]
 			posY = drawRegionStartY + c.SideboardDrawOffsets[i][1]
-			drawPiece(posX, posY, 20, 20, i, s.Players[playerIndex].Id)
+			drawSideboardPiece(posX, posY, 20, 20, i, s.Players[playerIndex].Id)
 		}
 	}
 
 }
 
-func drawPiece(x int32, y int32, cellWidth int32, cellHeight int32, pieceNumber int, playerId int) {
+// Draws a Sideboard Piece at the given location
+func drawSideboardPiece(x int32, y int32, cellWidth int32, cellHeight int32, pieceNumber int, playerId int) {
 	posX := x
 	posY := y
 	piece := s.Pieces[pieceNumber]
 	for py, prow := range piece.Cells {
 		for px, pval := range prow {
+			// Only draw cells that exist
 			if pval {
+				// Since we are drawing on a per-cell basis, we need the location of the current cell
 				posX = x + (int32(px) * cellWidth)
 				posY = y + (int32(py) * cellHeight)
 				color := c.PlayerColor[playerId]
+
+				// Draw an outline around the cell of the piece
 				rl.DrawRectangleLines(posX, posY, cellWidth+1, cellHeight+1, rl.Black)
+
+				// If the piece is selected by the player whose turn it is
+				// fill the cell with a gradient, otherwise just use the normal player color
 				if s.Players[s.CurrentPlayerIndex].Id == playerId && s.PieceToPlace == pieceNumber {
 					rect := rl.Rectangle{X: float32(posX + 1), Y: float32(posY + 1), Width: float32(cellWidth - 1), Height: float32(cellHeight - 1)}
 					rl.DrawRectangleGradientEx(rect, color, rl.LightGray, color, color)
@@ -209,20 +223,21 @@ func drawGameBoard() {
 	*/
 }
 
+// Draws the game board pieces by the given value in each cell
 func drawGameBoardPieces() {
 	// Color grid locations
 	//var drawPos rl.Vector2
 	for x, col := range s.GameBoard {
 		for y, val := range col {
 			if val != 0 {
-				drawCellColor(x, y, c.PlayerColor[val])
+				drawGameBoardCellColor(x, y, c.PlayerColor[val])
 			}
 		}
 	}
 }
 
 // @TODO: Abstract to handle alternative sizing (to enable preview board to use the same function)
-func drawCellColor(x int, y int, color rl.Color) {
+func drawGameBoardCellColor(x int, y int, color rl.Color) {
 	drawPos := rl.Vector2Add(c.GameBoardStartingPiecePos, rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, c.CellSizeWithBorder))
 	size := rl.Vector2Subtract(c.CellSizeWithBorder, rl.Vector2{X: float32(c.GameBoardLineWidth), Y: float32(c.GameBoardLineWidth)})
 	rl.DrawRectangleV(drawPos, size, color)
@@ -231,20 +246,37 @@ func drawCellColor(x int, y int, color rl.Color) {
 	}
 }
 
-func drawCellColorIfValid(x int, y int, color rl.Color) {
+func drawGameBoardCellColorIfValid(x int, y int, color rl.Color) {
 	if x >= 0 && x < c.GameBoardWidth && y >= 0 && y < c.GameBoardHeight {
 		// fmt.Printf("Cell is valid for drawCellColor. x: %d, y: %d, Color: (%d,%d,%d,%d)\n", x, y, color.R, color.G, color.B, color.A)
-		drawCellColor(x, y, color)
+		drawGameBoardCellColor(x, y, color)
 	}
 }
 
+// @TODO
+// Draw Responsive Floating piece over the board, that follows the mouse
+// func drawFloatingPeice(x int, y int, color rl.Color) {
+// 	drawPos := rl.Vector2Add(c.GameBoardStartingPiecePos, rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, c.CellSizeWithBorder))
+// 	size := rl.Vector2Subtract(c.CellSizeWithBorder, rl.Vector2{X: float32(c.GameBoardLineWidth), Y: float32(c.GameBoardLineWidth)})
+// 	rl.DrawRectangleV(drawPos, size, color)
+// 	if !c.DebugPrinted {
+// 		fmt.Printf("Cell (%d, %d) - X: %f, Y: %f; Width: %f, Length: %f\n", x, y, drawPos.X, drawPos.Y, size.X, size.Y)
+// 	}
+// }
+// func drawPieceBeingHeld() {
+
+// }
+
+// Draws an opaque piece where the a piece would be placed
+// if the player were to place a piece right then
 func drawPreviewPiece() {
 	if s.PiecePreview.IsVisible {
 
 		x := s.PiecePreview.Origin[0]
 		y := s.PiecePreview.Origin[1]
 
-		rl.DrawText(fmt.Sprintf("X: %d, Y: %d", x, y), 10, 50, 40, rl.DarkGray)
+		// Debug
+		// rl.DrawText(fmt.Sprintf("X: %d, Y: %d", x, y), 10, 50, 40, rl.DarkGray)
 
 		color := s.PiecePreview.Color
 
@@ -258,21 +290,21 @@ func drawPreviewPiece() {
 
 					switch s.PiecePreview.Orientation {
 					case 0:
-						drawCellColorIfValid(x+px, y+py, color)
+						drawGameBoardCellColorIfValid(x+px, y+py, color)
 					case 1:
-						drawCellColorIfValid(x+py, y-px, color)
+						drawGameBoardCellColorIfValid(x+py, y-px, color)
 					case 2:
-						drawCellColorIfValid(x-px, y-py, color)
+						drawGameBoardCellColorIfValid(x-px, y-py, color)
 					case 3:
-						drawCellColorIfValid(x-py, y+px, color)
+						drawGameBoardCellColorIfValid(x-py, y+px, color)
 					case 4:
-						drawCellColorIfValid(x-px, y+py, color)
+						drawGameBoardCellColorIfValid(x-px, y+py, color)
 					case 5:
-						drawCellColorIfValid(x+py, y+px, color)
+						drawGameBoardCellColorIfValid(x+py, y+px, color)
 					case 6:
-						drawCellColorIfValid(x+px, y-py, color)
+						drawGameBoardCellColorIfValid(x+px, y-py, color)
 					case 7:
-						drawCellColorIfValid(x-py, y-px, color)
+						drawGameBoardCellColorIfValid(x-py, y-px, color)
 					default:
 						panic("Invalid preview piece orientation.")
 					}

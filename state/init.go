@@ -25,9 +25,10 @@ func Init() {
 	addPlayerSideboard(1360, 540, 3)
 }
 
+// Add a Player's Sideboard
 func addPlayerSideboard(x int32, y int32, playerIndex int) {
 
-	// margin of 5 in both dimensions
+	// margin in both dimensions
 	drawRegionStartX := x + 20
 	drawRegionStartY := y + 20
 
@@ -41,13 +42,13 @@ func addPlayerSideboard(x int32, y int32, playerIndex int) {
 		if !piece.IsPlaced {
 			posX = drawRegionStartX + c.SideboardDrawOffsets[i][0]
 			posY = drawRegionStartY + c.SideboardDrawOffsets[i][1]
-			addPiece(posX, posY, 20, 20, i, playerIndex)
+			addPieceToSideboard(posX, posY, 20, 20, i, playerIndex)
 		}
 	}
-
 }
 
-func addPiece(x int32, y int32, cellWidth int32, cellHeight int32, pieceNumber int, playerIndex int) {
+// Add a Piece to a Player's Sideboard
+func addPieceToSideboard(x int32, y int32, cellWidth int32, cellHeight int32, pieceNumber int, playerIndex int) {
 	posX := x
 	posY := y
 	piece := Pieces[pieceNumber]
