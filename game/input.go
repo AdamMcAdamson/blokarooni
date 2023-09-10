@@ -19,7 +19,7 @@ func handleKeys() {
 	for checkForMoreKeys {
 		keyCode := rl.GetKeyPressed()
 		switch keyCode {
-		case rl.KeyS:
+		case rl.KeyN:
 			{
 				s.SaveBoardState()
 			}
@@ -29,21 +29,29 @@ func handleKeys() {
 					setGameStateAfterLoad()
 				}
 			}
+		case rl.KeyA:
+			updatePieceOrientation(1)
+		case rl.KeyD:
+			updatePieceOrientation(2)
+		case rl.KeyE:
+			fallthrough
+		case rl.KeyQ:
+			updatePieceOrientation(3)
+		case rl.KeyW:
+			fallthrough
+		case rl.KeyS:
+			updatePieceOrientation(4)
 		case rl.KeyLeft:
-			if s.PieceOrientation > 0 {
-				s.PieceOrientation--
-			} else {
-				s.PieceOrientation = 7
-			}
+			updatePieceOrientation(5)
 		case rl.KeyRight:
-			if s.PieceOrientation < 7 {
-				s.PieceOrientation++
-			} else {
-				s.PieceOrientation = 0
-			}
+			updatePieceOrientation(6)
 		case rl.KeyDown:
+			fallthrough
+		case rl.KeyZ:
 			updatePieceToPlace(false, true)
 		case rl.KeyUp:
+			fallthrough
+		case rl.KeyX:
 			updatePieceToPlace(true, true)
 		case 0:
 			checkForMoreKeys = false

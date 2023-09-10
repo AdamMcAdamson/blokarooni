@@ -11,7 +11,6 @@ import (
 // @TODO: Finish Game
 // ------------------
 // Load Save in Game window (Use s.GameState for saves)
-// Better Rotation (enable/handle flips)
 // End game state and screen
 // Pick starting player
 // Skip Turns
@@ -21,6 +20,7 @@ import (
 // UI Work
 // -- Clip the responsive floating piece against the game board
 // -- (?) Center selected pieces on Cursor
+// -- Flipping feedback (for when piece looks the same even with different 'orientation') (maybe do a slight gradient on the outline?)
 // -- Abstract Drawing Boards (Game and Preview) into one function
 // -- General Cleanup (Say which player's turn it is, better piece highlighting etc)
 // -- Buttons (rotation, skip turn, etc)

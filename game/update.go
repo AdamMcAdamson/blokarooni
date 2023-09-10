@@ -167,8 +167,69 @@ func updateCurrentPlayer() {
 	fmt.Printf("ERROR: Players.PiecesRemaining and/or game over condition is not being set correctly. All players seem to have no pieces remaining.\n")
 }
 
-// Update Piece to Place
-// increaseIndex - True: Increment, False: Decrement
+// Update Piece Orientation
+// mode - 0: reset, 1: rotate left, 2: rotate right, 3: flip left-right, 4: flip up-down,
+// 5: cycle left, 6: cycle right
+func updatePieceOrientation(mode int) {
+	switch mode {
+	case 0:
+		s.PieceOrientation = 0
+	case 1:
+		switch s.PieceOrientation {
+		case 7:
+			s.PieceOrientation = 4
+		case 3:
+			s.PieceOrientation = 0
+		default:
+			s.PieceOrientation++
+		}
+	case 2:
+		switch s.PieceOrientation {
+		case 4:
+			s.PieceOrientation = 7
+		case 0:
+			s.PieceOrientation = 3
+		default:
+			s.PieceOrientation--
+		}
+	case 3:
+		switch s.PieceOrientation {
+		case 3:
+			fallthrough
+		case 7:
+			s.PieceOrientation -= 6
+		default:
+			s.PieceOrientation += ((s.PieceOrientation + 1) % 2) * 4
+			s.PieceOrientation += (s.PieceOrientation % 2) * 6
+		}
+	case 4:
+		switch s.PieceOrientation {
+		case 2:
+			fallthrough
+		case 6:
+			s.PieceOrientation -= 6
+		default:
+			s.PieceOrientation += (s.PieceOrientation % 2) * 4
+			s.PieceOrientation += ((s.PieceOrientation + 1) % 2) * 6
+		}
+	case 5:
+		s.PieceOrientation++
+	case 6:
+		s.PieceOrientation--
+	default:
+		panic("Invalid 'mode' parameter for game.updatePieceOrientation")
+	}
+
+	// wrap around (required for flip logic, and case 5/6)
+	if s.PieceOrientation < 0 {
+		s.PieceOrientation += 8
+	} else if s.PieceOrientation > 7 {
+		s.PieceOrientation -= 8
+	}
+}
+
+// Update Piece to Place ::
+// increaseIndex - True: Increment, False: Decrement;
 // force - True: Always change, False: Don't change if you don't have to (when switching currentPlayer)
 func updatePieceToPlace(increaseIndex bool, force bool) {
 	counter := 0
