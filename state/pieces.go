@@ -77,7 +77,7 @@ func getPiecesData() [21]c.PieceData {
 
 var Pieces = getPiecesData()
 
-func getPieceNumSquaresFromIndex(index int) int {
+func getPieceNumCellsFromIndex(index int) int {
 	if index > 20 {
 		panic("Invalid Index")
 	} else if index >= 9 {

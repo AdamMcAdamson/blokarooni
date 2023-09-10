@@ -10,7 +10,7 @@ var GameBoard = [c.GameBoardWidth][c.GameBoardHeight]int{}
 
 var PiecePreview = c.PreviewPiece{}
 
-var SideboardPieces = [len(Players)][]c.SideboardPieceSquare{}
+var SideboardPieces = [len(Players)][]c.SideboardPieceCell{}
 
 var BoardState = []c.BoardStateEntry{}
 

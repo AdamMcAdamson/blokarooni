@@ -12,7 +12,7 @@ type PieceData struct {
 
 type PieceState struct {
 	Number      int
-	NumSquares  int
+	NumCells    int
 	IsPlaced    bool
 	Orientation int
 	Origin      [2]int
@@ -32,7 +32,7 @@ type BoardStateEntry struct {
 	PlayerId int
 }
 
-type SideboardPieceSquare struct {
+type SideboardPieceCell struct {
 	PieceNumber   int
 	CollisionRect rl.Rectangle
 }

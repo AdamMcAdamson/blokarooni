@@ -159,7 +159,7 @@ func updateCurrentPlayer() {
 		} else {
 			s.CurrentPlayerIndex = 0
 		}
-		playerHasAValidPlacementRemaining(s.CurrentPlayerIndex, s.Players[s.CurrentPlayerIndex].PiecesRemaining == 21)
+		playerHasAValidPlacementRemaining(s.CurrentPlayerIndex)
 		if s.Players[s.CurrentPlayerIndex].PiecesRemaining > 0 {
 			return
 		}
@@ -267,7 +267,7 @@ func calculateNegativeScores() {
 		if s.Players[i].PiecesRemaining > 0 {
 			for j := range s.Players[i].Pieces {
 				if !s.Players[i].Pieces[j].IsPlaced {
-					workingScore -= s.Players[i].Pieces[j].NumSquares
+					workingScore -= s.Players[i].Pieces[j].NumCells
 				}
 			}
 			s.Players[i].Score = workingScore
@@ -287,7 +287,7 @@ func endGame() {
 // 	}
 // }
 
-// func updatePreviewSquare(x int, y int, PlayerId int) {
+// func updatePreviewCell(x int, y int, PlayerId int) {
 // 	if x > 9 || y > 9 || x < 0 || y < 0 {
 // 		fmt.Printf("Invalid previewBoard, tile out of bounds. Tile (%d, %d)\n", x, y)
 // 	} else {
@@ -306,21 +306,21 @@ func endGame() {
 // 			if pval {
 // 				switch orientation {
 // 				case 0:
-// 					updatePreviewSquare(x+px, y+py, PlayerId)
+// 					updatePreviewCell(x+px, y+py, PlayerId)
 // 				case 1:
-// 					updatePreviewSquare(x+py, y-px, PlayerId)
+// 					updatePreviewCell(x+py, y-px, PlayerId)
 // 				case 2:
-// 					updatePreviewSquare(x-px, y-py, PlayerId)
+// 					updatePreviewCell(x-px, y-py, PlayerId)
 // 				case 3:
-// 					updatePreviewSquare(x-py, y+px, PlayerId)
+// 					updatePreviewCell(x-py, y+px, PlayerId)
 // 				case 4:
-// 					updatePreviewSquare(x-px, y+py, PlayerId)
+// 					updatePreviewCell(x-px, y+py, PlayerId)
 // 				case 5:
-// 					updatePreviewSquare(x+py, y+px, PlayerId)
+// 					updatePreviewCell(x+py, y+px, PlayerId)
 // 				case 6:
-// 					updatePreviewSquare(x+px, y-py, PlayerId)
+// 					updatePreviewCell(x+px, y-py, PlayerId)
 // 				case 7:
-// 					updatePreviewSquare(x-py, y-px, PlayerId)
+// 					updatePreviewCell(x-py, y-px, PlayerId)
 // 				default:py :=
 // 					panic(fmt.Sprintf("Invalid piece orientation. Player %d, Piece %d", PlayerId, piece))
 // 				}
