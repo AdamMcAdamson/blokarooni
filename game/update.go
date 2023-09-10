@@ -159,6 +159,7 @@ func updateCurrentPlayer() {
 		} else {
 			s.CurrentPlayerIndex = 0
 		}
+		playerHasAValidPlacementRemaining(s.CurrentPlayerIndex, s.Players[s.CurrentPlayerIndex].PiecesRemaining == 21)
 		if s.Players[s.CurrentPlayerIndex].PiecesRemaining > 0 {
 			return
 		}

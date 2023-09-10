@@ -14,9 +14,8 @@ import (
 // End game state and screen
 // Pick starting player
 // Skip Turns
-// Create function that determine if players have a valid play
-//  -- auto-skip if they have none (and they skipped before)
-//  -- use this simulates a game from a given boardState (and randomly play games for debug)
+//  -- auto-skip if player has no valid placements none and they skipped before
+// Create random placement function to simulate games (from a given boardState)
 // UI Work
 // -- Clip the responsive floating piece against the game board
 // -- Ensure floating pieces are the right size (may simply need int cell Width/Height)
