@@ -55,6 +55,8 @@ func Draw() {
 	rl.EndDrawing()
 }
 
+/*
+// @DebugRemove
 func drawLineVDebug(sx float32, sy float32, ex float32, ey float32) {
 	rl.DrawLineV(rl.Vector2{X: sx, Y: sy}, rl.Vector2{X: ex, Y: ey}, rl.Black)
 }
@@ -79,6 +81,7 @@ func drawPixelsForDebug() {
 
 }
 
+// @DebugRemove
 func drawRectVDebug() {
 	drawRectVDebugHelper(804.75, 9.75, 1, 1)
 	rl.DrawPixel(805, 10, rl.Red)
@@ -100,7 +103,9 @@ func drawCellDebug(x int, y int) {
 		fmt.Printf("Cell (%d, %d) - X: %f, Y: %f; Width: %f, Length: %f\n", x, y, drawPos.X, drawPos.Y, size.X, size.Y)
 	}
 }
+*/
 
+/*
 func drawEndGameScreen() {
 	endGameScreenRect := rl.Rectangle{X: 1020, Y: 100, Width: 480, Height: 340}
 	rl.DrawRectangleRounded(endGameScreenRect, 0, 4, rl.LightGray)
@@ -120,6 +125,7 @@ func drawEndGameScreen() {
 		rl.DrawText(fmt.Sprintf("Player %d Score: %d", s.Players[val].Id, s.Players[val].Score), endGameScreenRect.ToInt32().X+20, endGameScreenRect.ToInt32().Y+int32(20+i*80), 42, c.PlayerColor[s.Players[val].Id])
 	}
 }
+*/
 
 // Draw Player Sideboards
 // Sets positions of player sideboards
@@ -253,19 +259,52 @@ func drawGameBoardCellColorIfValid(x int, y int, color rl.Color) {
 	}
 }
 
-// @TODO
 // Draw Responsive Floating piece over the board, that follows the mouse
-// func drawFloatingPeice(x int, y int, color rl.Color) {
-// 	drawPos := rl.Vector2Add(c.GameBoardStartingPiecePos, rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, c.CellSizeWithBorder))
-// 	size := rl.Vector2Subtract(c.CellSizeWithBorder, rl.Vector2{X: float32(c.GameBoardLineWidth), Y: float32(c.GameBoardLineWidth)})
-// 	rl.DrawRectangleV(drawPos, size, color)
-// 	if !c.DebugPrinted {
-// 		fmt.Printf("Cell (%d, %d) - X: %f, Y: %f; Width: %f, Length: %f\n", x, y, drawPos.X, drawPos.Y, size.X, size.Y)
-// 	}
-// }
-// func drawPieceBeingHeld() {
+func drawFloatingPiece(x float32, y float32, cellWidth float32, cellHeight float32, pieceNumber int) {
+	// @TODO: Clip floating cells against gameboard
+	color := rl.Black
+	piece := s.Pieces[pieceNumber]
 
-// }
+	for iy, prow := range piece.Cells {
+		for ix, pval := range prow {
+			// Only draw cells that exist
+			if pval {
+
+				// Since we are drawing on a per-cell basis, we need the location of the current cell
+				posX := x - (cellWidth / 2)
+				posY := y - (cellHeight / 2)
+
+				px := float32(ix-piece.Offset[0]) * cellWidth
+				py := float32(iy-piece.Offset[1]) * cellHeight
+
+				switch s.PiecePreview.Orientation {
+				case 0:
+					drawFloatingPieceCell(posX+px, posY+py, cellWidth, cellHeight, color)
+				case 1:
+					drawFloatingPieceCell(posX+py, posY-px, cellWidth, cellHeight, color)
+				case 2:
+					drawFloatingPieceCell(posX-px, posY-py, cellWidth, cellHeight, color)
+				case 3:
+					drawFloatingPieceCell(posX-py, posY+px, cellWidth, cellHeight, color)
+				case 4:
+					drawFloatingPieceCell(posX-px, posY+py, cellWidth, cellHeight, color)
+				case 5:
+					drawFloatingPieceCell(posX+py, posY+px, cellWidth, cellHeight, color)
+				case 6:
+					drawFloatingPieceCell(posX+px, posY-py, cellWidth, cellHeight, color)
+				case 7:
+					drawFloatingPieceCell(posX-py, posY-px, cellWidth, cellHeight, color)
+				default:
+					panic("Invalid piece orientation!")
+				}
+			}
+		}
+	}
+}
+
+func drawFloatingPieceCell(x float32, y float32, cellWidth float32, cellHeight float32, color rl.Color) {
+	rl.DrawRectangleLinesEx(rl.Rectangle{X: x, Y: y, Width: cellWidth + 1, Height: cellHeight + 1}, float32(c.GameBoardLineWidth), color)
+}
 
 // Draws an opaque piece where the a piece would be placed
 // if the player were to place a piece right then

@@ -19,7 +19,7 @@ import (
 //  -- auto-skip if they have none (and they skipped before)
 //  -- use this simulates a game from a given boardState (and randomly play games for debug)
 // UI Work
-// -- Draw responsive floating piece that follows mouse exactly (clip against the board?) (Outline only?)
+// -- Clip the responsive floating piece against the game board
 // -- (?) Center selected pieces on Cursor
 // -- Abstract Drawing Boards (Game and Preview) into one function
 // -- General Cleanup (Say which player's turn it is, better piece highlighting etc)

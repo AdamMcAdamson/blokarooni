@@ -29,13 +29,13 @@ func checkToEndGame() bool {
 	return false
 }
 
-func skipTurn() {
-	s.Players[s.CurrentPlayerIndex].Turn++
-	s.Players[s.CurrentPlayerIndex].Skipped = true
-	checkToEndGame()
-	updateCurrentPlayer()
-	updatePieceToPlace(true, false)
-}
+// func skipTurn() {
+// 	s.Players[s.CurrentPlayerIndex].Turn++
+// 	s.Players[s.CurrentPlayerIndex].Skipped = true
+// 	checkToEndGame()
+// 	updateCurrentPlayer()
+// 	updatePieceToPlace(true, false)
+// }
 
 // Append a BoardStateEntry to the BoardState
 func addBoardStateEntry(playerId int, piece c.PieceState) {
