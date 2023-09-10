@@ -19,6 +19,7 @@ import (
 //  -- use this simulates a game from a given boardState (and randomly play games for debug)
 // UI Work
 // -- Clip the responsive floating piece against the game board
+// -- Ensure floating pieces are the right size (may simply need int cell Width/Height)
 // -- (?) Center selected pieces on Cursor
 // -- Flipping feedback (for when piece looks the same even with different 'orientation') (maybe do a slight gradient on the outline?)
 // -- Abstract Drawing Boards (Game and Preview) into one function
