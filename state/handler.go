@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"time"
@@ -31,7 +30,7 @@ func GetSaveFiles() bool {
 
 	// LoadBoardState("./saves/blokarooni-save-2023-08-05-142833.json")
 	// return
-	files, err := ioutil.ReadDir(c.SaveFilePath)
+	files, err := os.ReadDir(c.SaveFilePath)
 	if err != nil {
 		log.Fatal(err)
 	}
