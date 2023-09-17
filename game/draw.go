@@ -21,7 +21,7 @@ func Draw() {
 	drawGameBoard()
 	drawGameBoardPieces()
 	drawPreviewPiece()
-	// drawPieceBeingHeld()
+	drawPieceBeingHeld()
 
 	// if s.GameState != 2 {
 	// 	drawPreviewBoard()
@@ -256,6 +256,13 @@ func drawGameBoardCellColorIfValid(x int, y int, color rl.Color) {
 	if x >= 0 && x < c.GameBoardWidth && y >= 0 && y < c.GameBoardHeight {
 		// fmt.Printf("Cell is valid for drawCellColor. x: %d, y: %d, Color: (%d,%d,%d,%d)\n", x, y, color.R, color.G, color.B, color.A)
 		drawGameBoardCellColor(x, y, color)
+	}
+}
+
+func drawPieceBeingHeld() {
+	if s.PiecePreview.IsVisible {
+		mousePos := rl.GetMousePosition()
+		drawFloatingPiece(mousePos.X, mousePos.Y, c.CellWidthWithBorder, c.CellHeightWithBorder, s.PieceToPlace)
 	}
 }
 
