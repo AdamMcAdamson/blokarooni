@@ -106,7 +106,6 @@ func handleMousePositionOnBoard() {
 			y := int(cellV.Y)
 
 			updatePiecePreview(x, y)
-			drawFloatingPiece(mousePos.X, mousePos.Y, c.CellWidthWithBorder, c.CellHeightWithBorder, s.PieceToPlace)
 
 		} else {
 			s.PiecePreview.IsVisible = false
