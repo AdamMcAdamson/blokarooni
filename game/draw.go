@@ -262,14 +262,14 @@ func drawGameBoardCellColorIfValid(x int, y int, color rl.Color) {
 func drawPieceBeingHeld() {
 	if s.PiecePreview.IsVisible {
 		mousePos := rl.GetMousePosition()
-		drawFloatingPiece(mousePos.X, mousePos.Y, c.CellWidthWithBorder, c.CellHeightWithBorder, s.PieceToPlace)
+		drawFloatingPiece(mousePos.X, mousePos.Y, c.CellWidthWithBorder, c.CellHeightWithBorder, s.PieceToPlace, c.PlayerColor[s.Players[s.CurrentPlayerIndex].Id], rl.Black)
 	}
 }
 
 // Draw Responsive Floating piece over the board, that follows the mouse
-func drawFloatingPiece(x float32, y float32, cellWidth float32, cellHeight float32, pieceNumber int) {
+func drawFloatingPiece(x float32, y float32, cellWidth float32, cellHeight float32, pieceNumber int, color rl.Color, edgeColor rl.Color) {
 	// @TODO: Clip floating cells against gameboard
-	color := rl.Black
+
 	piece := s.Pieces[pieceNumber]
 
 	for iy, prow := range piece.Cells {
@@ -286,21 +286,21 @@ func drawFloatingPiece(x float32, y float32, cellWidth float32, cellHeight float
 
 				switch s.PiecePreview.Orientation {
 				case 0:
-					drawFloatingPieceCell(posX+px, posY+py, cellWidth, cellHeight, color)
+					drawFloatingPieceCell(posX+px, posY+py, cellWidth, cellHeight, color, edgeColor)
 				case 1:
-					drawFloatingPieceCell(posX+py, posY-px, cellWidth, cellHeight, color)
+					drawFloatingPieceCell(posX+py, posY-px, cellWidth, cellHeight, color, edgeColor)
 				case 2:
-					drawFloatingPieceCell(posX-px, posY-py, cellWidth, cellHeight, color)
+					drawFloatingPieceCell(posX-px, posY-py, cellWidth, cellHeight, color, edgeColor)
 				case 3:
-					drawFloatingPieceCell(posX-py, posY+px, cellWidth, cellHeight, color)
+					drawFloatingPieceCell(posX-py, posY+px, cellWidth, cellHeight, color, edgeColor)
 				case 4:
-					drawFloatingPieceCell(posX-px, posY+py, cellWidth, cellHeight, color)
+					drawFloatingPieceCell(posX-px, posY+py, cellWidth, cellHeight, color, edgeColor)
 				case 5:
-					drawFloatingPieceCell(posX+py, posY+px, cellWidth, cellHeight, color)
+					drawFloatingPieceCell(posX+py, posY+px, cellWidth, cellHeight, color, edgeColor)
 				case 6:
-					drawFloatingPieceCell(posX+px, posY-py, cellWidth, cellHeight, color)
+					drawFloatingPieceCell(posX+px, posY-py, cellWidth, cellHeight, color, edgeColor)
 				case 7:
-					drawFloatingPieceCell(posX-py, posY-px, cellWidth, cellHeight, color)
+					drawFloatingPieceCell(posX-py, posY-px, cellWidth, cellHeight, color, edgeColor)
 				default:
 					panic("Invalid piece orientation!")
 				}
@@ -309,8 +309,9 @@ func drawFloatingPiece(x float32, y float32, cellWidth float32, cellHeight float
 	}
 }
 
-func drawFloatingPieceCell(x float32, y float32, cellWidth float32, cellHeight float32, color rl.Color) {
-	rl.DrawRectangleLinesEx(rl.Rectangle{X: x, Y: y, Width: cellWidth + 1, Height: cellHeight + 1}, float32(c.GameBoardLineWidth), color)
+func drawFloatingPieceCell(x float32, y float32, cellWidth float32, cellHeight float32, color rl.Color, edgeColor rl.Color) {
+	rl.DrawRectangleRec(rl.Rectangle{X: x + 1, Y: y + 1, Width: cellWidth - 1, Height: cellHeight - 1}, color)
+	rl.DrawRectangleLinesEx(rl.Rectangle{X: x, Y: y, Width: cellWidth + 1, Height: cellHeight + 1}, float32(c.GameBoardLineWidth), edgeColor)
 }
 
 // Draws an opaque piece where the a piece would be placed
