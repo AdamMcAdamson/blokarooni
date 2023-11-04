@@ -17,7 +17,8 @@ import (
 //  -- auto-skip if player has no valid placements none and they skipped before
 // Create random placement function to simulate games (from a given boardState)
 // UI Work
-// -- Clip the responsive floating piece against the game board
+// -- Draw responsive floating piece everywhere when selected.
+// -- Unselect (and stop drawing) responsive floating piece with right click.
 // -- Ensure floating pieces are the right size (may simply need int cell Width/Height)
 // -- (?) Center selected pieces on Cursor
 // -- Flipping feedback (for when piece looks the same even with different 'orientation') (maybe do a slight gradient on the outline?)
