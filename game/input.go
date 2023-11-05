@@ -61,12 +61,11 @@ func handleKeys() {
 
 func handleClicks() {
 	if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-
 		mousePos := rl.GetMousePosition()
 		mousePosOnBoard := rl.Vector2Subtract(mousePos, c.GameBoardStartingPos)
 
 		// @TODO: Create rect for gameBoard and use CheckCollisionPointRec to check bounds
-		if mousePosOnBoard.X <= c.GameBoardSizePixels.X && mousePosOnBoard.Y <= c.GameBoardSizePixels.Y && mousePosOnBoard.X >= 0 && mousePosOnBoard.Y >= 0 {
+		if s.PieceSelected && mousePosOnBoard.X <= c.GameBoardSizePixels.X && mousePosOnBoard.Y <= c.GameBoardSizePixels.Y && mousePosOnBoard.X >= 0 && mousePosOnBoard.Y >= 0 {
 			// get cell
 			cellV := rl.Vector2DivideV(mousePosOnBoard, c.CellSizeWithBorder)
 
@@ -84,9 +83,13 @@ func handleClicks() {
 				if !s.Players[s.CurrentPlayerIndex].Pieces[s.SideboardPieces[s.CurrentPlayerIndex][i].PieceNumber].IsPlaced && rl.CheckCollisionPointRec(mousePos, s.SideboardPieces[s.CurrentPlayerIndex][i].CollisionRect) {
 					s.PieceToPlace = s.SideboardPieces[s.CurrentPlayerIndex][i].PieceNumber
 					s.PieceSelected = true
+					s.PieceOrientation = 0
 				}
 			}
 		}
+	} else if rl.IsMouseButtonPressed(rl.MouseRightButton) {
+		s.PieceSelected = false
+		s.PieceOrientation = 0
 	}
 }
 
