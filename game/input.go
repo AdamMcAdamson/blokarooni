@@ -80,7 +80,7 @@ func handleClicks() {
 			}
 		} else {
 			for i := range s.SideboardPieces[s.CurrentPlayerIndex] {
-				if !s.Players[s.CurrentPlayerIndex].Pieces[s.SideboardPieces[s.CurrentPlayerIndex][i].PieceNumber].IsPlaced && rl.CheckCollisionPointRec(mousePos, s.SideboardPieces[s.CurrentPlayerIndex][i].CollisionRect) {
+				if !s.Players[s.CurrentPlayerIndex].Pieces[s.SideboardPieces[s.CurrentPlayerIndex][i].PieceNumber].IsPlaced && rl.CheckCollisionPointRec(mousePos, s.SideboardPieces[s.CurrentPlayerIndex][i].CollisionRect) && (!s.PieceSelected || s.PieceToPlace != s.SideboardPieces[s.CurrentPlayerIndex][i].PieceNumber) {
 					s.PieceToPlace = s.SideboardPieces[s.CurrentPlayerIndex][i].PieceNumber
 					s.PieceSelected = true
 					s.PieceOrientation = 0
