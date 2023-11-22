@@ -10,7 +10,11 @@ import (
 
 // @TODO: Finish Game
 // ------------------
-// Load Save in Game window (Use s.GameState for saves)
+// StepGame() GameMode handling
+// Buttons (play, skip turn, rotation, etc)
+// Main menu
+// Load Saves in window (Use s.GameState for saves)
+// SaveGames preview images (rtextures)
 // End game state and screen
 // Pick starting player
 // Skip Turns
@@ -22,7 +26,6 @@ import (
 // -- Flipping feedback (for when piece looks the same even with different 'orientation') (maybe do a slight gradient on the outline?)
 // -- Abstract Drawing Boards (Game and Preview) into one function
 // -- General Cleanup (Say which player's turn it is, better piece highlighting etc)
-// -- Buttons (rotation, skip turn, etc)
 // ------------------
 
 func main() {
