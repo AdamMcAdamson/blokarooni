@@ -13,17 +13,18 @@ import (
 func Draw() {
 	rl.BeginDrawing()
 
-	rl.ClearBackground(rl.RayWhite)
-	rl.DrawText(fmt.Sprintf("PlayerIndex: %d, Piece: %d, Orientation: %d", s.CurrentPlayerIndex, s.PieceToPlace, s.PieceOrientation), 10, 10, 40, rl.DarkGray)
+	switch s.GameMode {
+	case 0:
+		drawGameModeMainMenu()
+	case 1:
+		drawGameModePlay()
+	case 2:
+		drawGameModeGameOver()
+	default:
+		panic(fmt.Sprintf("Draw(): Invalid GameMode %d", s.GameMode))
+	}
 
-	drawSideboards()
-
-	drawGameBoard()
-	drawGameBoardPieces()
-	drawPreviewPiece()
-	drawPieceBeingHeld()
-
-	// if s.GameState != 2 {
+	// if s.GameMode != 2 {
 	// 	drawPreviewBoard()
 	// 	drawPreviewBoardPiece()
 
@@ -53,6 +54,30 @@ func Draw() {
 	c.DebugPrinted = true
 
 	rl.EndDrawing()
+}
+
+func drawGameModePlay() {
+	rl.ClearBackground(rl.RayWhite)
+	rl.DrawText(fmt.Sprintf("PlayerIndex: %d, Piece: %d, Orientation: %d", s.CurrentPlayerIndex, s.PieceToPlace, s.PieceOrientation), 10, 10, 40, rl.DarkGray)
+
+	drawSideboards()
+
+	drawGameBoard()
+	drawGameBoardPieces()
+	drawPreviewPiece()
+	drawPieceBeingHeld()
+}
+
+func drawGameModeGameOver() {
+
+}
+
+func drawGameModeMainMenu() {
+	rl.ClearBackground(rl.RayWhite)
+
+	var textWidth int32 = 670
+
+	rl.DrawText("Blokarooni", (c.WindowWidth-textWidth)/2, 180, 128, rl.DarkGray)
 }
 
 /*
@@ -302,7 +327,7 @@ func drawFloatingPiece(x float32, y float32, cellWidth float32, cellHeight float
 				case 7:
 					drawFloatingPieceCell(posX-py, posY-px, cellWidth, cellHeight, color, edgeColor)
 				default:
-					panic("Invalid piece orientation!")
+					panic(fmt.Sprintf("drawFloatingPiece(): Invalid preview piece orientation %d for pieceNumber %d", s.PiecePreview.Orientation, pieceNumber))
 				}
 			}
 		}
@@ -353,7 +378,7 @@ func drawPreviewPiece() {
 					case 7:
 						drawGameBoardCellColorIfValid(x-py, y-px, color)
 					default:
-						panic("Invalid preview piece orientation.")
+						panic(fmt.Sprintf("drawPiecePreview(): Invalid preview piece orientation %d for PiecePreview", s.PiecePreview.Orientation))
 					}
 				}
 			}

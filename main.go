@@ -57,20 +57,22 @@ func main() {
 	// --------------------------------------------------
 	for !rl.WindowShouldClose() {
 
+		game.StepGame()
+
 		// --------------------------------------------------
 		// Gameplay Logic
 		// --------------------------------------------------
-		game.HandleInput()
+		//game.HandleInput()
 
 		// Clear and Update gameBoard
-		game.ClearGameBoard()
-		game.UpdateGameBoard()
+		//game.ClearGameBoard()
+		//game.UpdateGameBoard()
 
 		// game.UpdatePreviewBoard(s.Players[s.CurrentPlayerIndex].Id, s.PieceToPlace, s.PieceOrientation)
 
 		// --------------------------------------------------
 		// Drawing
 		// --------------------------------------------------
-		game.Draw()
+		//game.Draw()
 	}
 }

@@ -9,6 +9,24 @@ import (
 	s "github.com/AdamMcAdamson/blockeroni/state"
 )
 
+func StepGame() {
+	switch s.GameMode {
+	case 0:
+		HandleInput()
+		Draw()
+	case 1:
+		HandleInput()
+		clearGameBoard()
+		UpdateGameBoard()
+		Draw()
+	case 2:
+		HandleInput()
+		Draw()
+	default:
+		panic(fmt.Sprintf("StepGame(): Invalid gamemode %d", s.GameMode))
+	}
+}
+
 func checkToEndGame() bool {
 	allPlaced := true
 	for i := range s.Players {
@@ -21,7 +39,7 @@ func checkToEndGame() bool {
 	}
 
 	if allPlaced {
-		s.GameState = 2 // GameOver
+		s.GameMode = 2 // GameOver
 		return true
 	} else {
 		s.ShouldShowEndGameButton = true
@@ -86,7 +104,7 @@ func updateGameBoardCell(x int, y int, playerId int) {
 }
 
 // Sets the gameboard cells to 0 (resets the board)
-func ClearGameBoard() {
+func clearGameBoard() {
 	for x := range s.GameBoard {
 		for y := range s.GameBoard[0] {
 			s.GameBoard[x][y] = 0
@@ -218,7 +236,7 @@ func updatePieceOrientation(mode int) {
 	case 6:
 		s.PieceOrientation--
 	default:
-		panic("Invalid 'mode' parameter for game.updatePieceOrientation")
+		panic(fmt.Sprintf("Invalid 'mode' parameter %d for game.updatePieceOrientation", mode))
 	}
 
 	// wrap around (required for flip logic, and case 5/6)
@@ -277,6 +295,7 @@ func calculateNegativeScores() {
 
 func endGame() {
 	calculateNegativeScores()
+	s.GameMode = 2
 }
 
 // func clearPreviewBoard() {
