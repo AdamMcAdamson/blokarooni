@@ -6,6 +6,8 @@ import (
 )
 
 func Init() {
+	GameMode = 1
+
 	for i := range Players {
 		Players[i].Id = i + 1
 		Players[i].Turn = 0

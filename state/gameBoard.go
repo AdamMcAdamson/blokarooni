@@ -16,4 +16,4 @@ var BoardState = []c.BoardStateEntry{}
 
 var ShouldShowEndGameButton = false
 
-var GameMode = 0
+var GameMode = -1
