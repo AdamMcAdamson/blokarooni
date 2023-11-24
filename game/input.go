@@ -63,7 +63,10 @@ func handleClicks() {
 	if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 		mousePos := rl.GetMousePosition()
 		mousePosOnBoard := rl.Vector2Subtract(mousePos, c.GameBoardStartingPos)
-
+		btnPressed, _ := s.DetectAndHandleButtonPress(mousePos)
+		if btnPressed {
+			return
+		}
 		// @TODO: Create rect for gameBoard and use CheckCollisionPointRec to check bounds
 		if s.PieceSelected && mousePosOnBoard.X <= c.GameBoardSizePixels.X && mousePosOnBoard.Y <= c.GameBoardSizePixels.Y && mousePosOnBoard.X >= 0 && mousePosOnBoard.Y >= 0 {
 			// get cell

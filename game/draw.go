@@ -24,6 +24,8 @@ func Draw() {
 		panic(fmt.Sprintf("Draw(): Invalid GameMode %d", s.GameMode))
 	}
 
+	s.DrawActiveButtons()
+
 	// if s.GameMode != 2 {
 	// 	drawPreviewBoard()
 	// 	drawPreviewBoardPiece()

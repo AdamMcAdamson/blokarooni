@@ -12,6 +12,7 @@ import (
 // ------------------
 // StepGame() GameMode handling
 // Buttons (play, skip turn, rotation, etc)
+//  -- More Responsive press-release action
 // Main menu
 // Load Saves in window (Use s.GameState for saves)
 // SaveGames preview images (rtextures)

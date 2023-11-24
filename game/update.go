@@ -27,6 +27,41 @@ func StepGame() {
 	}
 }
 
+func setGameMode(mode int) {
+	switch s.GameMode {
+	case 0:
+		setGameModeFromMainMenu(mode)
+	case 1:
+
+	case 2:
+		setGameModeFromGameOver(mode)
+	}
+}
+
+func setGameModeFromMainMenu(mode int) {
+	s.DisableAllButtons()
+	switch mode {
+	case 0:
+		s.EnableButton("MainMenuPlay")
+	case 1:
+		clearGameBoard()
+		UpdateGameBoard()
+		s.GameMode = 1
+	}
+}
+func setGameModeFromGameOver(mode int) {
+	s.DisableAllButtons()
+	switch mode {
+	case 0:
+		s.EnableButton("MainMenuPlay")
+		s.GameMode = 0
+	case 1:
+		clearGameBoard()
+		UpdateGameBoard()
+		s.GameMode = 1
+	}
+}
+
 func checkToEndGame() bool {
 	allPlaced := true
 	for i := range s.Players {
