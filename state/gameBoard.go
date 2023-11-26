@@ -2,6 +2,7 @@ package gamestate
 
 import (
 	c "github.com/AdamMcAdamson/blockeroni/config"
+	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 var GameBoard = [c.GameBoardWidth][c.GameBoardHeight]int{}
@@ -17,3 +18,5 @@ var BoardState = []c.BoardStateEntry{}
 var ShouldShowEndGameButton = false
 
 var GameMode = 0 // 0: MainMenu, 1: Playing, 2: GameOver
+
+var MousePosition rl.Vector2

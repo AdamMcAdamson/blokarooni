@@ -22,11 +22,15 @@ func registerMainMenuButtons() {
 	playOnPressed := func() {
 		setGameMode(1)
 	}
-	playDraw := func(rect rl.Rectangle) {
+	playDrawUp := func(rect rl.Rectangle) {
 		rl.DrawRectangleRounded(rect, 0.1, 4, rl.Gray)
 		rl.DrawText("Play", rect.ToInt32().X+38, rect.ToInt32().Y+15, 48, rl.RayWhite)
 	}
-	s.RegisterButton("MainMenuPlay", playRect, playOnPressed, playDraw)
+	playDrawDown := func(rect rl.Rectangle) {
+		rl.DrawRectangleRounded(rect, 0.1, 4, rl.DarkGray)
+		rl.DrawText("Play", rect.ToInt32().X+38, rect.ToInt32().Y+15, 48, rl.RayWhite)
+	}
+	s.RegisterButton("MainMenuPlay", playRect, playOnPressed, playDrawUp, playDrawDown)
 }
 
 func registerGameScreenButtons() {

@@ -60,11 +60,11 @@ func handleKeys() {
 }
 
 func handleClicks() {
+	s.MousePosition = rl.GetMousePosition()
 	if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-		mousePos := rl.GetMousePosition()
-		mousePosOnBoard := rl.Vector2Subtract(mousePos, c.GameBoardStartingPos)
-		btnPressed, _ := s.DetectAndHandleButtonPress(mousePos)
-		if btnPressed {
+		mousePosOnBoard := rl.Vector2Subtract(s.MousePosition, c.GameBoardStartingPos)
+		btnDown, _ := s.DetectAndHandleButtonDown(s.MousePosition)
+		if btnDown {
 			return
 		}
 		// @TODO: Create rect for gameBoard and use CheckCollisionPointRec to check bounds
@@ -83,7 +83,7 @@ func handleClicks() {
 			}
 		} else {
 			for i := range s.SideboardPieces[s.CurrentPlayerIndex] {
-				if !s.Players[s.CurrentPlayerIndex].Pieces[s.SideboardPieces[s.CurrentPlayerIndex][i].PieceNumber].IsPlaced && rl.CheckCollisionPointRec(mousePos, s.SideboardPieces[s.CurrentPlayerIndex][i].CollisionRect) && (!s.PieceSelected || s.PieceToPlace != s.SideboardPieces[s.CurrentPlayerIndex][i].PieceNumber) {
+				if !s.Players[s.CurrentPlayerIndex].Pieces[s.SideboardPieces[s.CurrentPlayerIndex][i].PieceNumber].IsPlaced && rl.CheckCollisionPointRec(s.MousePosition, s.SideboardPieces[s.CurrentPlayerIndex][i].CollisionRect) && (!s.PieceSelected || s.PieceToPlace != s.SideboardPieces[s.CurrentPlayerIndex][i].PieceNumber) {
 					s.PieceToPlace = s.SideboardPieces[s.CurrentPlayerIndex][i].PieceNumber
 					s.PieceSelected = true
 					s.PieceOrientation = 0
@@ -94,11 +94,18 @@ func handleClicks() {
 		s.PieceSelected = false
 		s.PieceOrientation = 0
 	}
+
+	if rl.IsMouseButtonReleased(rl.MouseLeftButton) {
+		btnPressed, _ := s.DetectAndHandleButtonRelease(s.MousePosition)
+
+		if btnPressed {
+			return
+		}
+	}
 }
 
 func handleMousePositionOnBoard() {
-	mousePos := rl.GetMousePosition()
-	mousePosOnBoard := rl.Vector2Subtract(mousePos, c.GameBoardStartingPos)
+	mousePosOnBoard := rl.Vector2Subtract(s.MousePosition, c.GameBoardStartingPos)
 
 	if s.PieceSelected {
 		// @TODO: Create rect for gameBoard and use CheckCollisionPointRec to check bounds
