@@ -10,10 +10,11 @@ import (
 
 // @TODO: Finish Game
 // ------------------
-// StepGame() GameMode handling
+// Refactor game functionality to be based on GameMode
+// -- Draw
+// -- Input
+// -- Buttons (move from state.buttons to game.input/buttons)
 // Buttons (play, skip turn, rotation, etc)
-//  -- More Responsive press-release action
-// GameMode specific input handling
 // Main menu
 // Load Saves in window (Use s.GameState for saves)
 // SaveGames preview images (rtextures)
