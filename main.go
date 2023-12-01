@@ -10,6 +10,7 @@ import (
 
 // @TODO: Finish Game
 // ------------------
+// @Critical: Fix players being able to place pieces on other players' corners.
 // Refactor game functionality to be based on GameMode
 // -- Draw
 // -- Input
