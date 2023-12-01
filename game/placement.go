@@ -92,8 +92,18 @@ func isValidConnectingCell(x int, y int, playerId int) bool {
 	return false
 }
 
-func isCorner(x int, y int) bool {
-	return (x == 0 || x == 19) && (y == 0 || y == 19)
+func isPlayerCorner(x int, y int, playerId int) bool {
+	switch playerId {
+	case 1:
+		return (x == 0 && y == 0)
+	case 2:
+		return (x == 19 && y == 0)
+	case 3:
+		return (x == 0 && y == 19)
+	case 4:
+		return (x == 19 && y == 19)
+	}
+	return false
 }
 
 func isValidPlacement(x int, y int, playerId int, pieceNumber int, orientation int, isFirstPiece bool) bool {
@@ -118,7 +128,7 @@ func isValidPlacement(x int, y int, playerId int, pieceNumber int, orientation i
 					} else if !connectionFound && !isFirstPiece {
 						connectionFound = isValidConnectingCell(x+px, y+py, playerId)
 					} else if !connectionFound {
-						connectionFound = isCorner(x+px, y+py)
+						connectionFound = isPlayerCorner(x+px, y+py, playerId)
 					}
 				case 1:
 					if !isValidPlacementCell(x+py, y-px, playerId) {
@@ -126,7 +136,7 @@ func isValidPlacement(x int, y int, playerId int, pieceNumber int, orientation i
 					} else if !connectionFound && !isFirstPiece {
 						connectionFound = isValidConnectingCell(x+py, y-px, playerId)
 					} else if !connectionFound {
-						connectionFound = isCorner(x+py, y-px)
+						connectionFound = isPlayerCorner(x+py, y-px, playerId)
 					}
 				case 2:
 					if !isValidPlacementCell(x-px, y-py, playerId) {
@@ -134,7 +144,7 @@ func isValidPlacement(x int, y int, playerId int, pieceNumber int, orientation i
 					} else if !connectionFound && !isFirstPiece {
 						connectionFound = isValidConnectingCell(x-px, y-py, playerId)
 					} else if !connectionFound {
-						connectionFound = isCorner(x-px, y-py)
+						connectionFound = isPlayerCorner(x-px, y-py, playerId)
 					}
 				case 3:
 					if !isValidPlacementCell(x-py, y+px, playerId) {
@@ -142,7 +152,7 @@ func isValidPlacement(x int, y int, playerId int, pieceNumber int, orientation i
 					} else if !connectionFound && !isFirstPiece {
 						connectionFound = isValidConnectingCell(x-py, y+px, playerId)
 					} else if !connectionFound {
-						connectionFound = isCorner(x-py, y+px)
+						connectionFound = isPlayerCorner(x-py, y+px, playerId)
 					}
 				case 4:
 					if !isValidPlacementCell(x-px, y+py, playerId) {
@@ -150,7 +160,7 @@ func isValidPlacement(x int, y int, playerId int, pieceNumber int, orientation i
 					} else if !connectionFound && !isFirstPiece {
 						connectionFound = isValidConnectingCell(x-px, y+py, playerId)
 					} else if !connectionFound {
-						connectionFound = isCorner(x-px, y+py)
+						connectionFound = isPlayerCorner(x-px, y+py, playerId)
 					}
 				case 5:
 					if !isValidPlacementCell(x+py, y+px, playerId) {
@@ -158,7 +168,7 @@ func isValidPlacement(x int, y int, playerId int, pieceNumber int, orientation i
 					} else if !connectionFound && !isFirstPiece {
 						connectionFound = isValidConnectingCell(x+py, y+px, playerId)
 					} else if !connectionFound {
-						connectionFound = isCorner(x+py, y+px)
+						connectionFound = isPlayerCorner(x+py, y+px, playerId)
 					}
 				case 6:
 					if !isValidPlacementCell(x+px, y-py, playerId) {
@@ -166,7 +176,7 @@ func isValidPlacement(x int, y int, playerId int, pieceNumber int, orientation i
 					} else if !connectionFound && !isFirstPiece {
 						connectionFound = isValidConnectingCell(x+px, y-py, playerId)
 					} else if !connectionFound {
-						connectionFound = isCorner(x+px, y-py)
+						connectionFound = isPlayerCorner(x+px, y-py, playerId)
 					}
 				case 7:
 					if !isValidPlacementCell(x-py, y-px, playerId) {
@@ -174,7 +184,7 @@ func isValidPlacement(x int, y int, playerId int, pieceNumber int, orientation i
 					} else if !connectionFound && !isFirstPiece {
 						connectionFound = isValidConnectingCell(x-py, y-px, playerId)
 					} else if !connectionFound {
-						connectionFound = isCorner(x-py, y-px)
+						connectionFound = isPlayerCorner(x-py, y-px, playerId)
 					}
 				default:
 					panic(fmt.Sprintf("Invalid piece orientation. Player %d, Piece %d", playerId, pieceNumber))
