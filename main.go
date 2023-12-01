@@ -29,6 +29,7 @@ import (
 // -- Flipping feedback (for when piece looks the same even with different 'orientation') (maybe do a slight gradient on the outline?)
 // -- Abstract Drawing Boards (Game and Preview) into one function
 // -- General Cleanup (Say which player's turn it is, better piece highlighting etc)
+// -- (?) Enable line widths of > 1 (drawRect) (swapping over induces cell width errors, would need to address)
 // ------------------
 
 func main() {

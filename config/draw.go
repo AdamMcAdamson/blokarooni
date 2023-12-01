@@ -35,6 +35,7 @@ func GenerateSideboardDrawOffsets(cellWidth int32, cellHeight int32 /*, sideboar
 	return workingOffsets
 }
 
+// @TODO: get cell width from config
 var SideboardDrawOffsets = GenerateSideboardDrawOffsets(20, 20)
 
 const PiecePreviewAlpha = 0.4

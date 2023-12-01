@@ -19,6 +19,8 @@ func Init() {
 			Players[i].Pieces[j].NumCells = getPieceNumCellsFromIndex(j)
 		}
 	}
+
+	// @TODO: Grab from config
 	addPlayerSideboard(40, 120, 0)
 	addPlayerSideboard(1360, 120, 1)
 	addPlayerSideboard(40, 540, 2)
@@ -42,6 +44,7 @@ func addPlayerSideboard(x int32, y int32, playerIndex int) {
 		if !piece.IsPlaced {
 			posX = drawRegionStartX + c.SideboardDrawOffsets[i][0]
 			posY = drawRegionStartY + c.SideboardDrawOffsets[i][1]
+			// @TODO: Grab cell size from config
 			addPieceToSideboard(posX, posY, 20, 20, i, playerIndex)
 		}
 	}

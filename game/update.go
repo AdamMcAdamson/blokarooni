@@ -125,6 +125,7 @@ func setGameStateAfterLoad() {
 			}
 		}
 	}
+	setGameMode(1)
 }
 
 // Update the gameboard cell if valid

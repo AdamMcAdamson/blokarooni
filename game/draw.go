@@ -157,6 +157,7 @@ func drawEndGameScreen() {
 // Draw Player Sideboards
 // Sets positions of player sideboards
 // @TODO: Draw sideboards from s.SideboardPieces instead of creating and drawing them seperately
+// @TODO: Move to config
 func drawSideboards() {
 	drawPlayerSideboard(40, 120, 0)
 	drawPlayerSideboard(1360, 120, 1)
@@ -186,7 +187,6 @@ func drawPlayerSideboard(x int32, y int32, playerIndex int) {
 			drawSideboardPiece(posX, posY, 20, 20, i, s.Players[playerIndex].Id)
 		}
 	}
-
 }
 
 // Draws a Sideboard Piece at the given location
@@ -219,27 +219,42 @@ func drawSideboardPiece(x int32, y int32, cellWidth int32, cellHeight int32, pie
 	}
 }
 
+// func randomColor() rl.Color {
+
+// 	rand.NewSource(time.Now().UnixNano())
+// 	return rl.ColorFromHSV(rand.Float32()*360, rand.Float32(), rand.Float32())
+// }
+
 // @TODO: Abstract to handle alternative sizing (to enable preview board to use the same function)
 func drawGameBoard() {
 	// fmt.Printf("X: %f, Y: %f\n", c.GameBoardStartingPos.X, c.GameBoardStartingPos.Y)
 	// Draw gameBoard grid
-	// @VERIFY: On Desktop
+	// @VERIFY: On Laptop
+	// Vertical lines
 	for i := 0; i <= c.GameBoardWidth; i++ {
 		start := rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2Multiply(c.CellSizeWithBorder, rl.Vector2{X: float32(i), Y: 0.0}))
 		end := rl.Vector2Add(start, rl.Vector2{X: c.Eps, Y: c.GameBoardSizePixels.Y})
+		size := rl.Vector2{X: float32(c.GameBoardLineWidth), Y: c.GameBoardSizePixels.Y}
+		// rl.DrawRectangleV(start, size, rl.Black)
 		rl.DrawLineV(start, end, rl.Black)
 		if !c.DebugPrinted {
+			fmt.Printf("V%d - X: %f, Y: %f; W: %f, H: %f\n", i, start.X, start.Y, size.X, size.Y)
 			fmt.Printf("V%d - sX: %f, sY: %f; eX: %f, eY: %f\n", i, start.X, start.Y, end.X, end.Y)
 		}
 	}
+	// Horizontal lines
 	for i := 0; i <= c.GameBoardWidth; i++ {
 		start := rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2Multiply(c.CellSizeWithBorder, rl.Vector2{X: 0.0, Y: float32(i)}))
 		end := rl.Vector2Add(start, rl.Vector2{X: c.GameBoardSizePixels.X, Y: c.Eps})
+		// size := rl.Vector2{X: c.GameBoardSizePixels.X, Y: float32(c.GameBoardLineWidth)}
+		// rl.DrawRectangleV(start, size, rl.Black)
 		rl.DrawLineV(start, end, rl.Black)
 		if !c.DebugPrinted {
 			fmt.Printf("H%d - sX: %f, sY: %f; eX: %f, eY: %f\n", i, start.X, start.Y, end.X, end.Y)
+			// fmt.Printf("V%d - X: %f, Y: %f; W: %f, H: %f\n", i, start.X, start.Y, size.X, size.Y)
 		}
 	}
+
 	/*
 		// Old Broken Code
 		rl.DrawLineV(rl.Vector2Subtract(c.GameBoardStartingPos, rl.Vector2{X: 0.0, Y: 1.0}), rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2{X: 0.0, Y: c.GameBoardSizePixels.Y}), rl.Black)

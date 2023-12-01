@@ -19,8 +19,8 @@ const GameBoardLineWidth int = 1
 
 // Includes border
 // @VERIFY: handle other window sizes well on Desktop
-const GameBoardWidthPixels = 834  // windowHeight * 0.75  // 841
-const GameBoardHeightPixels = 834 // GameBoardWidthPixels // 841
+const GameBoardWidthPixels = 841  // windowHeight * 0.75  // 841
+const GameBoardHeightPixels = 841 // GameBoardWidthPixels // 841
 
 var GameBoardSizePixels = rl.Vector2{X: GameBoardWidthPixels, Y: GameBoardHeightPixels}
 
@@ -31,6 +31,7 @@ const CellHeightWithBorder float32 = float32(GameBoardHeightPixels-GameBoardLine
 var CellSizeWithBorder = rl.Vector2{X: float32(CellWidthWithBorder), Y: float32(CellHeightWithBorder)}
 
 // Add Eps to ensure lines are drawn on correct side of the pixel delimiter
+// @TODO: Parameterize top margin (maybe center on screen as with X)
 var GameBoardStartingPos = rl.Vector2{X: float32((WindowWidth-GameBoardWidthPixels)/2) + Eps, Y: 100 + Eps}
 
 // Accounts for upper and left-most border lines on the board
