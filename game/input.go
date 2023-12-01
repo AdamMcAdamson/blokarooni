@@ -96,11 +96,8 @@ func handleClicks() {
 	}
 
 	if rl.IsMouseButtonReleased(rl.MouseLeftButton) {
-		btnPressed, _ := s.DetectAndHandleButtonRelease(s.MousePosition)
-
-		if btnPressed {
-			return
-		}
+		// btnPressed, _ := s.DetectAndHandleButtonRelease(s.MousePosition)
+		s.DetectAndHandleButtonRelease(s.MousePosition)
 	}
 }
 
