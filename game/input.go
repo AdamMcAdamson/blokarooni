@@ -21,11 +21,11 @@ func handleKeys() {
 		switch keyCode {
 		case rl.KeyN:
 			{
-				s.SaveBoardState()
+				saveGame()
 			}
 		case rl.KeyL:
 			{
-				if s.GetSaveFiles() {
+				if getSaveFiles() {
 					setGameStateAfterLoad()
 				}
 			}

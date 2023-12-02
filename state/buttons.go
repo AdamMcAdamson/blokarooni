@@ -48,11 +48,11 @@ func DisableAllButtons() {
 	}
 }
 
-func releaseAllButtons() {
-	for i := range buttons {
-		buttons[i].clickedDown = false
-	}
-}
+// func releaseAllButtons() {
+// 	for i := range buttons {
+// 		buttons[i].clickedDown = false
+// 	}
+// }
 
 func EnableButton(name string) (bool, string) {
 	var buttonIndex int

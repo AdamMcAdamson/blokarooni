@@ -16,8 +16,7 @@ import (
 // -- Buttons (move from state.buttons to game.input/buttons)
 // Buttons (play, skip turn, rotation, etc)
 // Main menu
-// Load Saves in window (Use s.GameState for saves)
-// SaveGames preview images (rtextures)
+// Load Saves in window (Use s.GameMode for saves)
 // End game state and screen
 // Pick starting player
 // Skip Turns
@@ -46,40 +45,10 @@ func main() {
 	// Init gameBoard
 	game.UpdateGameBoard()
 
-	// @Debug: Piece verification
-	// for i := range players[0].pieces {
-	// 	players[0].pieces[i].isPlaced = true
-	// 	players[0].pieces[i].orientation = 0
-	// 	if i < 5 {
-	// 		players[0].pieces[i].origin = [2]int{(i * 4) % 20, 4 * (i / 5)}
-	// 	} else if i < 15 {
-	// 		players[0].pieces[i].origin = [2]int{(i * 4) % 20, 4*(i/5) - 1}
-	// 	} else {
-	// 		players[0].pieces[i].origin = [2]int{(i * 4) % 20, 4*(i/5) + 1}
-	// 	}
-	// }
-
 	// --------------------------------------------------
 	// Main Game loop
 	// --------------------------------------------------
 	for !rl.WindowShouldClose() {
-
 		game.StepGame()
-
-		// --------------------------------------------------
-		// Gameplay Logic
-		// --------------------------------------------------
-		//game.HandleInput()
-
-		// Clear and Update gameBoard
-		//game.ClearGameBoard()
-		//game.UpdateGameBoard()
-
-		// game.UpdatePreviewBoard(s.Players[s.CurrentPlayerIndex].Id, s.PieceToPlace, s.PieceOrientation)
-
-		// --------------------------------------------------
-		// Drawing
-		// --------------------------------------------------
-		//game.Draw()
 	}
 }

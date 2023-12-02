@@ -1,4 +1,4 @@
-package gamestate
+package game
 
 import (
 	"encoding/json"
@@ -9,28 +9,46 @@ import (
 	"time"
 
 	c "github.com/AdamMcAdamson/blockeroni/config"
+	s "github.com/AdamMcAdamson/blockeroni/state"
+	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func SaveBoardState() {
-	if _, err := os.Stat(c.SaveFilePath); errors.Is(err, os.ErrNotExist) {
-		err := os.Mkdir(c.SaveFilePath, os.ModePerm)
+func saveGame() {
+	timestamp := time.Now().Format("2006-01-02-150405")
+	saveFolder := c.SavePath + c.SaveNameBase + timestamp
+	saveDataFile := saveFolder + "/data.json"
+	savePreviewImageFile := saveFolder + "/previewImage.png"
+
+	createFolderIfMissing(c.SavePath)
+	createFolderIfMissing(saveFolder)
+
+	previewImage := *rl.LoadImageFromScreen() // Use pause image (will be able to save game from menu, aka game is paused. Should be using image to draw game background while paused).
+
+	saveBoardState(saveDataFile)
+	rl.ExportImage(previewImage, savePreviewImageFile)
+}
+
+func createFolderIfMissing(folderpath string) {
+	if _, err := os.Stat(folderpath); errors.Is(err, os.ErrNotExist) {
+		err := os.Mkdir(folderpath, os.ModePerm)
 		if err != nil {
 			log.Println(err)
 		}
 	}
-	timestamp := time.Now().Format("2006-01-02-150405")
-	filename := c.SaveFilePath + c.SaveFileNameBase + timestamp + ".json"
-	out, _ := json.Marshal(BoardState)
+}
+
+func saveBoardState(filename string) {
+	out, _ := json.Marshal(s.BoardState)
 	if err := os.WriteFile(filename, out, os.ModePerm); err != nil {
 		log.Fatal(err)
 	}
 }
 
-func GetSaveFiles() bool {
+func getSaveFiles() bool {
 
 	// LoadBoardState("./saves/blokarooni-save-2023-08-05-142833.json")
 	// return
-	files, err := os.ReadDir(c.SaveFilePath)
+	files, err := os.ReadDir(c.SavePath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -42,13 +60,13 @@ func GetSaveFiles() bool {
 
 	options := []option{}
 
-	for i, file := range files {
-		if !file.IsDir() {
-			fmt.Printf("%d: %s\n", i, file.Name())
+	for i, dirEntry := range files {
+		if dirEntry.IsDir() {
+			fmt.Printf("%d: %s\n", i, dirEntry.Name())
 			// @TODO: Remove
 			// LoadBoardState(c.SaveFilePath + file.Name())
 			// return
-			options = append(options, option{index: i, filename: c.SaveFilePath + file.Name()})
+			options = append(options, option{index: i, filename: c.SavePath + dirEntry.Name()})
 		}
 	}
 
@@ -69,7 +87,7 @@ func GetSaveFiles() bool {
 		}
 		for _, o := range options {
 			if input == o.index {
-				LoadBoardState(o.filename)
+				loadBoardState(o.filename + "/data.json")
 				return true
 			}
 		}
@@ -78,7 +96,7 @@ func GetSaveFiles() bool {
 
 }
 
-func LoadBoardState(filename string) {
+func loadBoardState(filename string) {
 	fmt.Printf("LoadingBoardState: %s\n", filename)
 
 	file, err := os.Open(filename)
@@ -99,7 +117,7 @@ func LoadBoardState(filename string) {
 		fmt.Printf("Could not read file: %s\n", err)
 	}
 
-	if err := json.Unmarshal(data, &BoardState); err != nil {
+	if err := json.Unmarshal(data, &s.BoardState); err != nil {
 		fmt.Printf("%s\n", err)
 	}
 
