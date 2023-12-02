@@ -26,33 +26,6 @@ func Draw() {
 
 	s.DrawActiveButtons(s.MousePosition)
 
-	// if s.GameMode != 2 {
-	// 	drawPreviewBoard()
-	// 	drawPreviewBoardPiece()
-
-	// 	drawSkipButton()
-	// } else {
-	// 	drawEndGameScreen()
-	// }
-
-	// drawCellDebug(0, 0)
-	// drawCellDebug(1, 1)
-
-	// @TODO: verify works on Desktop
-	// @DebugRemove
-
-	// drawLineVDebug(483.002502, 100.002502, 483.005005, 934.002502)
-	// drawLineVDebug(524.652527, 100.002502, 524.655029, 934.002502)
-	// drawLineVDebug(566.302490, 100.002502, 566.304993, 934.002502)
-	// drawLineVDebug(483.002502, 100.002502, 1317.002441, 100.005005)
-	// drawLineVDebug(483.002502, 141.652496, 1317.002441, 141.654999)
-	// drawLineVDebug(483.002502, 183.302505, 1317.002441, 183.305008)
-	// drawRectVDebugHelper(484.450, 101.40, 40, 40)  // rounds to top left of (484, 101)
-	// drawRectVDebugHelper(524.601, 141.601, 41, 41) // rounds to top left of (525, 142)
-	// drawPixelsForDebug()
-	// drawRectVDebug()
-
-	// -----------
 	c.DebugPrinted = true
 
 	rl.EndDrawing()
@@ -71,7 +44,7 @@ func drawGameModePlay() {
 }
 
 func drawGameModeGameOver() {
-
+	drawEndGameScreen()
 }
 
 func drawGameModeMainMenu() {
@@ -82,57 +55,6 @@ func drawGameModeMainMenu() {
 	rl.DrawText("Blokarooni", (c.WindowWidth-textWidth)/2, 180, 128, rl.DarkGray)
 }
 
-/*
-// @DebugRemove
-func drawLineVDebug(sx float32, sy float32, ex float32, ey float32) {
-	rl.DrawLineV(rl.Vector2{X: sx, Y: sy}, rl.Vector2{X: ex, Y: ey}, rl.Black)
-}
-
-// @DebugRemove
-func drawPixelsForDebug() {
-
-	// top left of Draw Rect Region
-	rl.DrawPixel(484, 101, rl.Red)
-	rl.DrawPixel(525, 142, rl.Red)
-
-	rl.DrawPixel(483, 250, rl.Red)
-	rl.DrawPixel(483, 251, rl.Red)
-	rl.DrawPixel(483, 252, rl.Red)
-
-	rl.DrawPixel(524, 250, rl.Red)
-	rl.DrawPixel(524, 251, rl.Red)
-	rl.DrawPixel(524, 252, rl.Red)
-	// rl.DrawPixel(1272, 250, rl.Red)
-	// rl.DrawPixel(1272, 251, rl.Red)
-	// rl.DrawPixel(1272, 252, rl.Red)
-
-}
-
-// @DebugRemove
-func drawRectVDebug() {
-	drawRectVDebugHelper(804.75, 9.75, 1, 1)
-	rl.DrawPixel(805, 10, rl.Red)
-}
-
-// @DebugRemove
-func drawRectVDebugHelper(x float32, y float32, sizeX float32, sizeY float32) {
-	drawPos := rl.Vector2{X: x, Y: y}
-	size := rl.Vector2{X: sizeX, Y: sizeY}
-	rl.DrawRectangleV(drawPos, size, rl.Blue)
-}
-
-// @DebugRemove
-func drawCellDebug(x int, y int) {
-	drawPos := rl.Vector2Add(c.GameBoardStartingPiecePos, rl.Vector2Multiply(rl.Vector2{X: float32(x), Y: float32(y)}, c.CellSizeWithBorder))
-	size := rl.Vector2Subtract(c.CellSizeWithBorder, rl.Vector2{X: float32(c.GameBoardLineWidth), Y: float32(c.GameBoardLineWidth)})
-	rl.DrawRectangleV(drawPos, size, rl.Green)
-	if !c.DebugPrinted {
-		fmt.Printf("Cell (%d, %d) - X: %f, Y: %f; Width: %f, Length: %f\n", x, y, drawPos.X, drawPos.Y, size.X, size.Y)
-	}
-}
-*/
-
-/*
 func drawEndGameScreen() {
 	endGameScreenRect := rl.Rectangle{X: 1020, Y: 100, Width: 480, Height: 340}
 	rl.DrawRectangleRounded(endGameScreenRect, 0, 4, rl.LightGray)
@@ -152,7 +74,6 @@ func drawEndGameScreen() {
 		rl.DrawText(fmt.Sprintf("Player %d Score: %d", s.Players[val].Id, s.Players[val].Score), endGameScreenRect.ToInt32().X+20, endGameScreenRect.ToInt32().Y+int32(20+i*80), 42, c.PlayerColor[s.Players[val].Id])
 	}
 }
-*/
 
 // Draw Player Sideboards
 // Sets positions of player sideboards
@@ -219,17 +140,10 @@ func drawSideboardPiece(x int32, y int32, cellWidth int32, cellHeight int32, pie
 	}
 }
 
-// func randomColor() rl.Color {
-
-// 	rand.NewSource(time.Now().UnixNano())
-// 	return rl.ColorFromHSV(rand.Float32()*360, rand.Float32(), rand.Float32())
-// }
-
 // @TODO: Abstract to handle alternative sizing (to enable preview board to use the same function)
 func drawGameBoard() {
 	// fmt.Printf("X: %f, Y: %f\n", c.GameBoardStartingPos.X, c.GameBoardStartingPos.Y)
 	// Draw gameBoard grid
-	// @VERIFY: On Laptop
 	// Vertical lines
 	for i := 0; i <= c.GameBoardWidth; i++ {
 		start := rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2Multiply(c.CellSizeWithBorder, rl.Vector2{X: float32(i), Y: 0.0}))
@@ -254,27 +168,11 @@ func drawGameBoard() {
 			// fmt.Printf("V%d - X: %f, Y: %f; W: %f, H: %f\n", i, start.X, start.Y, size.X, size.Y)
 		}
 	}
-
-	/*
-		// Old Broken Code
-		rl.DrawLineV(rl.Vector2Subtract(c.GameBoardStartingPos, rl.Vector2{X: 0.0, Y: 1.0}), rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2{X: 0.0, Y: c.GameBoardSizePixels.Y}), rl.Black)
-		for i := 1; i <= c.GameBoardWidth; i++ {
-			start := rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2Multiply(c.CellSize, rl.Vector2{X: float32(i), Y: 0.0}))
-			end := rl.Vector2Add(start, rl.Vector2{X: 0.0, Y: c.GameBoardSizePixels.Y})
-			rl.DrawLineV(start, end, rl.Black)
-		}
-		for i := 0; i <= c.GameBoardHeight; i++ {
-			start := rl.Vector2Add(c.GameBoardStartingPos, rl.Vector2Multiply(c.CellSize, rl.Vector2{X: 0.0, Y: float32(i)}))
-			end := rl.Vector2Add(start, rl.Vector2{X: c.GameBoardSizePixels.X, Y: 0.0})
-			rl.DrawLineV(start, end, rl.Black)
-		}
-	*/
 }
 
 // Draws the game board pieces by the given value in each cell
 func drawGameBoardPieces() {
 	// Color grid locations
-	//var drawPos rl.Vector2
 	for x, col := range s.GameBoard {
 		for y, val := range col {
 			if val != 0 {
@@ -402,14 +300,6 @@ func drawPreviewPiece() {
 		}
 	}
 }
-
-// func drawSkipButton() {
-// 	text := "Skip Turn"
-// 	var fontSize float32 = 24
-// 	rl.DrawRectangleRounded(c.SkipTurnButtonBounds, .25, 4, rl.LightGray)
-// 	textSize := rl.MeasureTextEx(rl.GetFontDefault(), text, fontSize, 1)
-// 	rl.DrawText(text, c.SkipTurnButtonBounds.ToInt32().X+((c.SkipTurnButtonBounds.ToInt32().Width-int32(textSize.X))/2), c.SkipTurnButtonBounds.ToInt32().Y+((c.SkipTurnButtonBounds.ToInt32().Height-int32(textSize.Y))/2), int32(fontSize), rl.DarkGray)
-// }
 
 // func drawPreviewBoard() {
 // 	// Draw preview grid
