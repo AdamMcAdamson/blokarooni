@@ -17,6 +17,10 @@ var BoardState = []c.BoardStateEntry{}
 
 var ShouldShowEndGameButton = false
 
-var GameMode = 0 // 0: MainMenu, 1: Playing, 2: GameOver, 3: Paused, 4: LoadSave
+var GameState = 0 // 0: MainMenu, 1: Playing, 2: GameOver, 3: Paused, 4: LoadSave
+
+var ActiveMenuId = 0 // 0: MainMenu, 1: PauseMenu
+
+var GameScreen rl.Texture2D
 
 var MousePosition rl.Vector2

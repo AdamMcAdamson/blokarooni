@@ -53,6 +53,13 @@ func handleKeys() {
 			fallthrough
 		case rl.KeyX:
 			updatePieceToPlace(true, true)
+		case rl.KeyEscape:
+			switch s.GameState {
+			case 1:
+				setGameState(3)
+			case 3:
+				setGameState(1)
+			}
 		case 0:
 			checkForMoreKeys = false
 		}

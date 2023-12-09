@@ -24,7 +24,7 @@ func placePiece(x int, y int) {
 
 	checkToEndGame()
 
-	if s.GameMode != 2 {
+	if s.GameState != 2 {
 		updateCurrentPlayer()
 		updatePieceToPlace(true, false)
 	}

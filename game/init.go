@@ -6,10 +6,11 @@ import (
 )
 
 func Init() {
+	rl.SetExitKey(0)
 	s.Init()
 	registerButtons()
-	s.GameMode = 0
-	setGameMode(0)
+	s.GameState = 0
+	setGameState(0)
 }
 
 func registerButtons() {
@@ -20,7 +21,7 @@ func registerButtons() {
 func registerMainMenuButtons() {
 	playRect := rl.Rectangle{X: 810, Y: 400, Width: 180, Height: 80}
 	playOnPressed := func() {
-		setGameMode(1)
+		setGameState(1)
 	}
 	playDrawUp := func(rect rl.Rectangle) {
 		rl.DrawRectangleRounded(rect, 0.1, 4, rl.Gray)

@@ -10,18 +10,17 @@ import (
 
 // @TODO: Finish Game
 // ------------------
-// Refactor game functionality to be based on GameMode
-// -- Add menus (s.ActiveMenuId) for GameModes that have multiple menus (paused)
+// Refactor game functionality to be based on GameState
+// -- Add menus (s.ActiveMenuId) for GameStates that have multiple menus (paused)
 // -- Draw
 // -- Input
 // -- Buttons (move from state.buttons to game.input/buttons) (move under menus?)
-// Decide on GameMode vs GameState (naming (yes i know this is sad...))
 // Buttons (play, skip turn, rotation, etc)
 // Main menu
 // Pause state
 // - LoadImageFromScreen, draw as tinted texture
 // - Draw over that menus and the like)
-// Load Saves in window (Use s.GameMode for saves)
+// Load Saves in window (Use s.GameState for saves)
 // End game state and screen
 // Pick starting player
 // Skip Turns

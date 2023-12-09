@@ -10,7 +10,7 @@ import (
 )
 
 func StepGame() {
-	switch s.GameMode {
+	switch s.GameState {
 	case 0:
 		HandleInput()
 		Draw()
@@ -20,45 +20,68 @@ func StepGame() {
 		UpdateGameBoard()
 		Draw()
 	case 2:
+		HandleInput()
+		Draw()
+	case 3:
 		HandleInput()
 		Draw()
 	default:
-		panic(fmt.Sprintf("StepGame(): Invalid gamemode %d", s.GameMode))
+		panic(fmt.Sprintf("StepGame(): Invalid GameState %d", s.GameState))
 	}
 }
 
-func setGameMode(mode int) {
-	switch s.GameMode {
+func setGameState(mode int) {
+	switch s.GameState {
 	case 0:
-		setGameModeFromMainMenu(mode)
+		setGameStateFromMainMenu(mode)
 	case 1:
-
+		setGameStateFromPlaying(mode)
 	case 2:
-		setGameModeFromGameOver(mode)
+		setGameStateFromGameOver(mode)
+	case 3:
+		setGameStateFromPaused(mode)
 	}
 }
 
-func setGameModeFromMainMenu(mode int) {
-	s.DisableAllButtons()
+func setGameStateFromPlaying(mode int) {
 	switch mode {
-	case 0:
-		s.EnableButton("MainMenuPlay")
-	case 1:
-		clearGameBoard()
-		UpdateGameBoard()
-		s.GameMode = 1
+	case 3:
+		s.GameScreen = rl.LoadTextureFromImage(rl.LoadImageFromScreen())
+		s.ActiveMenuId = 1
+		s.GameState = 3
 	}
 }
-func setGameModeFromGameOver(mode int) {
+
+func setGameStateFromPaused(mode int) {
+	switch mode {
+	case 1:
+		// s.GameScreen = rl.LoadTextureFromImage(rl.LoadImageFromScreen())
+		s.ActiveMenuId = -1
+		s.GameState = 1
+	}
+}
+
+func setGameStateFromMainMenu(mode int) {
 	s.DisableAllButtons()
 	switch mode {
 	case 0:
 		s.EnableButton("MainMenuPlay")
-		s.GameMode = 0
 	case 1:
 		clearGameBoard()
 		UpdateGameBoard()
-		s.GameMode = 1
+		s.GameState = 1
+	}
+}
+func setGameStateFromGameOver(mode int) {
+	s.DisableAllButtons()
+	switch mode {
+	case 0:
+		s.EnableButton("MainMenuPlay")
+		s.GameState = 0
+	case 1:
+		clearGameBoard()
+		UpdateGameBoard()
+		s.GameState = 1
 	}
 }
 
@@ -74,7 +97,7 @@ func checkToEndGame() bool {
 	}
 
 	if allPlaced {
-		s.GameMode = 2 // GameOver
+		s.GameState = 2 // GameOver
 		return true
 	} else {
 		s.ShouldShowEndGameButton = true
@@ -125,7 +148,7 @@ func setGameStateAfterLoad() {
 			}
 		}
 	}
-	setGameMode(1)
+	setGameState(1)
 }
 
 // Update the gameboard cell if valid
@@ -331,7 +354,7 @@ func calculateNegativeScores() {
 
 func endGame() {
 	calculateNegativeScores()
-	s.GameMode = 2
+	s.GameState = 2
 }
 
 // func clearPreviewBoard() {

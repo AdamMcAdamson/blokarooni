@@ -13,15 +13,17 @@ import (
 func Draw() {
 	rl.BeginDrawing()
 
-	switch s.GameMode {
+	switch s.GameState {
 	case 0:
-		drawGameModeMainMenu()
+		drawGameStateMainMenu()
 	case 1:
-		drawGameModePlay()
+		drawGameStatePlay()
 	case 2:
-		drawGameModeGameOver()
+		drawGameStateGameOver()
+	case 3:
+		drawGameStatePaused()
 	default:
-		panic(fmt.Sprintf("Draw(): Invalid GameMode %d", s.GameMode))
+		panic(fmt.Sprintf("Draw(): Invalid GameState %d", s.GameState))
 	}
 
 	s.DrawActiveButtons(s.MousePosition)
@@ -31,7 +33,7 @@ func Draw() {
 	rl.EndDrawing()
 }
 
-func drawGameModePlay() {
+func drawGameStatePlay() {
 	rl.ClearBackground(rl.RayWhite)
 	rl.DrawText(fmt.Sprintf("PlayerIndex: %d, Piece: %d, Orientation: %d", s.CurrentPlayerIndex, s.PieceToPlace, s.PieceOrientation), 10, 10, 40, rl.DarkGray)
 
@@ -43,11 +45,29 @@ func drawGameModePlay() {
 	drawPieceBeingHeld()
 }
 
-func drawGameModeGameOver() {
+func drawGameStateGameOver() {
 	drawEndGameScreen()
 }
 
-func drawGameModeMainMenu() {
+func drawGameStatePaused() {
+	rl.ClearBackground(rl.White)
+	rl.DrawTexture(s.GameScreen, 0, 0, rl.Gray)
+
+	switch s.ActiveMenuId {
+	case 1:
+		drawPauseMenu()
+	}
+}
+
+func drawPauseMenu() {
+	var width float32 = 600.0
+	var height float32 = 800.0
+	menuBoxRect := rl.Rectangle{X: ((float32(c.WindowWidth) - width) / 2), Y: ((float32(c.WindowHeight) - height) / 2), Width: width, Height: height}
+	rl.DrawRectangleRounded(menuBoxRect, 0.1, 1, rl.LightGray)
+	rl.DrawText("Paused", menuBoxRect.ToInt32().X+140, menuBoxRect.ToInt32().Y+20, 84, rl.Black)
+}
+
+func drawGameStateMainMenu() {
 	rl.ClearBackground(rl.RayWhite)
 
 	var textWidth int32 = 670
