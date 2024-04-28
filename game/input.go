@@ -9,80 +9,83 @@ import (
 )
 
 func HandleInput() {
-	handleKeys()
-	handleClicks()
-	handleMousePositionOnBoard()
+	switch s.GameState {
+	case s.MainMenu:
+		handleClicksMainMenu()
+	case s.Playing:
+		handleKeysPlaying()
+		handleClicksPlaying()
+		handleMousePositionOnBoardWhilePlaying()
+	case s.GameOver:
+	case s.Paused:
+		handleKeysPaused()
+	case s.LoadSave:
+
+	}
 }
 
-func handleKeys() {
+func handleKeysPlaying() {
 	checkForMoreKeys := true
 	for checkForMoreKeys {
 		keyCode := rl.GetKeyPressed()
-		if keyCode == 0 {
-			return
-		}
-		switch s.GameState {
-		case s.MainMenu:
-		case s.Playing:
-			handleKeyPlaying(keyCode)
-		case s.GameOver:
-		case s.Paused:
-			handleKeyPaused(keyCode)
-		case s.LoadSave:
-
-		}
-	}
-}
-
-func handleKeyPlaying(keyCode int32) {
-	switch keyCode {
-	case rl.KeyN:
-		{
-			saveGame()
-		}
-	case rl.KeyL:
-		{
-			if getSaveFiles() {
-				setGameStateAfterLoad()
+		switch keyCode {
+		case rl.KeyN:
+			{
+				saveGame()
 			}
+		case rl.KeyL:
+			{
+				if getSaveFiles() {
+					setGameStateAfterLoad()
+				}
+			}
+		case rl.KeyA:
+			updatePieceOrientation(1)
+		case rl.KeyD:
+			updatePieceOrientation(2)
+		case rl.KeyE:
+			fallthrough
+		case rl.KeyQ:
+			updatePieceOrientation(3)
+		case rl.KeyW:
+			fallthrough
+		case rl.KeyS:
+			updatePieceOrientation(4)
+		case rl.KeyLeft:
+			updatePieceOrientation(5)
+		case rl.KeyRight:
+			updatePieceOrientation(6)
+		case rl.KeyDown:
+			fallthrough
+		case rl.KeyZ:
+			updatePieceToPlace(false, true)
+		case rl.KeyUp:
+			fallthrough
+		case rl.KeyX:
+			updatePieceToPlace(true, true)
+		case rl.KeyEscape:
+			setGameState(s.Paused)
+		case 0:
+			checkForMoreKeys = false
 		}
-	case rl.KeyA:
-		updatePieceOrientation(1)
-	case rl.KeyD:
-		updatePieceOrientation(2)
-	case rl.KeyE:
-		fallthrough
-	case rl.KeyQ:
-		updatePieceOrientation(3)
-	case rl.KeyW:
-		fallthrough
-	case rl.KeyS:
-		updatePieceOrientation(4)
-	case rl.KeyLeft:
-		updatePieceOrientation(5)
-	case rl.KeyRight:
-		updatePieceOrientation(6)
-	case rl.KeyDown:
-		fallthrough
-	case rl.KeyZ:
-		updatePieceToPlace(false, true)
-	case rl.KeyUp:
-		fallthrough
-	case rl.KeyX:
-		updatePieceToPlace(true, true)
-	case rl.KeyEscape:
-		setGameState(s.Paused)
 	}
 }
 
-func handleKeyPaused(keyCode int32) {
-	switch keyCode {
-	case rl.KeyEscape:
-		setGameState(s.Playing)
+func handleKeysPaused() {
+	checkForMoreKeys := true
+	for checkForMoreKeys {
+		keyCode := rl.GetKeyPressed()
+		switch keyCode {
+		case rl.KeyEscape:
+			setGameState(s.Playing)
+		case 0:
+			checkForMoreKeys = false
+		}
 	}
 }
 
-func handleClicks() {
+func handleClicksPlaying() {
+	// @TODO: Verify behavior/rewrite
 	s.MousePosition = rl.GetMousePosition()
 	if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 		mousePosOnBoard := rl.Vector2Subtract(s.MousePosition, c.GameBoardStartingPos)
@@ -123,13 +126,22 @@ func handleClicks() {
 		s.DetectAndHandleButtonRelease(s.MousePosition)
 	}
 }
-
-func handleMousePositionOnBoard() {
-
-	if s.GameState != s.Playing {
-		return
+func handleClicksMainMenu() {
+	s.MousePosition = rl.GetMousePosition()
+	if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+		btnDown, _ := s.DetectAndHandleButtonDown(s.MousePosition)
+		if btnDown {
+			return
+		}
 	}
 
+	if rl.IsMouseButtonReleased(rl.MouseLeftButton) {
+		// btnPressed, _ := s.DetectAndHandleButtonRelease(s.MousePosition)
+		s.DetectAndHandleButtonRelease(s.MousePosition)
+	}
+}
+
+func handleMousePositionOnBoardWhilePlaying() {
 	mousePosOnBoard := rl.Vector2Subtract(s.MousePosition, c.GameBoardStartingPos)
 
 	if s.PieceSelected {
