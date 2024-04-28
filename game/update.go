@@ -30,21 +30,21 @@ func StepGame() {
 	}
 }
 
-func setGameState(mode int) {
+func setGameState(newGameState int) {
 	switch s.GameState {
 	case s.MainMenu:
-		setGameStateFromMainMenu(mode)
+		setGameStateFromMainMenu(newGameState)
 	case s.Playing:
-		setGameStateFromPlaying(mode)
+		setGameStateFromPlaying(newGameState)
 	case s.GameOver:
-		setGameStateFromGameOver(mode)
+		setGameStateFromGameOver(newGameState)
 	case s.Paused:
-		setGameStateFromPaused(mode)
+		setGameStateFromPaused(newGameState)
 	}
 }
 
-func setGameStateFromPlaying(mode int) {
-	switch mode {
+func setGameStateFromPlaying(newGameState int) {
+	switch newGameState {
 	case s.Paused:
 		s.GameScreen = rl.LoadTextureFromImage(rl.LoadImageFromScreen())
 		s.ActiveMenuId = 1
@@ -52,8 +52,8 @@ func setGameStateFromPlaying(mode int) {
 	}
 }
 
-func setGameStateFromPaused(mode int) {
-	switch mode {
+func setGameStateFromPaused(newGameState int) {
+	switch newGameState {
 	case s.Playing:
 		// s.GameScreen = rl.LoadTextureFromImage(rl.LoadImageFromScreen())
 		s.ActiveMenuId = -1
@@ -61,9 +61,9 @@ func setGameStateFromPaused(mode int) {
 	}
 }
 
-func setGameStateFromMainMenu(mode int) {
+func setGameStateFromMainMenu(newGameState int) {
 	s.DisableAllButtons()
-	switch mode {
+	switch newGameState {
 	case s.MainMenu:
 		s.EnableButton("MainMenuPlay")
 	case s.Playing:
@@ -72,9 +72,9 @@ func setGameStateFromMainMenu(mode int) {
 		s.GameState = s.Playing
 	}
 }
-func setGameStateFromGameOver(mode int) {
+func setGameStateFromGameOver(newGameState int) {
 	s.DisableAllButtons()
-	switch mode {
+	switch newGameState {
 	case s.MainMenu:
 		s.EnableButton("MainMenuPlay")
 		s.GameState = s.MainMenu
