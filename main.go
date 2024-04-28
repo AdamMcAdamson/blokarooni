@@ -14,7 +14,7 @@ import (
 // -- Add menus (s.ActiveMenuId) for GameStates that have multiple menus (paused)
 // -- Draw
 // -- Buttons (move from state.buttons to game.input/buttons) (move under menus?)
-// Buttons (play, skip turn, rotation, etc)
+// Create Buttons (play, skip turn, rotation, etc)
 // Main menu
 // Pause state
 // - LoadImageFromScreen, draw as tinted texture
@@ -26,6 +26,7 @@ import (
 //  -- auto-skip if player has no valid placements none and they skipped before
 // Create random placement function to simulate games (from a given boardState)
 // UI Work
+// -- Button drawHover
 // -- Ensure floating pieces are the right size (may simply need int cell Width/Height)
 // -- (?) Center selected pieces on Cursor
 // -- Flipping feedback (for when piece looks the same even with different 'orientation') (maybe do a slight gradient on the outline?)

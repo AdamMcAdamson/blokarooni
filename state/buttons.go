@@ -17,6 +17,7 @@ type button struct {
 	onPressed   fn
 	drawUp      drawfn
 	drawDown    drawfn
+	// drawHover drawfn
 }
 
 var buttons []button
