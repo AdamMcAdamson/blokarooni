@@ -15,13 +15,13 @@ func Draw() {
 
 	switch s.GameState {
 	case s.MainMenu:
-		drawGameStateMainMenu()
+		drawMainMenu()
 	case s.Playing:
-		drawGameStatePlay()
+		drawPlaying()
 	case s.GameOver:
-		drawGameStateGameOver()
+		drawGameOver()
 	case s.Paused:
-		drawGameStatePaused()
+		drawPaused()
 	default:
 		panic(fmt.Sprintf("Draw(): Invalid GameState %d", s.GameState))
 	}
@@ -33,7 +33,7 @@ func Draw() {
 	rl.EndDrawing()
 }
 
-func drawGameStatePlay() {
+func drawPlaying() {
 	rl.ClearBackground(rl.RayWhite)
 	rl.DrawText(fmt.Sprintf("PlayerIndex: %d, Piece: %d, Orientation: %d", s.CurrentPlayerIndex, s.PieceToPlace, s.PieceOrientation), 10, 10, 40, rl.DarkGray)
 
@@ -45,11 +45,11 @@ func drawGameStatePlay() {
 	drawPieceBeingHeld()
 }
 
-func drawGameStateGameOver() {
+func drawGameOver() {
 	drawEndGameScreen()
 }
 
-func drawGameStatePaused() {
+func drawPaused() {
 	rl.ClearBackground(rl.White)
 	rl.DrawTexture(s.GameScreen, 0, 0, rl.Gray)
 
@@ -67,7 +67,7 @@ func drawPauseMenu() {
 	rl.DrawText("Paused", menuBoxRect.ToInt32().X+140, menuBoxRect.ToInt32().Y+20, 84, rl.Black)
 }
 
-func drawGameStateMainMenu() {
+func drawMainMenu() {
 	rl.ClearBackground(rl.RayWhite)
 
 	var textWidth int32 = 670
