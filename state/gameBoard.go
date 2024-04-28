@@ -19,6 +19,12 @@ var ShouldShowEndGameButton = false
 
 var GameState = 0 // 0: MainMenu, 1: Playing, 2: GameOver, 3: Paused, 4: LoadSave
 
+const MainMenu = 0
+const Playing = 1
+const GameOver = 2
+const Paused = 3
+const LoadSave = 4
+
 var ActiveMenuId = 0 // 0: MainMenu, 1: PauseMenu
 
 var GameScreen rl.Texture2D
