@@ -11,18 +11,18 @@ import (
 
 func StepGame() {
 	switch s.GameState {
-	case 0:
+	case s.MainMenu:
 		HandleInput()
 		Draw()
-	case 1:
+	case s.Playing:
 		HandleInput()
 		clearGameBoard()
 		UpdateGameBoard()
 		Draw()
-	case 2:
+	case s.GameOver:
 		HandleInput()
 		Draw()
-	case 3:
+	case s.Paused:
 		HandleInput()
 		Draw()
 	default:
@@ -32,56 +32,56 @@ func StepGame() {
 
 func setGameState(mode int) {
 	switch s.GameState {
-	case 0:
+	case s.MainMenu:
 		setGameStateFromMainMenu(mode)
-	case 1:
+	case s.Playing:
 		setGameStateFromPlaying(mode)
-	case 2:
+	case s.GameOver:
 		setGameStateFromGameOver(mode)
-	case 3:
+	case s.Paused:
 		setGameStateFromPaused(mode)
 	}
 }
 
 func setGameStateFromPlaying(mode int) {
 	switch mode {
-	case 3:
+	case s.Paused:
 		s.GameScreen = rl.LoadTextureFromImage(rl.LoadImageFromScreen())
 		s.ActiveMenuId = 1
-		s.GameState = 3
+		s.GameState = s.Paused
 	}
 }
 
 func setGameStateFromPaused(mode int) {
 	switch mode {
-	case 1:
+	case s.Playing:
 		// s.GameScreen = rl.LoadTextureFromImage(rl.LoadImageFromScreen())
 		s.ActiveMenuId = -1
-		s.GameState = 1
+		s.GameState = s.Playing
 	}
 }
 
 func setGameStateFromMainMenu(mode int) {
 	s.DisableAllButtons()
 	switch mode {
-	case 0:
+	case s.MainMenu:
 		s.EnableButton("MainMenuPlay")
-	case 1:
+	case s.Playing:
 		clearGameBoard()
 		UpdateGameBoard()
-		s.GameState = 1
+		s.GameState = s.Playing
 	}
 }
 func setGameStateFromGameOver(mode int) {
 	s.DisableAllButtons()
 	switch mode {
-	case 0:
+	case s.MainMenu:
 		s.EnableButton("MainMenuPlay")
-		s.GameState = 0
-	case 1:
+		s.GameState = s.MainMenu
+	case s.Playing:
 		clearGameBoard()
 		UpdateGameBoard()
-		s.GameState = 1
+		s.GameState = s.Playing
 	}
 }
 
@@ -97,7 +97,7 @@ func checkToEndGame() bool {
 	}
 
 	if allPlaced {
-		s.GameState = 2 // GameOver
+		s.GameState = s.GameOver
 		return true
 	} else {
 		s.ShouldShowEndGameButton = true
@@ -354,7 +354,7 @@ func calculateNegativeScores() {
 
 func endGame() {
 	calculateNegativeScores()
-	s.GameState = 2
+	s.GameState = s.GameOver
 }
 
 // func clearPreviewBoard() {

@@ -14,13 +14,13 @@ func Draw() {
 	rl.BeginDrawing()
 
 	switch s.GameState {
-	case 0:
+	case s.MainMenu:
 		drawGameStateMainMenu()
-	case 1:
+	case s.Playing:
 		drawGameStatePlay()
-	case 2:
+	case s.GameOver:
 		drawGameStateGameOver()
-	case 3:
+	case s.Paused:
 		drawGameStatePaused()
 	default:
 		panic(fmt.Sprintf("Draw(): Invalid GameState %d", s.GameState))
